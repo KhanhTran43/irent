@@ -6,6 +6,6 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <StrictMode>
-    <>Hello</>
+    <>Hello I'm app</>
   </StrictMode>
 );
