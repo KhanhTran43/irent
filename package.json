@@ -2,7 +2,11 @@
   "name": "vehicle-management",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "format": "nx format:write",
+    "lint:app": "nx lint vehicle-management",
+    "lint:admin": "nx lint admin"
+  },
   "private": true,
   "dependencies": {
     "@swc/helpers": "~0.5.0",
