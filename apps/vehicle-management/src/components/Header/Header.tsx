@@ -1,4 +1,6 @@
+import { HeartFilledIcon } from '@radix-ui/react-icons';
 import styled from 'styled-components';
+import Logo from '../Logo/Logo';
 
 const Container = styled.header`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.108);
@@ -25,17 +27,6 @@ const Item = styled.li`
   cursor: pointer;
 `;
 
-const Logo = styled.div`
-  font-size: 32px;
-  display: flex;
-  align-items: center;
-  padding: 0 36px;
-  font-family: 'Pacifico', cursive;
-
-  &:after {
-    content: 'Stockly';
-  }
-`;
 
 const Header = () => {
   return (
