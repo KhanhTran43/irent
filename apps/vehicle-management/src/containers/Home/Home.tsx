@@ -124,7 +124,7 @@ const Home = () => {
       mockWareHouses.filter((it) => {
         let flag = false;
 
-        if (query) {
+        if (query || query === '') {
           flag = it.address.toLowerCase().includes(query.toLowerCase());
         }
 

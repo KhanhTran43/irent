@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { WareHouseModel } from '../../models/warehouse.model';
 import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
+import { SewingPinFilledIcon, TimerIcon } from '@radix-ui/react-icons';
 
 const CardContainer = styled.div`
   background-color: #ffffff;
@@ -54,7 +55,9 @@ const CardDate = styled.span`
   font-size: 12px;
   position: absolute;
   right: 12px;
-`
+  display: flex;
+  gap: 4px;
+`;
 
 const PriceText = styled.div`
   width: 60px;
@@ -79,10 +82,16 @@ const WarehouseViewCard = (warehouse: WareHouseModel) => {
       />
       <TextContainer>
         <CardName>{name}</CardName>
-        <CardAddress>{address}</CardAddress>
+        <CardAddress>
+          <SewingPinFilledIcon />
+          {address}
+        </CardAddress>
         <PriceText>$ {price}</PriceText>
         <CardArea>{area} sqrt</CardArea>
-        <CardDate>{convertTimestampToDate(createdDate)}</CardDate>
+        <CardDate>
+          <TimerIcon />
+          {convertTimestampToDate(createdDate)}
+        </CardDate>
       </TextContainer>
     </CardContainer>
   );
