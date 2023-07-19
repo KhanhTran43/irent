@@ -3,6 +3,8 @@ import { WareHouseModel } from '../../models/warehouse.model';
 import WarehouseViewCard from '../../components/WarehouseViewCard/WarehouseViewCard';
 import styled from 'styled-components';
 import SearchBar from '../../components/SearchBar/SearchBar';
+import PriceRangeSlider from '../../components/PriceRangeSlider/PriceRangeSlider';
+import { FilterWarehouseOptionModel } from '../../models/filter-warehouse-option.model';
 
 const mockWareHouses: WareHouseModel[] = [
   {
@@ -70,7 +72,7 @@ const mockWareHouses: WareHouseModel[] = [
     createdDate: Date.now(),
   },
   {
-    id: 4,
+    id: 9,
     name: 'A4',
     address: 'Hoà Hải, Đà Nẵng',
     area: 100,
@@ -78,7 +80,7 @@ const mockWareHouses: WareHouseModel[] = [
     createdDate: Date.now(),
   },
   {
-    id: 5,
+    id: 10,
     name: 'A5',
     address: 'Hoà Hải, Đà Nẵng',
     area: 100,
@@ -86,7 +88,7 @@ const mockWareHouses: WareHouseModel[] = [
     createdDate: Date.now(),
   },
   {
-    id: 6,
+    id: 11,
     name: 'A6',
     address: 'Hoà Hải, Đà Nẵng',
     area: 100,
@@ -94,7 +96,7 @@ const mockWareHouses: WareHouseModel[] = [
     createdDate: Date.now(),
   },
   {
-    id: 7,
+    id: 12,
     name: 'A7',
     address: 'Hoà Hải, Đà Nẵng',
     area: 100,
@@ -102,7 +104,7 @@ const mockWareHouses: WareHouseModel[] = [
     createdDate: Date.now(),
   },
   {
-    id: 8,
+    id: 13,
     name: 'A8',
     address: 'Hoà Hải, Đà Nẵng',
     area: 100,
@@ -112,13 +114,41 @@ const mockWareHouses: WareHouseModel[] = [
 ];
 
 const Home = () => {
-  const [warehouses, setWareHouse] = useState<WareHouseModel[]>(mockWareHouses);
+  const [wareHouses, setWareHouse] = useState<WareHouseModel[]>(mockWareHouses);
+
+  // TODO: If we call api to search, this code should be removed
+  const onFilter = (options: FilterWarehouseOptionModel) => {
+    const { query, priceRange } = options;
+
+    setWareHouse(
+      mockWareHouses.filter((it) => {
+        let flag = false;
+
+        if (query) {
+          flag = it.address.toLowerCase().includes(query.toLowerCase());
+        }
+
+        if (priceRange) {
+          flag = it.price >= priceRange[0] && it.price <= priceRange[1];
+        }
+
+        return flag;
+      })
+    );
+  };
 
   return (
     <>
-      <SearchBar />
+      <FilterContainer>
+        <SearchBar
+          onSearch={onFilter}
+          placeholder="Search warehouse by address"
+        />
+        <PriceRangeSlider min={1} max={100} onInput={onFilter} />
+      </FilterContainer>
+
       <GridContainer>
-        {mockWareHouses.map((it) => (
+        {wareHouses.map((it) => (
           <WarehouseViewCard key={it.id} {...it}></WarehouseViewCard>
         ))}
       </GridContainer>
@@ -128,8 +158,14 @@ const Home = () => {
 
 export default Home;
 
+const FilterContainer = styled.div`
+  display: flex;
+  margin-bottom: 48px;
+  gap: 24px;
+`;
+
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 `;
