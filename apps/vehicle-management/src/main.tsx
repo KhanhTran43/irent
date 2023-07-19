@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Wrapper = styled.div`
-  width: 990px;
+  width: 1024px;
   margin: 16px auto 32px;
 `;
 

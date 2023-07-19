@@ -1,10 +1,10 @@
 import styled from 'styled-components';
+import { debounce } from 'lodash'
+import { FilterWarehouseOptionModel } from '../../models/filter-warehouse-option.model';
 
 const InputSearch = styled.div`
-  flex-grow: 1;
-  margin-right: 15px;
   position: relative;
-  margin-bottom: 48px;
+  margin: auto: 0;
 `;
 
 const Input = styled.input`
@@ -16,10 +16,22 @@ const Input = styled.input`
   width: 280px;
 `;
 
-const SearchBar = () => {
+interface SearchBarProps {
+  onSearch: (options: FilterWarehouseOptionModel) => void,
+  placeholder: string
+}
+
+const SearchBar = (props: SearchBarProps) => {
+  const { onSearch, placeholder } = props;
+  const debouncedOnSearch = debounce(onSearch, 400);
+
   return (
     <InputSearch>
-      <Input />
+      <Input onChange={(v) => {
+        debouncedOnSearch({
+          query: v.target.value
+        });
+      }} placeholder={placeholder}/>
     </InputSearch>
   );
 };
