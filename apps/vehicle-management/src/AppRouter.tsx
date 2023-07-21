@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './containers/Login/Login';
 import SignUp from './containers/SignUp/SignUp';
 import Home from './containers/Home/Home';
+import WarehouseDetails from './containers/WarehouseDetails/WarehouseDetails';
 
 const AppRouter: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const AppRouter: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/warehouse/:id" element={<WarehouseDetails />} />
         <Route path="*" element={<Login />} />
       </Routes>
     </Router>
