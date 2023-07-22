@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import PriceRangeSlider from '../../components/PriceRangeSlider/PriceRangeSlider';
 import { FilterWarehouseOptionModel } from '../../models/filter-warehouse-option.model';
+import { useNavigate } from 'react-router-dom';
 
 const mockWareHouses: WareHouseModel[] = [
   {
@@ -115,6 +116,7 @@ const mockWareHouses: WareHouseModel[] = [
 
 const Home = () => {
   const [wareHouses, setWareHouse] = useState<WareHouseModel[]>(mockWareHouses);
+  const navigate = useNavigate();
 
   // TODO: If we call api to search, this code should be removed
   const onFilter = (options: FilterWarehouseOptionModel) => {
@@ -137,6 +139,10 @@ const Home = () => {
     );
   };
 
+  const navigateToDetails = (id: number) => {
+    navigate(`/warehouse/${id}`);
+  }
+
   return (
     <>
       <FilterContainer>
@@ -149,7 +155,7 @@ const Home = () => {
 
       <GridContainer>
         {wareHouses.map((it) => (
-          <WarehouseViewCard key={it.id} {...it}></WarehouseViewCard>
+          <WarehouseViewCard key={it.id} warehouse={it} onClick={navigateToDetails}></WarehouseViewCard>
         ))}
       </GridContainer>
     </>
@@ -166,6 +172,6 @@ const FilterContainer = styled.div`
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 `;

@@ -10,17 +10,27 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
+const BackgroundWrapper = styled.div`
+  background-color: #eee;
+  padding: 16px 0;
+`;
+
 const Wrapper = styled.div`
   width: 1024px;
-  margin: 16px auto 32px;
+  margin: 0 auto 32px;
+  background-color: white;
+  padding: 16px;
+  border-radius: 8px;
 `;
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <>
     <Header></Header>
     <GlobalStyle />
-    <Wrapper>
-      <AppRouter />
-    </Wrapper>
+    <BackgroundWrapper>
+      <Wrapper>
+        <AppRouter />
+      </Wrapper>
+    </BackgroundWrapper>
   </>
 );
