@@ -71,11 +71,16 @@ const PriceText = styled.div`
   text-align: center;
 `;
 
-const WarehouseViewCard = (warehouse: WareHouseModel) => {
-  const { id, name, address, price, area, createdDate } = warehouse;
+interface WarehouseViewCardProps {
+  warehouse: WareHouseModel;
+  onClick: (id: number) => void
+}
+
+const WarehouseViewCard = (props: WarehouseViewCardProps) => {
+  const { id, name, address, price, area, createdDate } = props.warehouse;
 
   return (
-    <CardContainer>
+    <CardContainer onClick={() => props.onClick(id)}>
       <CardImage
         src="https://picsum.photos/seed/picsum/400/300"
         alt="Product"
