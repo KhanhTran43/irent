@@ -77,7 +77,7 @@ interface WarehouseViewCardProps {
 }
 
 const WarehouseViewCard = (props: WarehouseViewCardProps) => {
-  const { id, name, address, price, area, createdDate } = props.warehouse;
+  const { id, name, ward, price, area, createdDate } = props.warehouse;
 
   return (
     <CardContainer onClick={() => props.onClick(id)}>
@@ -89,7 +89,7 @@ const WarehouseViewCard = (props: WarehouseViewCardProps) => {
         <CardName>{name}</CardName>
         <CardAddress>
           <SewingPinFilledIcon />
-          {address}
+          {ward}
         </CardAddress>
         <PriceText>$ {price}</PriceText>
         <CardArea>{area} sqrt</CardArea>

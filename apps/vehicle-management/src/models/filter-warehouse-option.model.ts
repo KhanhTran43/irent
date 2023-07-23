@@ -1,4 +1,5 @@
 export interface FilterWarehouseOptionModel {
     query?: string,
-    priceRange?: [number, number]
+    priceRange?: [number, number],
+    ward?: string
 }

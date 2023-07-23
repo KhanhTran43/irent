@@ -4,6 +4,7 @@ import Login from './containers/Login/Login';
 import SignUp from './containers/SignUp/SignUp';
 import Home from './containers/Home/Home';
 import WarehouseDetails from './containers/WarehouseDetails/WarehouseDetails';
+import ListWarehouse from './containers/ListWarehouse/ListWarehouse';
 
 const AppRouter: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const AppRouter: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/list" element={<ListWarehouse />} />
         <Route path="/warehouse/:id" element={<WarehouseDetails />} />
         <Route path="*" element={<Login />} />
       </Routes>

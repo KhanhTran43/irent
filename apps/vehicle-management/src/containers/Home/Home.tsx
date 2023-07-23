@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { WareHouseModel } from '../../models/warehouse.model';
 import WarehouseViewCard from '../../components/WarehouseViewCard/WarehouseViewCard';
 import styled from 'styled-components';
-import SearchBar from '../../components/SearchBar/SearchBar';
 import PriceRangeSlider from '../../components/PriceRangeSlider/PriceRangeSlider';
-import { FilterWarehouseOptionModel } from '../../models/filter-warehouse-option.model';
 import { useNavigate } from 'react-router-dom';
+import WardSelect from '../../components/WardSelect/WardSelect';
+import { WardValue } from '../../enums/ward-value.enum';
 
 const mockWareHouses: WareHouseModel[] = [
   {
     id: 1,
     name: 'A1',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.CAM_LE,
     price: 5.4,
     area: 100,
     createdDate: Date.now(),
@@ -19,7 +19,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 2,
     name: 'A2',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.HOANG_SA,
     area: 100,
     price: 5.3,
     createdDate: Date.now(),
@@ -27,7 +27,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 3,
     name: 'A3',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.THANH_KHE,
     area: 100,
     price: 1.9,
     createdDate: Date.now(),
@@ -35,7 +35,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 4,
     name: 'A4',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.CAM_LE,
     area: 100,
     price: 6.4,
     createdDate: Date.now(),
@@ -43,7 +43,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 5,
     name: 'A5',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.HOANG_SA,
     area: 100,
     price: 5.4,
     createdDate: Date.now(),
@@ -51,7 +51,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 6,
     name: 'A6',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.HOA_VANG,
     area: 100,
     price: 5.3,
     createdDate: Date.now(),
@@ -59,7 +59,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 7,
     name: 'A7',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.HOANG_SA,
     area: 100,
     price: 1.9,
     createdDate: Date.now(),
@@ -67,7 +67,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 8,
     name: 'A8',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.NGU_HANH_SON,
     area: 100,
     price: 6.4,
     createdDate: Date.now(),
@@ -75,7 +75,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 9,
     name: 'A4',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.HOANG_SA,
     area: 100,
     price: 6.4,
     createdDate: Date.now(),
@@ -83,7 +83,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 10,
     name: 'A5',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.HAI_CHAU,
     area: 100,
     price: 5.4,
     createdDate: Date.now(),
@@ -91,7 +91,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 11,
     name: 'A6',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.HAI_CHAU,
     area: 100,
     price: 5.3,
     createdDate: Date.now(),
@@ -99,7 +99,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 12,
     name: 'A7',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.LIEN_CHIEU,
     area: 100,
     price: 1.9,
     createdDate: Date.now(),
@@ -107,7 +107,7 @@ const mockWareHouses: WareHouseModel[] = [
   {
     id: 13,
     name: 'A8',
-    address: 'Hoà Hải, Đà Nẵng',
+    ward: WardValue.NGU_HANH_SON,
     area: 100,
     price: 6.4,
     createdDate: Date.now(),
@@ -119,19 +119,18 @@ const Home = () => {
   const navigate = useNavigate();
 
   // TODO: If we call api to search, this code should be removed
-  const onFilter = (options: FilterWarehouseOptionModel) => {
-    const { query, priceRange } = options;
-
+  const onFilter = (value: [number, number] | string, type: 'ward' | 'price') => {
     setWareHouse(
       mockWareHouses.filter((it) => {
         let flag = false;
 
-        if (query || query === '') {
-          flag = it.address.toLowerCase().includes(query.toLowerCase());
+        if (type === 'ward') {
+          flag = value === WardValue.ALL ? true : it.ward.toLowerCase().includes((value as string).toLowerCase());
         }
 
-        if (priceRange) {
-          flag = it.price >= priceRange[0] && it.price <= priceRange[1];
+        if (type === 'price') {
+          const searchValue = value as [number, number]
+          flag = it.price >= searchValue[0] && it.price <= searchValue[1];
         }
 
         return flag;
@@ -146,11 +145,8 @@ const Home = () => {
   return (
     <>
       <FilterContainer>
-        <SearchBar
-          onSearch={onFilter}
-          placeholder="Search warehouse by address"
-        />
-        <PriceRangeSlider min={1} max={100} onInput={onFilter} />
+        <WardSelect onSelect={(value: string) => onFilter(value, 'ward')}/>
+        <PriceRangeSlider min={1} max={100} onInput={(value: [number, number]) => onFilter(value, 'price')} />
       </FilterContainer>
 
       <GridContainer>
