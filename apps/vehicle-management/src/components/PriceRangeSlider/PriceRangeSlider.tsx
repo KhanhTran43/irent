@@ -8,7 +8,7 @@ import styled from 'styled-components';
 interface PriceRangeSliderProps {
   min: number;
   max: number;
-  onInput: (options: FilterWarehouseOptionModel) => void;
+  onInput: (options: [number, number]) => void;
 }
 
 const PriceRangeSlider = (props: PriceRangeSliderProps) => {
@@ -31,9 +31,7 @@ const PriceRangeSlider = (props: PriceRangeSliderProps) => {
           setValue(priceRange);
         }}
         onThumbDragEnd={() => {
-          debouncedOnInput({
-            priceRange: value,
-          });
+          debouncedOnInput(value);
         }}
       />
     </Container>
