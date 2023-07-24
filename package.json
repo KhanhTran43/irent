@@ -1,10 +1,10 @@
 {
-  "name": "vehicle-management",
+  "name": "app",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "format": "nx format:write",
-    "lint:app": "nx lint vehicle-management",
+    "lint:app": "nx lint app",
     "lint:admin": "nx lint admin"
   },
   "private": true,
