@@ -1,14 +1,14 @@
-import { styled } from '@stitches/react';
-import React from 'react';
-import * as Select from '@radix-ui/react-select';
-import { violet, mauve, blackA } from '@radix-ui/colors';
+import { blackA, mauve, violet } from '@radix-ui/colors';
 import {
   CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
 } from '@radix-ui/react-icons';
-import { WARD_OPTIONS } from '../../constants/ward-options.constant';
+import * as Select from '@radix-ui/react-select';
+import { styled } from '@stitches/react';
 import { debounce } from 'lodash';
+import React from 'react';
+import { WARD_OPTIONS } from '../../constants/ward-options.constant';
 
 interface WardSelectProps {
   onSelect: (value: string) => void;
@@ -21,7 +21,7 @@ const WardSelect = (props: WardSelectProps) => {
   return (
     <Select.Root onValueChange={(value) => debouncedOnSelect(value)}>
       <SelectTrigger aria-label="Food">
-        <Select.Value placeholder="Select a fruit…" />
+        <Select.Value placeholder="Chọn quận" />
         <SelectIcon>
           <ChevronDownIcon />
         </SelectIcon>

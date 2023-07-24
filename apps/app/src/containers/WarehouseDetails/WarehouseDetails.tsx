@@ -1,31 +1,42 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { WareHouseModel } from '../../models/warehouse.model';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
-import { HeartIcon, RulerSquareIcon, StackIcon, ViewVerticalIcon } from '@radix-ui/react-icons';
+import {
+  HeartIcon,
+  RulerSquareIcon,
+  StackIcon,
+  ViewVerticalIcon,
+} from '@radix-ui/react-icons';
 import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
+
+import { WardValue } from '../../enums/ward-value.enum';
+import Button from '../../components/Button/Button';
 
 const mockWarehouseDetails: WarehouseDetailsModel = {
   id: 1,
   name: 'Thien Thai Ho',
-  address:
-    'Sejati Lakeside, No. 3, Jalan SL 2, Sejati Lakeside, Cyber 10, Cyberjaya, Selangor',
+  ward: WardValue.HAI_CHAU,
   price: 45,
   area: 100,
   createdDate: 1,
   doorQuantity: 3,
-  floors: 3
+  floors: 3,
 };
 
 const WarehouseDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // TODO: get warehouse details
   const [warehouseDetails, setWarehouseDetails] =
     useState(mockWarehouseDetails);
 
-  console.log(id);
+  const goToRentingForm = () => {
+    navigate(`/warehouse/${id}/renting`);
+  }
+
   return (
     <Container>
       <ImageContainer>
@@ -34,11 +45,15 @@ const WarehouseDetails = () => {
       <HeaderContainer>
         <Title>{warehouseDetails.name}</Title>
         <Address>
-          {warehouseDetails.address}. <DirectionText>See on map</DirectionText>
+          {warehouseDetails.ward}. <DirectionText>See on map</DirectionText>
         </Address>
         <Date>
           Created at: {convertTimestampToDate(warehouseDetails.createdDate)}
         </Date>
+        <br />
+        <ButtonContainer>
+          <Button onClick={goToRentingForm}>Rent</Button>
+        </ButtonContainer>
         <IconActions>
           <IconActionItem>
             <HeartIcon></HeartIcon>
@@ -50,15 +65,23 @@ const WarehouseDetails = () => {
           <Price>{warehouseDetails.price} $ / mth</Price>
           <OtherMetrics>
             <OtherMetricItem>
-              <RulerSquareIcon width={32} height={32} color='#999'></RulerSquareIcon>
+              <RulerSquareIcon
+                width={32}
+                height={32}
+                color="#999"
+              ></RulerSquareIcon>
               <Text>{warehouseDetails.area} sqrt</Text>
             </OtherMetricItem>
             <OtherMetricItem>
-              <ViewVerticalIcon width={32} height={32} color='#999'></ViewVerticalIcon>
+              <ViewVerticalIcon
+                width={32}
+                height={32}
+                color="#999"
+              ></ViewVerticalIcon>
               <Text>{warehouseDetails.doorQuantity} doors</Text>
             </OtherMetricItem>
             <OtherMetricItem>
-              <StackIcon width={32} height={32} color='#999'></StackIcon>
+              <StackIcon width={32} height={32} color="#999"></StackIcon>
               <Text>{warehouseDetails.floors} floors</Text>
             </OtherMetricItem>
           </OtherMetrics>
@@ -141,5 +164,13 @@ const OtherMetricItem = styled.div`
 const Text = styled.span``;
 
 const Container = styled.div``;
+
+const ButtonContainer = styled.div`
+  margin-top: 24px;
+  text-align: right;
+  cursor: pointer;
+`;
+
+
 
 export default WarehouseDetails;
