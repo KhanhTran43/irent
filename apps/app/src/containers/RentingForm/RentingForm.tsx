@@ -3,32 +3,23 @@ import Button from '../../components/Button/Button';
 import { StepperItemModel } from '../../components/Stepper';
 import Stepper from '../../components/Stepper/Stepper';
 import { useState } from 'react';
+import RentingWarehouseDetails from '../../components/RentingWarehouseDetails/RentingWarehouseDetails';
+import RenterInformation from '../../components/RenterInformation/RenterInformation';
+import Privacy from '../../components/Privacy/Privacy';
 
 const RentingForm = () => {
   const [activeIdx, setActiveIdx] = useState(0);
   const [stepperItems, setStepperItems] = useState<StepperItemModel[]>([
     {
-      label: 'Question 1',
+      label: 'Nhập thông tin',
       status: 'active',
     },
     {
-      label: 'Question 2',
+      label: 'Điều khoản',
       status: 'default',
     },
     {
-      label: 'Question 3',
-      status: 'default',
-    },
-    {
-      label: 'Question 4',
-      status: 'default',
-    },
-    {
-      label: 'Question 5',
-      status: 'default',
-    },
-    {
-      label: 'Question 6',
+      label: 'Xác nhận',
       status: 'default',
     },
   ]);
@@ -92,12 +83,8 @@ const RentingForm = () => {
         </ButtonContainer>
       </Header>
       <Stepper items={stepperItems} />
-      {
-        activeIdx === 0 && <>Step 1</>
-      }
-      {
-        activeIdx === 1 && <>Step 2</>
-      }
+      {activeIdx === 0 && <RenterInformation price={600} />}
+      {activeIdx === 1 && <Privacy />}
     </Container>
   );
 };
