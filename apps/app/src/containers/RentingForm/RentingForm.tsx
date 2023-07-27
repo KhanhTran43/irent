@@ -1,11 +1,12 @@
+import { useState } from 'react';
 import styled from 'styled-components';
+
 import Button from '../../components/Button/Button';
+import Privacy from '../../components/Privacy/Privacy';
+import RenterInformation from '../../components/RenterInformation/RenterInformation';
+import RentingWarehouseDetails from '../../components/RentingWarehouseDetails/RentingWarehouseDetails';
 import { StepperItemModel } from '../../components/Stepper';
 import Stepper from '../../components/Stepper/Stepper';
-import { useState } from 'react';
-import RentingWarehouseDetails from '../../components/RentingWarehouseDetails/RentingWarehouseDetails';
-import RenterInformation from '../../components/RenterInformation/RenterInformation';
-import Privacy from '../../components/Privacy/Privacy';
 
 const RentingForm = () => {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -73,9 +74,9 @@ const RentingForm = () => {
         </TextContainer>
         <ButtonContainer>
           <Button
+            disabled={!activeIdx}
             type="secondary"
             onClick={() => backPage()}
-            disabled={!activeIdx}
           >
             Quay lại
           </Button>

@@ -1,6 +1,6 @@
 import { WareHouseModel } from "./warehouse.model";
 
-export interface WarehouseDetailsModel extends WareHouseModel {
+export type WarehouseDetailsModel = WareHouseModel & {
     doorQuantity: number;
     floors: number;
 }

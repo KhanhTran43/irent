@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import { PRIVACY } from '../../constants/privacy.constant';
 
 const Privacy = () => {

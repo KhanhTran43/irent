@@ -33,50 +33,50 @@ const SignUp = () => {
       <h2>Sign Up</h2>
       <Form onSubmit={handleSubmit}>
         <Input
-          type="text"
           placeholder="Name"
+          type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <Input
-          type="email"
           placeholder="Email"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input
-          type="password"
           placeholder="Password"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <Input
-          type="password"
           placeholder="Confirm Password"
+          type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
         <RadioButtonContainer>
           <RadioButtonLabel>
             <RadioButton
+              checked={role === 'user'}
               type="radio"
               value="user"
-              checked={role === 'user'}
               onChange={() => setRole('user')}
             />
             User
           </RadioButtonLabel>
           <RadioButtonLabel>
             <RadioButton
+              checked={role === 'admin'}
               type="radio"
               value="admin"
-              checked={role === 'admin'}
               onChange={() => setRole('admin')}
             />
             Admin
           </RadioButtonLabel>
         </RadioButtonContainer>
-        <Button type="submit" disabled={!isFormValid}>
+        <Button disabled={!isFormValid} type="submit">
           Sign Up
         </Button>
       </Form>

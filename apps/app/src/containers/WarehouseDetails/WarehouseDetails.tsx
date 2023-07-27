@@ -1,18 +1,18 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { WareHouseModel } from '../../models/warehouse.model';
-import { useState } from 'react';
-import styled from 'styled-components';
-import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
 import {
   HeartIcon,
   RulerSquareIcon,
   StackIcon,
   ViewVerticalIcon,
 } from '@radix-ui/react-icons';
-import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { WardValue } from '../../enums/ward-value.enum';
 import Button from '../../components/Button/Button';
+import { WardValue } from '../../enums/ward-value.enum';
+import { WareHouseModel } from '../../models/warehouse.model';
+import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
+import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
 
 const mockWarehouseDetails: WarehouseDetailsModel = {
   id: 1,
@@ -40,7 +40,7 @@ const WarehouseDetails = () => {
   return (
     <Container>
       <ImageContainer>
-        <Image src="https://picsum.photos/seed/picsum/900/300" alt="title" />
+        <Image alt="title" src="https://picsum.photos/seed/picsum/900/300" />
       </ImageContainer>
       <HeaderContainer>
         <Title>{warehouseDetails.name}</Title>
@@ -66,22 +66,22 @@ const WarehouseDetails = () => {
           <OtherMetrics>
             <OtherMetricItem>
               <RulerSquareIcon
-                width={32}
-                height={32}
                 color="#999"
+                height={32}
+                width={32}
               ></RulerSquareIcon>
               <Text>{warehouseDetails.area} sqrt</Text>
             </OtherMetricItem>
             <OtherMetricItem>
               <ViewVerticalIcon
-                width={32}
-                height={32}
                 color="#999"
+                height={32}
+                width={32}
               ></ViewVerticalIcon>
               <Text>{warehouseDetails.doorQuantity} doors</Text>
             </OtherMetricItem>
             <OtherMetricItem>
-              <StackIcon width={32} height={32} color="#999"></StackIcon>
+              <StackIcon color="#999" height={32} width={32}></StackIcon>
               <Text>{warehouseDetails.floors} floors</Text>
             </OtherMetricItem>
           </OtherMetrics>

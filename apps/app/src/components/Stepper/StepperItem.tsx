@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import { StepperItemModel } from './models/stepper-item.model';
 
 const StepperItem = (item: StepperItemModel) => {

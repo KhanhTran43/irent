@@ -1,5 +1,5 @@
-import { SelectOption } from "../models/select-option.model";
 import { WardValue } from "../enums/ward-value.enum";
+import { SelectOption } from "../models/select-option.model";
 import { WardLabel } from "./ward-label.constant";
 
 export const WARD_OPTIONS: SelectOption[] = [

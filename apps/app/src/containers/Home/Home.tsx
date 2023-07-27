@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { WareHouseModel } from '../../models/warehouse.model';
-import WarehouseViewCard from '../../components/WarehouseViewCard/WarehouseViewCard';
-import styled from 'styled-components';
-import PriceRangeSlider from '../../components/PriceRangeSlider/PriceRangeSlider';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+import PriceRangeSlider from '../../components/PriceRangeSlider/PriceRangeSlider';
 import WardSelect from '../../components/WardSelect/WardSelect';
+import WarehouseViewCard from '../../components/WarehouseViewCard/WarehouseViewCard';
 import { WardValue } from '../../enums/ward-value.enum';
+import { WareHouseModel } from '../../models/warehouse.model';
 
 const mockWareHouses: WareHouseModel[] = [
   {
@@ -146,7 +147,7 @@ const Home = () => {
     <>
       <FilterContainer>
         <WardSelect onSelect={(value: string) => onFilter(value, 'ward')}/>
-        <PriceRangeSlider min={1} max={100} onInput={(value: [number, number]) => onFilter(value, 'price')} />
+        <PriceRangeSlider max={100} min={1} onInput={(value: [number, number]) => onFilter(value, 'price')} />
       </FilterContainer>
 
       <GridContainer>

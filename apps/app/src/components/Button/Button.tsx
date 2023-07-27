@@ -1,8 +1,8 @@
-import * as stitches from '@stitches/react';
 import { blackA, green, violet } from '@radix-ui/colors';
+import * as stitches from '@stitches/react';
 import { ReactNode } from 'react';
 
-interface ButtonProps {
+type ButtonProps = {
   type?: 'primary' | 'secondary';
   disabled?: boolean;
   onClick?: () => void;
@@ -16,8 +16,8 @@ const Button = (props: ButtonProps) => {
     // TODO: please fix the error here hehe
     <StyledButton
       buttonType={type || 'primary'}
-      onClick={() => onClick && onClick()}
       disabled={disabled}
+      onClick={() => onClick && onClick()}
     >
       {children}
     </StyledButton>

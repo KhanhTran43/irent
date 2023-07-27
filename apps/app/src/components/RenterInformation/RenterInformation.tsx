@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components'
+
 import { UserModel } from '../../models/user.model';
 import { formatPrice } from '../../utils/format-price.util';
 
-interface RenterInformationProps {
+type RenterInformationProps = {
   price: number;
 }
 
@@ -47,8 +48,8 @@ const RenterInformation = (props: RenterInformationProps) => {
             <Label>Thời hạn thuê (tháng)</Label>
             <Input
               defaultValue={1}
-              type="number"
               min="1"
+              type="number"
               onChange={(v) => {
                 setDuration(+v.target.value);
               }}
