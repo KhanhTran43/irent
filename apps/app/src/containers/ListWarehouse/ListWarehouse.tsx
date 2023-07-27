@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
-import { WardValue } from '../../enums/ward-value.enum';
+
 import MyWarehouseViewCard from '../../components/MyWarehouseViewCard/MyWarehouseViewCard';
+import { WardValue } from '../../enums/ward-value.enum';
+import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
 
 const myWarehouseDetailsMock: MyWarehouseDetailsModel[] = [
   {
@@ -82,11 +83,7 @@ const ListWarehouse = () => {
   return (
     <GridContainer>
       {myWarehouseDetailsMock.map((it) => (
-        <MyWarehouseViewCard
-          key={it.id}
-          warehouse={it}
-          onClick={onSelect}
-        ></MyWarehouseViewCard>
+        <MyWarehouseViewCard key={it.id} warehouse={it} onClick={onSelect}></MyWarehouseViewCard>
       ))}
     </GridContainer>
   );

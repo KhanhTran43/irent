@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { WarehouseDetailsModel } from "../../models/warehouse-details.model";
 
 const RentingWarehouseDetails = (warehouse: WarehouseDetailsModel) => {

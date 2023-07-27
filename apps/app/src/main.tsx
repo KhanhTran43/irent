@@ -1,6 +1,7 @@
 import * as ReactDOM from 'react-dom/client';
-import AppRouter from './AppRouter';
 import styled, { createGlobalStyle } from 'styled-components';
+
+import AppRouter from './AppRouter';
 import Header from './components/Header/Header';
 
 const GlobalStyle = createGlobalStyle`
@@ -32,5 +33,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <AppRouter />
       </Wrapper>
     </BackgroundWrapper>
-  </>
+  </>,
 );

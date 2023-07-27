@@ -1,11 +1,13 @@
-import { debounce } from 'lodash';
-import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
-import { FilterWarehouseOptionModel } from '../../models/filter-warehouse-option.model';
+
+import { debounce } from 'lodash';
 import { useState } from 'react';
+import RangeSlider from 'react-range-slider-input';
 import styled from 'styled-components';
 
-interface PriceRangeSliderProps {
+import { FilterWarehouseOptionModel } from '../../models/filter-warehouse-option.model';
+
+type PriceRangeSliderProps = {
   min: number;
   max: number;
   onInput: (options: [number, number]) => void;
@@ -24,9 +26,9 @@ const PriceRangeSlider = (props: PriceRangeSliderProps) => {
         <Text>{value[1]}$</Text>
       </Title>
       <RangeSlider
-        min={min}
-        max={max}
         defaultValue={[min, max]}
+        max={max}
+        min={min}
         onInput={(priceRange: [number, number]) => {
           setValue(priceRange);
         }}

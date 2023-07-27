@@ -1,6 +1,6 @@
 import { WareHouseModel } from "./warehouse.model";
 
-export interface MyWarehouseDetailsModel extends WareHouseModel {
+export type MyWarehouseDetailsModel = WareHouseModel & {
     endDate: number;
     daysLeft: number;
 }

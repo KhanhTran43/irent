@@ -8,9 +8,10 @@ import * as Select from '@radix-ui/react-select';
 import { styled } from '@stitches/react';
 import { debounce } from 'lodash';
 import React from 'react';
+
 import { WARD_OPTIONS } from '../../constants/ward-options.constant';
 
-interface WardSelectProps {
+type WardSelectProps = {
   onSelect: (value: string) => void;
 }
 

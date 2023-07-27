@@ -1,23 +1,24 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './containers/Login/Login';
-import SignUp from './containers/SignUp/SignUp';
+import { BrowserRouter as Router, Route,Routes } from 'react-router-dom';
+
 import Home from './containers/Home/Home';
-import WarehouseDetails from './containers/WarehouseDetails/WarehouseDetails';
 import ListWarehouse from './containers/ListWarehouse/ListWarehouse';
+import Login from './containers/Login/Login';
 import RentingForm from './containers/RentingForm/RentingForm';
+import SignUp from './containers/SignUp/SignUp';
+import WarehouseDetails from './containers/WarehouseDetails/WarehouseDetails';
 
 const AppRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/list" element={<ListWarehouse />} />
-        <Route path="/warehouse/:id" element={<WarehouseDetails />} />
-        <Route path="/warehouse/:id/renting" element={<RentingForm />} />
-        <Route path="*" element={<Login />} />
+        <Route element={<Login />} path="/login" />
+        <Route element={<SignUp />} path="/sign-up" />
+        <Route element={<Home />} path="/home" />
+        <Route element={<ListWarehouse />} path="/list" />
+        <Route element={<WarehouseDetails />} path="/warehouse/:id" />
+        <Route element={<RentingForm />} path="/warehouse/:id/renting" />
+        <Route element={<Login />} path="*" />
       </Routes>
     </Router>
   );
