@@ -20,7 +20,8 @@ const Stepper = (props: StepperProps) => {
 
 const Container = styled.div`
   display: flex;
-  gap: 24px;
+  justify-content: center;
+  margin-top: 24px;
 `;
 
 export default Stepper;

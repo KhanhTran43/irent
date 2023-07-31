@@ -6,6 +6,10 @@ import { useState } from 'react';
 import RentingWarehouseDetails from '../../components/RentingWarehouseDetails/RentingWarehouseDetails';
 import RenterInformation from '../../components/RenterInformation/RenterInformation';
 import Privacy from '../../components/Privacy/Privacy';
+import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
+import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
+import { WardValue } from '../../enums/ward-value.enum';
+import { UserModel } from '../../models/user.model';
 
 const RentingForm = () => {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -23,6 +27,23 @@ const RentingForm = () => {
       status: 'default',
     },
   ]);
+  const [warehouse] = useState<WarehouseDetailsModel>({
+    id: 1,
+    name: 'Kho bãi rộng rãi thoáng mát sạch sẽ',
+    ward: WardValue.CAM_LE,
+    price: 400,
+    area: 45,
+    createdDate: Date.now(),
+    doorQuantity: 3,
+    floors: 4,
+  });
+  const [renterInfo, setRenterInfo] = useState<UserModel>({
+    id: 1,
+    name: 'Haha',
+    phoneNumber: '+84 002992922',
+    email: '@gmail.com',
+    ioc: '12313',
+  });
 
   const nextPage = () => {
     let currentActiveIdx: number | null;
@@ -83,8 +104,9 @@ const RentingForm = () => {
         </ButtonContainer>
       </Header>
       <Stepper items={stepperItems} />
-      {activeIdx === 0 && <RenterInformation price={600} />}
+      {activeIdx === 0 && <RenterInformation price={warehouse.price} setRenterInfo={setRenterInfo}/>}
       {activeIdx === 1 && <Privacy />}
+      {activeIdx === 2 && <RentingConfirmation warehouse={warehouse} />}
     </Container>
   );
 };
