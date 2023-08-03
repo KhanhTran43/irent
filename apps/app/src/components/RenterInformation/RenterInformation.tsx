@@ -6,10 +6,11 @@ import { formatPrice } from '../../utils/format-price.util';
 
 type RenterInformationProps = {
   price: number;
+  setRenterInfo: (info: UserModel) => void
 }
 
 const RenterInformation = (props: RenterInformationProps) => {
-  const { price } = props;
+  const { price, setRenterInfo } = props;
   const [duration, setDuration] = useState(1);
 
   const [user] = useState<UserModel>({
