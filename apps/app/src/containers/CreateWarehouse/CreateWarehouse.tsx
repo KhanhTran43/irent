@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { StepperItemModel } from '../../components/Stepper';
 import styled from 'styled-components';
 import Button from '../../components/Button/Button';
-import Stepper from '../../components/Stepper/Stepper';
-import RenterInformation from '../../components/RenterInformation/RenterInformation';
+import CreateWarehouseForm from '../../components/CreateWarehouseForm/CreateWarehouseForm';
 import Privacy from '../../components/Privacy/Privacy';
+import { StepperItemModel } from '../../components/Stepper';
+import Stepper from '../../components/Stepper/Stepper';
 
 const CreateWarehouse = () => {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -15,10 +15,6 @@ const CreateWarehouse = () => {
     },
     {
       label: 'Điều khoản',
-      status: 'default',
-    },
-    {
-      label: 'Xác nhận',
       status: 'default',
     },
   ]);
@@ -81,9 +77,7 @@ const CreateWarehouse = () => {
         </ButtonContainer>
       </Header>
       <Stepper items={stepperItems} />
-      {activeIdx === 0 && (
-        <></>
-      )}
+      {activeIdx === 0 && <CreateWarehouseForm />}
       {activeIdx === 1 && <Privacy />}
     </Container>
   );
