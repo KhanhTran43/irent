@@ -1,18 +1,12 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-
 import Button from '../../components/Button/Button';
+import CreateWarehouseForm from '../../components/CreateWarehouseForm/CreateWarehouseForm';
 import Privacy from '../../components/Privacy/Privacy';
-import RenterInformation from '../../components/RenterInformation/RenterInformation';
-import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
-import RentingWarehouseDetails from '../../components/RentingWarehouseDetails/RentingWarehouseDetails';
 import { StepperItemModel } from '../../components/Stepper';
 import Stepper from '../../components/Stepper/Stepper';
-import { WardValue } from '../../enums/ward-value.enum';
-import { UserModel } from '../../models/user.model';
-import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
 
-const RentingForm = () => {
+const CreateWarehouse = () => {
   const [activeIdx, setActiveIdx] = useState(0);
   const [stepperItems, setStepperItems] = useState<StepperItemModel[]>([
     {
@@ -23,28 +17,7 @@ const RentingForm = () => {
       label: 'Điều khoản',
       status: 'default',
     },
-    {
-      label: 'Xác nhận',
-      status: 'default',
-    },
   ]);
-  const [warehouse] = useState<WarehouseDetailsModel>({
-    id: 1,
-    name: 'Kho bãi rộng rãi thoáng mát sạch sẽ',
-    ward: WardValue.CAM_LE,
-    price: 400,
-    area: 45,
-    createdDate: Date.now(),
-    doorQuantity: 3,
-    floors: 4,
-  });
-  const [renterInfo, setRenterInfo] = useState<UserModel>({
-    id: 1,
-    name: 'Haha',
-    phoneNumber: '+84 002992922',
-    email: '@gmail.com',
-    ioc: '12313',
-  });
 
   const nextPage = () => {
     let currentActiveIdx: number | null;
@@ -61,7 +34,7 @@ const RentingForm = () => {
         }
 
         return it;
-      }),
+      })
     );
   };
 
@@ -82,28 +55,30 @@ const RentingForm = () => {
         prev.unshift(curr);
 
         return prev;
-      }, [] as StepperItemModel[]),
+      }, [] as StepperItemModel[])
     );
   };
-
   return (
     <Container>
       <Header>
         <TextContainer>
-          <Title>Thuê kho bãi</Title>
+          <Title>Tạo kho bãi</Title>
           <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
         </TextContainer>
         <ButtonContainer>
-          <Button disabled={!activeIdx} type="secondary" onClick={() => backPage()}>
+          <Button
+            type="secondary"
+            onClick={() => backPage()}
+            disabled={!activeIdx}
+          >
             Quay lại
           </Button>
           <Button onClick={() => nextPage()}>Tiếp theo</Button>
         </ButtonContainer>
       </Header>
       <Stepper items={stepperItems} />
-      {activeIdx === 0 && <RenterInformation price={warehouse.price} setRenterInfo={setRenterInfo} />}
+      {activeIdx === 0 && <CreateWarehouseForm />}
       {activeIdx === 1 && <Privacy />}
-      {activeIdx === 2 && <RentingConfirmation warehouse={warehouse} />}
     </Container>
   );
 };
@@ -129,4 +104,4 @@ const Detail = styled.span`
   color: #999;
 `;
 
-export default RentingForm;
+export default CreateWarehouse;
