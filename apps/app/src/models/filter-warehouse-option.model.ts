@@ -1,4 +1,4 @@
-export interface FilterWarehouseOptionModel {
+export type FilterWarehouseOptionModel = {
     query?: string,
     priceRange?: [number, number],
     ward?: string

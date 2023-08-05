@@ -1,15 +1,16 @@
+import { useState } from 'react';
 import styled from 'styled-components';
+
 import Button from '../../components/Button/Button';
+import Privacy from '../../components/Privacy/Privacy';
+import RenterInformation from '../../components/RenterInformation/RenterInformation';
+import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
+import RentingWarehouseDetails from '../../components/RentingWarehouseDetails/RentingWarehouseDetails';
 import { StepperItemModel } from '../../components/Stepper';
 import Stepper from '../../components/Stepper/Stepper';
-import { useState } from 'react';
-import RentingWarehouseDetails from '../../components/RentingWarehouseDetails/RentingWarehouseDetails';
-import RenterInformation from '../../components/RenterInformation/RenterInformation';
-import Privacy from '../../components/Privacy/Privacy';
-import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
-import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
 import { WardValue } from '../../enums/ward-value.enum';
 import { UserModel } from '../../models/user.model';
+import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
 
 const RentingForm = () => {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -60,7 +61,7 @@ const RentingForm = () => {
         }
 
         return it;
-      })
+      }),
     );
   };
 
@@ -81,7 +82,7 @@ const RentingForm = () => {
         prev.unshift(curr);
 
         return prev;
-      }, [] as StepperItemModel[])
+      }, [] as StepperItemModel[]),
     );
   };
 
@@ -93,18 +94,14 @@ const RentingForm = () => {
           <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
         </TextContainer>
         <ButtonContainer>
-          <Button
-            type="secondary"
-            onClick={() => backPage()}
-            disabled={!activeIdx}
-          >
+          <Button disabled={!activeIdx} type="secondary" onClick={() => backPage()}>
             Quay lại
           </Button>
           <Button onClick={() => nextPage()}>Tiếp theo</Button>
         </ButtonContainer>
       </Header>
       <Stepper items={stepperItems} />
-      {activeIdx === 0 && <RenterInformation price={warehouse.price} setRenterInfo={setRenterInfo}/>}
+      {activeIdx === 0 && <RenterInformation price={warehouse.price} setRenterInfo={setRenterInfo} />}
       {activeIdx === 1 && <Privacy />}
       {activeIdx === 2 && <RentingConfirmation warehouse={warehouse} />}
     </Container>

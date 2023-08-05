@@ -1,7 +1,8 @@
+import { SewingPinFilledIcon, TimerIcon } from '@radix-ui/react-icons';
 import styled from 'styled-components';
+
 import { WareHouseModel } from '../../models/warehouse.model';
 import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
-import { SewingPinFilledIcon, TimerIcon } from '@radix-ui/react-icons';
 
 const CardContainer = styled.div`
   background-color: #ffffff;
@@ -71,7 +72,7 @@ const PriceText = styled.div`
   text-align: center;
 `;
 
-interface WarehouseViewCardProps {
+type WarehouseViewCardProps = {
   warehouse: WareHouseModel;
   onClick: (id: number) => void
 }
@@ -82,8 +83,8 @@ const WarehouseViewCard = (props: WarehouseViewCardProps) => {
   return (
     <CardContainer onClick={() => props.onClick(id)}>
       <CardImage
-        src="https://picsum.photos/seed/picsum/400/300"
         alt="Product"
+        src="https://picsum.photos/seed/picsum/400/300"
       />
       <TextContainer>
         <CardName>{name}</CardName>

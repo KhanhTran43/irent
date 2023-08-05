@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+
 import { StepperItemModel } from './models/stepper-item.model';
 import StepperItem from './StepperItem';
 
-interface StepperProps {
+type StepperProps = {
   items: StepperItemModel[];
 }
 

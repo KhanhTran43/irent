@@ -1,32 +1,27 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
+import { privateApi } from '../../axios/axios';
+import { useAuthStore } from '../../store/auth';
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [setAccessToken] = useAuthStore((state) => [state.setAccessToken]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login submitted:', email, password);
-    // Add your login logic here
+    privateApi.post('api/auth/login', { Email: email, Password: password }).then(({ data }) => {
+      setAccessToken(data.jwtToken);
+    });
   };
 
   return (
     <FormContainer>
       <h2>Login</h2>
       <Form onSubmit={handleSubmit}>
-        <Input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <Input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <Button type="submit">Login</Button>
       </Form>
     </FormContainer>

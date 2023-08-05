@@ -1,10 +1,11 @@
-import styled from 'styled-components';
-import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
+import { blackA,mauve, violet } from '@radix-ui/colors';
 import { SewingPinFilledIcon, TimerIcon } from '@radix-ui/react-icons';
-import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
-import { violet, mauve, blackA } from '@radix-ui/colors';
+import styled from 'styled-components';
 
-interface MyWarehouseViewCardProps {
+import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
+import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
+
+type MyWarehouseViewCardProps = {
   warehouse: MyWarehouseDetailsModel;
   onClick: (id: number) => void;
 }
@@ -16,8 +17,8 @@ const MyWarehouseViewCard = (props: MyWarehouseViewCardProps) => {
   return (
     <CardContainer>
       <CardImage
-        src="https://picsum.photos/seed/picsum/400/300"
         alt="Product"
+        src="https://picsum.photos/seed/picsum/400/300"
       />
       <TextContainer>
         <CardName>{name}</CardName>

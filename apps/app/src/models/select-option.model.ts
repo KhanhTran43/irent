@@ -1,4 +1,4 @@
-export interface SelectOption {
+export type SelectOption = {
     label: string;
     value: string;
 }

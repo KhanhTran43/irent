@@ -1,6 +1,6 @@
 import { WardValue } from "../enums/ward-value.enum";
 
-export interface WareHouseModel {
+export type WareHouseModel =  {
     id: number;
     name: string;
     ward: WardValue;
