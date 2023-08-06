@@ -6,6 +6,8 @@ import Home from './containers/Home/Home';
 import ListWarehouse from './containers/ListWarehouse/ListWarehouse';
 import Login from './containers/Login/Login';
 import RentingForm from './containers/RentingForm/RentingForm';
+import SignUp from './containers/SignUp/SignUp';
+import WarehouseDetails from './containers/WarehouseDetails/WarehouseDetails';
 
 const AppRouter: React.FC = () => {
   return (
