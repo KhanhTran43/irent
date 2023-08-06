@@ -1,51 +1,76 @@
+import { Formik } from 'formik';
 import styled from 'styled-components';
+
+import { WardValue } from '../../enums/ward-value.enum';
+import Button from '../Button/Button';
 
 const CreateWarehouseForm = () => {
   return (
     <Container>
       <Title>Thông tin kho bãi</Title>
-      <Body>
-        <ImageInfo>
-          <Text>Ảnh</Text>
-          <ImageInputContainer>
-            <ImageInput></ImageInput>
-          </ImageInputContainer>
-        </ImageInfo>
-        <TextInfo>
-          <LeftSide>
-            <FormField>
-              <Label>Tên</Label>
-              <Input />
-            </FormField>
-            <FormField>
-              <Label>Quận</Label>
-              <Input />
-            </FormField>
-            <FormField>
-              <Label>Diện tích</Label>
-              <Input />
-            </FormField>
-            <FormField>
-              <Label>Số cửa</Label>
-              <Input />
-            </FormField>
-            <FormField>
-              <Label>Số tầng</Label>
-              <Input />
-            </FormField>
-          </LeftSide>
-          <RightSide>
-            <FormField>
-              <Label>Giá</Label>
-              <Input/>
-            </FormField>
-            <FormField>
-              <Label>Thời gian thuê tối thiểu (tháng)</Label>
-              <Input/>
-            </FormField>
-          </RightSide>
-        </TextInfo>
-      </Body>
+      <Formik
+        initialValues={{
+          name: '',
+          ward: WardValue.CAM_LE,
+          area: 0,
+          doorQty: 0,
+          floors: 0,
+          minimumMonth: 0,
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          console.log(values);
+        }}
+      >
+        {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+          <form onSubmit={handleSubmit}>
+            <Body>
+              <ImageInfo>
+                <Text>Ảnh</Text>
+                <ImageInputContainer>
+                  <ImageInput></ImageInput>
+                </ImageInputContainer>
+              </ImageInfo>
+              <TextInfo>
+                <LeftSide>
+                  <FormField>
+                    <Label>Tên</Label>
+                    <Input name="name" onChange={handleChange} />
+                  </FormField>
+                  <FormField>
+                    <Label>Quận</Label>
+                    <Input name="ward" onChange={handleChange} />
+                  </FormField>
+                  <FormField>
+                    <Label>Diện tích</Label>
+                    <Input name="area" onChange={handleChange} />
+                  </FormField>
+                  <FormField>
+                    <Label>Số cửa</Label>
+                    <Input name="doorQty" onChange={handleChange} />
+                  </FormField>
+                  <FormField>
+                    <Label>Số tầng</Label>
+                    <Input name="floors" onChange={handleChange} />
+                  </FormField>
+                </LeftSide>
+                <RightSide>
+                  <FormField>
+                    <Label>Giá</Label>
+                    <Input name="price" onChange={handleChange} />
+                  </FormField>
+                  <FormField>
+                    <Label>Thời gian thuê tối thiểu (tháng)</Label>
+                    <Input name="minimumMonth" onChange={handleChange} />
+                  </FormField>
+                </RightSide>
+              </TextInfo>
+              <Button type="submit" disabled={isSubmitting}>
+                Submit
+              </Button>
+            </Body>
+          </form>
+        )}
+      </Formik>
     </Container>
   );
 };
@@ -62,7 +87,7 @@ const TextInfo = styled.div`
   grid-template-columns: repeat(2, 1fr);
 `;
 
-const ImageInfo = styled.div``
+const ImageInfo = styled.div``;
 
 const LeftSide = styled.div`
   display: flex;
@@ -95,8 +120,9 @@ const Input = styled.input`
   border: 1px solid gray;
 `;
 
-const ImageInputContainer = styled.div``
+const ImageInputContainer = styled.div``;
 
-const ImageInput = styled.input.attrs({ type: 'file' })``
+const ImageInput = styled.input.attrs({ type: 'file' })``;
 
 const Text = styled.span``;
+

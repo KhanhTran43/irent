@@ -93,11 +93,7 @@ const RentingForm = () => {
           <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
         </TextContainer>
         <ButtonContainer>
-          <Button
-            disabled={!activeIdx}
-            type="secondary"
-            onClick={() => backPage()}
-          >
+          <Button disabled={!activeIdx} color="secondary" onClick={() => backPage()}>
             Quay lại
           </Button>
           <Button onClick={() => nextPage()}>Tiếp theo</Button>

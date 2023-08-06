@@ -3,21 +3,23 @@ import * as stitches from '@stitches/react';
 import { ReactNode } from 'react';
 
 type ButtonProps = {
-  type?: 'primary' | 'secondary';
+  color?: 'primary' | 'secondary';
   disabled?: boolean;
   onClick?: () => void;
   children: ReactNode;
+  type?: 'submit'
 }
 
 const Button = (props: ButtonProps) => {
-  const { onClick, children, type, disabled } = props || {};
+  const { onClick, children, color, disabled, type } = props || {};
 
   return (
     // TODO: please fix the error here hehe
     <StyledButton
-      buttonType={type || 'primary'}
+      color={color || 'primary'}
       disabled={disabled}
       onClick={() => onClick && onClick()}
+      type={type}
     >
       {children}
     </StyledButton>
@@ -42,7 +44,7 @@ const StyledButton = stitches.styled('button', {
   '&:focus': { boxShadow: `0 0 0 2px black` },
   cursor: 'pointer',
   variants: {
-    buttonType: {
+    color: {
       secondary: {
         backgroundColor: 'white',
         color: 'black',

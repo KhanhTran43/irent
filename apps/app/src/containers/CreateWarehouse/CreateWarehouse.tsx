@@ -67,7 +67,7 @@ const CreateWarehouse = () => {
         </TextContainer>
         <ButtonContainer>
           <Button
-            type="secondary"
+            color="secondary"
             onClick={() => backPage()}
             disabled={!activeIdx}
           >

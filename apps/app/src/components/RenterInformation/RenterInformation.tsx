@@ -1,13 +1,15 @@
+import { Formik } from 'formik';
 import { useState } from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 import { UserModel } from '../../models/user.model';
 import { formatPrice } from '../../utils/format-price.util';
+import Button from '../Button/Button';
 
 type RenterInformationProps = {
   price: number;
-  setRenterInfo: (info: UserModel) => void
-}
+  setRenterInfo: (info: UserModel) => void;
+};
 
 const RenterInformation = (props: RenterInformationProps) => {
   const { price, setRenterInfo } = props;
@@ -24,41 +26,70 @@ const RenterInformation = (props: RenterInformationProps) => {
   return (
     <Container>
       <Title>Thông tin người thuê</Title>
-      <Body>
-        <LeftSide>
-          <FormField>
-            <Label>Tên</Label>
-            <Input value={user.name} />
-          </FormField>
-          <FormField>
-            <Label>Số điện thoại</Label>
-            <Input value={user.phoneNumber} />
-          </FormField>
-          <FormField>
-            <Label>Email</Label>
-            <Input value={user.email} />
-          </FormField>
-          <FormField>
-            <Label>CMND/CCCD</Label>
-            <Input value={user.ioc} />
-          </FormField>
-        </LeftSide>
+      <Formik
+        initialValues={{ name: '', phoneNumber: '', email: '', ioc: '', duration: '' }}
+        onSubmit={(values, { setSubmitting }) => {
+          console.log(values);
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <Body>
+              <LeftSide>
+                <FormField>
+                  <Label>Tên</Label>
+                  <Input name="name" onChange={handleChange} />
+                </FormField>
+                <FormField>
+                  <Label>Số điện thoại</Label>
+                  <Input name="phoneNumber" onChange={handleChange} />
+                </FormField>
+                <FormField>
+                  <Label>Email</Label>
+                  <Input name="email" onChange={handleChange} />
+                </FormField>
+                <FormField>
+                  <Label>CMND/CCCD</Label>
+                  <Input name="ioc" onChange={handleChange} />
+                </FormField>
+              </LeftSide>
 
-        <RightSide>
-          <FormField>
-            <Label>Thời hạn thuê (tháng)</Label>
-            <Input
-              defaultValue={1}
-              min="1"
-              type="number"
-              onChange={(v) => {
-                setDuration(+v.target.value);
-              }}
-            />
-          </FormField>
-          <Text>Thành tiền: {formatPrice(price * duration)} VND</Text>
-        </RightSide>
-      </Body>
+              <RightSide>
+                <FormField>
+                  <Label>Thời hạn thuê (tháng)</Label>
+                  <Input
+                    min="1"
+                    type="number"
+                    onChange={(v) => {
+                      setDuration(+v.target.value);
+
+                      handleChange(v);
+                    }}
+                    name="duration"
+                  />
+                </FormField>
+                <Text>Thành tiền: {formatPrice(price * duration)} VND</Text>
+              </RightSide>
+              <Button type="submit" disabled={isSubmitting}>
+                Submit
+              </Button>
+            </Body>
+          </form>
+        )}
+      </Formik>
     </Container>
   );
 };
@@ -105,3 +136,4 @@ const Input = styled.input`
 const Text = styled.span``;
 
 export default RenterInformation;
+

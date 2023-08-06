@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
 const BackgroundWrapper = styled.div`
   background-color: #eee;
   padding: 16px 0;
+  height: 100%
 `;
 
 const Wrapper = styled.div`
