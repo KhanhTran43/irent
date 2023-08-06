@@ -5,7 +5,6 @@ import Button from '../../components/Button/Button';
 import Privacy from '../../components/Privacy/Privacy';
 import RenterInformation from '../../components/RenterInformation/RenterInformation';
 import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
-import RentingWarehouseDetails from '../../components/RentingWarehouseDetails/RentingWarehouseDetails';
 import { StepperItemModel } from '../../components/Stepper';
 import Stepper from '../../components/Stepper/Stepper';
 import { WardValue } from '../../enums/ward-value.enum';
@@ -94,7 +93,7 @@ const RentingForm = () => {
           <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
         </TextContainer>
         <ButtonContainer>
-          <Button disabled={!activeIdx} type="secondary" onClick={() => backPage()}>
+          <Button disabled={!activeIdx} color="secondary" onClick={() => backPage()}>
             Quay lại
           </Button>
           <Button onClick={() => nextPage()}>Tiếp theo</Button>
