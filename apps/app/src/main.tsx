@@ -1,4 +1,5 @@
 import * as ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import AppRouter from './AppRouter';
@@ -14,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
 const BackgroundWrapper = styled.div`
   background-color: #eee;
   padding: 16px 0;
-  height: 100%
+  height: 100%;
 `;
 
 const Wrapper = styled.div`
@@ -26,7 +27,7 @@ const Wrapper = styled.div`
 `;
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <>
+  <BrowserRouter>
     <Header></Header>
     <GlobalStyle />
     <BackgroundWrapper>
@@ -34,5 +35,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <AppRouter />
       </Wrapper>
     </BackgroundWrapper>
-  </>,
+  </BrowserRouter>,
 );

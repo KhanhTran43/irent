@@ -1,4 +1,5 @@
 import { HeartFilledIcon } from '@radix-ui/react-icons';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Logo from '../Logo/Logo';
@@ -37,7 +38,7 @@ const UlContainerLeft = styled.ul`
   gap: 16px;
   list-style-type: none;
   margin: 0;
-`
+`;
 
 const LeftSideItem = styled.li`
   padding: 4px 20px;
@@ -56,19 +57,29 @@ const Header = () => {
   return (
     <Container>
       <LeftSide>
-        <Logo />
+        <Link to={'/home'}>
+          <Logo />
+        </Link>
         <Nav>
           <UlContainerLeft>
-            <LeftSideItem>Home</LeftSideItem>
-            <LeftSideItem>My Warehouses</LeftSideItem>
+            <Link to={'/home'}>
+              <LeftSideItem>Home</LeftSideItem>
+            </Link>
+            <Link to={'/list'}>
+              <LeftSideItem>My Warehouses</LeftSideItem>
+            </Link>
           </UlContainerLeft>
         </Nav>
       </LeftSide>
       <RightSide>
         <Nav>
           <UlContainerRight>
-            <RightSideItem>Login</RightSideItem>
-            <RightSideItem>Sign up</RightSideItem>
+            <Link to={'/sign-up'}>
+              <RightSideItem>Sign up</RightSideItem>
+            </Link>
+            <Link to={'/login'}>
+              <RightSideItem>Log in</RightSideItem>
+            </Link>
           </UlContainerRight>
         </Nav>
       </RightSide>

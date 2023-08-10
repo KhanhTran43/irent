@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import CreateWarehouse from './containers/CreateWarehouse/CreateWarehouse';
 import Home from './containers/Home/Home';
@@ -11,18 +11,16 @@ import WarehouseDetails from './containers/WarehouseDetails/WarehouseDetails';
 
 const AppRouter: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        <Route element={<Login />} path="/login" />
-        <Route element={<SignUp />} path="/sign-up" />
-        <Route element={<Home />} path="/home" />
-        <Route element={<ListWarehouse />} path="/list" />
-        <Route element={<WarehouseDetails />} path="/warehouse/:id" />
-        <Route element={<RentingForm />} path="/warehouse/:id/renting" />
-        <Route element={<CreateWarehouse />} path="/create" />
-        <Route element={<Login />} path="*" />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route element={<Login />} path="/login" />
+      <Route element={<SignUp />} path="/sign-up" />
+      <Route element={<Home />} path="/home" />
+      <Route element={<ListWarehouse />} path="/list" />
+      <Route element={<WarehouseDetails />} path="/warehouse/:id" />
+      <Route element={<RentingForm />} path="/warehouse/:id/renting" />
+      <Route element={<CreateWarehouse />} path="/create" />
+      <Route element={<Login />} path="*" />
+    </Routes>
   );
 };
 
