@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { privateApi } from '../../axios/axios';
@@ -8,11 +9,15 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [setAccessToken] = useAuthStore((state) => [state.setAccessToken]);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    privateApi.post('api/auth/login', { Email: email, Password: password }).then(({ data }) => {
-      setAccessToken(data.jwtToken);
+    privateApi.post('api/auth/login', { Email: email, Password: password }).then(({ data, status }) => {
+      if (status === 200) {
+        setAccessToken(data.jwtToken);
+        navigate('/home');
+      }
     });
   };
 
