@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "dev:app": "nx serve app",
     "format": "nx format:write",
     "lint:app": "nx lint app",
     "lint:admin": "nx lint admin",

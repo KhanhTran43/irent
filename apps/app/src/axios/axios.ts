@@ -1,20 +1,22 @@
-import axios from 'axios';
+import axios, { CreateAxiosDefaults } from 'axios';
 import qs from 'qs';
 
 import { useAuthStore } from '../store/auth';
 
-export const api = axios.create({
+const defaultConfigs: CreateAxiosDefaults = {
+  headers: { 'Content-Type': 'application/json' },
   baseURL: import.meta.env.VITE_BASE_URL,
   paramsSerializer: function (params) {
     return qs.stringify(params);
   },
+};
+
+export const api = axios.create({
+  ...defaultConfigs,
 });
 
 export const privateApi = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
-  paramsSerializer: function (params) {
-    return qs.stringify(params);
-  },
+  ...defaultConfigs,
   withCredentials: true,
 });
 
