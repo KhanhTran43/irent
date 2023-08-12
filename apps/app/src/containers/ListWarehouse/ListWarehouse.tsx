@@ -1,9 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import MyWarehouseViewCard from '../../components/MyWarehouseViewCard/MyWarehouseViewCard';
 import { WardValue } from '../../enums/ward-value.enum';
 import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
-import { useNavigate } from 'react-router-dom';
 
 const myWarehouseDetailsMock: MyWarehouseDetailsModel[] = [
   {
