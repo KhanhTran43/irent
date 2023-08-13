@@ -2,26 +2,29 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useAuthStore } from '../../auth';
+import { AuthenticateResponse } from '../../auth/models';
 import { privateApi } from '../../axios/axios';
-import { useAuthStore } from '../../store/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [setAccessToken] = useAuthStore((state) => [state.setAccessToken]);
+  const [authenticate] = useAuthStore((state) => [state.authenticate]);
+  const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    privateApi.post('auth/login', { Email: email, Password: password }).then(({ data, status }) => {
-      if (status === 200) {
-        setAccessToken(data.jwtToken);
-
-        // TODO: Also persist user data
-
-        navigate('/home');
-      }
-    });
+    setLoading(true);
+    privateApi
+      .post<AuthenticateResponse>('auth/login', { Email: email, Password: password })
+      .then(({ data, status }) => {
+        if (status === 200) {
+          const { jwtToken, id, username } = data;
+          authenticate(jwtToken, { id, username });
+          navigate('/home');
+        }
+      });
   };
 
   return (
@@ -30,7 +33,9 @@ const Login = () => {
       <Form onSubmit={handleSubmit}>
         <Input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <Input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <Button type="submit">Login</Button>
+        <Button type="submit" disabled={isLoading}>
+          Login
+        </Button>
       </Form>
     </FormContainer>
   );
