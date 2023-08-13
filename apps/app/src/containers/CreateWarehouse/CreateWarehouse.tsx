@@ -4,7 +4,13 @@ import styled from 'styled-components';
 import Button from '../../components/Button/Button';
 import CreateWarehouseForm from '../../components/CreateWarehouseForm/CreateWarehouseForm';
 import Privacy from '../../components/Privacy/Privacy';
-import { StepperItemModel } from '../../components/Stepper';
+import {
+  StepperBackButton,
+  StepperContentRenderer,
+  StepperItemModel,
+  StepperNextButton,
+  StepperProgression,
+} from '../../components/Stepper';
 import Stepper from '../../components/Stepper/Stepper';
 
 const CreateWarehouse = () => {
@@ -13,69 +19,33 @@ const CreateWarehouse = () => {
     {
       label: 'Nhập thông tin',
       status: 'active',
+      content: <CreateWarehouseForm />,
     },
     {
       label: 'Điều khoản',
       status: 'default',
+      content: <Privacy />,
     },
   ]);
 
-  const nextPage = () => {
-    let currentActiveIdx: number | null;
-
-    setStepperItems(
-      stepperItems.map((it, idx) => {
-        if (it.status === 'active') {
-          it.status = 'finish';
-          currentActiveIdx = idx + 1;
-        } else if (currentActiveIdx ? idx === currentActiveIdx : false) {
-          it.status = 'active';
-          currentActiveIdx = null;
-          setActiveIdx(idx);
-        }
-
-        return it;
-      }),
-    );
-  };
-
-  const backPage = () => {
-    let currentActiveIdx: number | null;
-
-    setStepperItems(
-      stepperItems.reduceRight((prev, curr, idx) => {
-        if (curr.status === 'active') {
-          curr.status = 'default';
-          currentActiveIdx = idx;
-        } else if (currentActiveIdx ? idx === currentActiveIdx - 1 : false) {
-          curr.status = 'active';
-          currentActiveIdx = null;
-          setActiveIdx(idx);
-        }
-
-        prev.unshift(curr);
-
-        return prev;
-      }, [] as StepperItemModel[]),
-    );
-  };
   return (
     <Container>
-      <Header>
-        <TextContainer>
-          <Title>Tạo kho bãi</Title>
-          <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
-        </TextContainer>
-        <ButtonContainer>
-          <Button color="secondary" disabled={!activeIdx} onClick={() => backPage()}>
-            Quay lại
-          </Button>
-          <Button onClick={() => nextPage()}>Tiếp theo</Button>
-        </ButtonContainer>
-      </Header>
-      <Stepper items={stepperItems} />
-      {activeIdx === 0 && <CreateWarehouseForm />}
-      {activeIdx === 1 && <Privacy />}
+      <Stepper items={stepperItems}>
+        <Header>
+          <TextContainer>
+            <Title>Tạo kho bãi</Title>
+            <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
+          </TextContainer>
+          <StepperProgression />
+          <ButtonContainer>
+            <StepperBackButton color="secondary"></StepperBackButton>
+            <StepperNextButton></StepperNextButton>
+          </ButtonContainer>
+        </Header>
+        <StepperContentRenderer />
+        {/* {activeIdx === 0 && <CreateWarehouseForm />}
+        {activeIdx === 1 && <Privacy />} */}
+      </Stepper>
     </Container>
   );
 };

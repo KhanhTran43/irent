@@ -7,13 +7,7 @@ const StepperItem = (item: StepperItemModel) => {
     <Container>
       <Item>
         <Line></Line>
-        {item.status === 'active' ? (
-          <ActiveState />
-        ) : item.status === 'finish' ? (
-          <FinishState />
-        ) : (
-          <DefaultState />
-        )}
+        {item.status === 'active' ? <ActiveState /> : item.status === 'finish' ? <FinishState /> : <DefaultState />}
         {/* <Line></Line> */}
       </Item>
       <Text>{item.label}</Text>
@@ -32,7 +26,7 @@ const FinishState = styled.div`
   height: 12px;
   border-radius: 50%;
   background-color: blue;
-  border: 1px solid transparent;
+  outline: 1px solid transparent;
   z-index: 2;
 `;
 
@@ -40,7 +34,7 @@ const ActiveState = styled.div`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: 1px solid blue;
+  outline: 2px solid blue;
   background-color: white;
   z-index: 2;
 `;
@@ -49,7 +43,7 @@ const DefaultState = styled.div`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: 1px solid gray;
+  outline: 1px solid gray;
   background-color: white;
   z-index: 2;
 `;

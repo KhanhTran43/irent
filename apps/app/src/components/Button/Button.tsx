@@ -2,7 +2,7 @@ import { blackA, green, violet } from '@radix-ui/colors';
 import * as stitches from '@stitches/react';
 import { ReactNode } from 'react';
 
-type ButtonProps = {
+export type ButtonProps = {
   color?: 'primary' | 'secondary';
   disabled?: boolean;
   onClick?: () => void;
@@ -22,6 +22,7 @@ const Button = (props: ButtonProps) => {
 
 const StyledButton = stitches.styled('button', {
   all: 'unset',
+  minWidth: 105,
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -34,16 +35,24 @@ const StyledButton = stitches.styled('button', {
   backgroundColor: violet.violet9,
   color: 'white',
   boxShadow: `0 2px 10px ${blackA.blackA7}`,
-  '&:hover': { backgroundColor: violet.violet8 },
+  transition: 'background-color 0.5s ease, opacity 0.5s ease',
+  '&:hover:enabled': { backgroundColor: violet.violet8 },
   // '&:focus': { boxShadow: `0 0 0 2px black` },
+  '&:disabled': {
+    opacity: 0.5,
+    cursor: 'not-allowed',
+  },
   cursor: 'pointer',
   variants: {
     color: {
       secondary: {
         backgroundColor: 'white',
         color: 'black',
-        '&:hover': { backgroundColor: 'rgba(0, 0, 0, .1)' },
+        '&:hover:enabled': { backgroundColor: 'rgba(0, 0, 0, .1)' },
         // '&:focus': { boxShadow: `0 0 0 2px black` },
+        '&:disabled': {
+          backgroundColor: 'rgba(136, 136, 136, 0.3)',
+        },
       },
       primary: {},
     },
