@@ -1,7 +1,7 @@
 import axios, { CreateAxiosDefaults } from 'axios';
 import qs from 'qs';
 
-import { useAuthStore } from '../store/auth';
+import { useAuthStore } from '../auth';
 
 const defaultConfigs: CreateAxiosDefaults = {
   headers: { 'Content-Type': 'application/json' },

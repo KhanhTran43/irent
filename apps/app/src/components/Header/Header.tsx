@@ -2,6 +2,7 @@ import { HeartFilledIcon } from '@radix-ui/react-icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useAuthContext } from '../../auth/context/AuthContext';
 import Logo from '../Logo/Logo';
 
 const Container = styled.header`
@@ -54,6 +55,8 @@ const LeftSideItem = styled.li`
 const RightSide = styled.div``;
 
 const Header = () => {
+  const { user, isAuthenticated } = useAuthContext(Header.name);
+
   return (
     <Container>
       <LeftSide>
@@ -73,14 +76,18 @@ const Header = () => {
       </LeftSide>
       <RightSide>
         <Nav>
-          <UlContainerRight>
-            <Link to={'/sign-up'}>
-              <RightSideItem>Sign up</RightSideItem>
-            </Link>
-            <Link to={'/login'}>
-              <RightSideItem>Log in</RightSideItem>
-            </Link>
-          </UlContainerRight>
+          {isAuthenticated ? (
+            <div>{`Hi, ${user?.username}`}</div>
+          ) : (
+            <UlContainerRight>
+              <Link to={'/sign-up'}>
+                <RightSideItem>Sign up</RightSideItem>
+              </Link>
+              <Link to={'/login'}>
+                <RightSideItem>Log in</RightSideItem>
+              </Link>
+            </UlContainerRight>
+          )}
         </Nav>
       </RightSide>
     </Container>
