@@ -17,7 +17,7 @@ const CreateWarehouseForm = () => {
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
           const userId = 8; // TODO: get userId from persisted user data
-          api.post(`warehouse/`, { ...values, createdDate: moment().toISOString(), userId });
+          api.post(`warehouse/`, { ...values, createdDate: moment().format(), userId });
         }}
       >
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (

@@ -26,7 +26,7 @@ const MyWarehouseViewCard = ({ warehouse, onClick }: MyWarehouseViewCardProps) =
         </CardAddress>
         <CardDate>
           <TimerIcon />
-          {convertTimestampToDate(createdDate)}
+          {moment(createdDate).format('DD/MM/yyyy hh:mm')}
         </CardDate>
         <Progress max={endDate} value={createdDate} />
         <CardDaysLeft>{`${daysLeft} day${daysLeft <= 1 ? '' : 's'} left`}</CardDaysLeft>
@@ -77,10 +77,12 @@ const CardAddress = styled.span`
 `;
 
 const CardDate = styled.span`
+  transform: translateY(50%);
+  top: -5px;
+  right: 20px;
   color: #999;
   font-size: 12px;
   position: absolute;
-  right: 12px;
   display: flex;
   gap: 4px;
 `;
