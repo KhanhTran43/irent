@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { api } from '../../axios/axios';
 import MyWarehouseViewCard from '../../components/MyWarehouseViewCard/MyWarehouseViewCard';
 import { WardValue } from '../../enums/ward-value.enum';
 import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
@@ -83,10 +85,17 @@ const ListWarehouse = () => {
   const onSelect = (id: number) => {
     navigate(`/warehouse/${id}`);
   };
+  const [warehouses, setWarehouses] = useState<MyWarehouseDetailsModel[]>(myWarehouseDetailsMock);
+
+  useEffect(() => {
+    api.get<MyWarehouseDetailsModel[]>('warehouse').then(({ data }) => {
+      if (data.length !== 0) setWarehouses(data);
+    });
+  }, []);
 
   return (
     <GridContainer>
-      {myWarehouseDetailsMock.map((it) => (
+      {warehouses.map((it) => (
         <MyWarehouseViewCard key={it.id} warehouse={it} onClick={onSelect}></MyWarehouseViewCard>
       ))}
     </GridContainer>

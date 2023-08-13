@@ -1,16 +1,12 @@
-import {
-  HeartIcon,
-  RulerSquareIcon,
-  StackIcon,
-  ViewVerticalIcon,
-} from '@radix-ui/react-icons';
-import { useState } from 'react';
+import { HeartIcon, RulerSquareIcon, StackIcon, ViewVerticalIcon } from '@radix-ui/react-icons';
+import { isEmpty } from 'lodash';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { api } from '../../axios/axios';
 import Button from '../../components/Button/Button';
 import { WardValue } from '../../enums/ward-value.enum';
-import { WareHouseModel } from '../../models/warehouse.model';
 import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
 import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
 
@@ -18,6 +14,7 @@ const mockWarehouseDetails: WarehouseDetailsModel = {
   id: 1,
   name: 'Thien Thai Ho',
   ward: WardValue.HAI_CHAU,
+  address: '73 Ha Huy Tap, Thanh Khe, Khue My',
   price: 45,
   area: 100,
   createdDate: 1,
@@ -29,13 +26,17 @@ const WarehouseDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // TODO: get warehouse details
-  const [warehouseDetails, setWarehouseDetails] =
-    useState(mockWarehouseDetails);
+  const [warehouseDetails, setWarehouseDetails] = useState(mockWarehouseDetails);
+
+  useEffect(() => {
+    api.get<WarehouseDetailsModel>(`warehouse/${id}`).then(({ data }) => {
+      if (!isEmpty(data)) setWarehouseDetails(data);
+    });
+  }, []);
 
   const goToRentingForm = () => {
     navigate(`/warehouse/${id}/renting`);
-  }
+  };
 
   return (
     <Container>
@@ -45,11 +46,9 @@ const WarehouseDetails = () => {
       <HeaderContainer>
         <Title>{warehouseDetails.name}</Title>
         <Address>
-          {warehouseDetails.ward}. <DirectionText>See on map</DirectionText>
+          {warehouseDetails.address}. <DirectionText>See on map</DirectionText>
         </Address>
-        <Date>
-          Created at: {convertTimestampToDate(warehouseDetails.createdDate)}
-        </Date>
+        <Date>Created at: {convertTimestampToDate(warehouseDetails.createdDate)}</Date>
         <br />
         <ButtonContainer>
           <Button onClick={goToRentingForm}>Rent</Button>
@@ -65,19 +64,11 @@ const WarehouseDetails = () => {
           <Price>{warehouseDetails.price} $ / mth</Price>
           <OtherMetrics>
             <OtherMetricItem>
-              <RulerSquareIcon
-                color="#999"
-                height={32}
-                width={32}
-              ></RulerSquareIcon>
+              <RulerSquareIcon color="#999" height={32} width={32}></RulerSquareIcon>
               <Text>{warehouseDetails.area} sqrt</Text>
             </OtherMetricItem>
             <OtherMetricItem>
-              <ViewVerticalIcon
-                color="#999"
-                height={32}
-                width={32}
-              ></ViewVerticalIcon>
+              <ViewVerticalIcon color="#999" height={32} width={32}></ViewVerticalIcon>
               <Text>{warehouseDetails.doorQuantity} doors</Text>
             </OtherMetricItem>
             <OtherMetricItem>
@@ -170,7 +161,5 @@ const ButtonContainer = styled.div`
   text-align: right;
   cursor: pointer;
 `;
-
-
 
 export default WarehouseDetails;

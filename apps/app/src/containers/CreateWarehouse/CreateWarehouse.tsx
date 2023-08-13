@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+
 import Button from '../../components/Button/Button';
 import CreateWarehouseForm from '../../components/CreateWarehouseForm/CreateWarehouseForm';
 import Privacy from '../../components/Privacy/Privacy';
@@ -27,14 +28,14 @@ const CreateWarehouse = () => {
         if (it.status === 'active') {
           it.status = 'finish';
           currentActiveIdx = idx + 1;
-        } else if (currentActiveIdx ?? idx === currentActiveIdx) {
+        } else if (currentActiveIdx ? idx === currentActiveIdx : false) {
           it.status = 'active';
           currentActiveIdx = null;
           setActiveIdx(idx);
         }
 
         return it;
-      })
+      }),
     );
   };
 
@@ -46,7 +47,7 @@ const CreateWarehouse = () => {
         if (curr.status === 'active') {
           curr.status = 'default';
           currentActiveIdx = idx;
-        } else if (currentActiveIdx ?? idx === currentActiveIdx! - 1) {
+        } else if (currentActiveIdx ? idx === currentActiveIdx - 1 : false) {
           curr.status = 'active';
           currentActiveIdx = null;
           setActiveIdx(idx);
@@ -55,7 +56,7 @@ const CreateWarehouse = () => {
         prev.unshift(curr);
 
         return prev;
-      }, [] as StepperItemModel[])
+      }, [] as StepperItemModel[]),
     );
   };
   return (
@@ -66,11 +67,7 @@ const CreateWarehouse = () => {
           <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
         </TextContainer>
         <ButtonContainer>
-          <Button
-            color="secondary"
-            onClick={() => backPage()}
-            disabled={!activeIdx}
-          >
+          <Button color="secondary" disabled={!activeIdx} onClick={() => backPage()}>
             Quay lại
           </Button>
           <Button onClick={() => nextPage()}>Tiếp theo</Button>

@@ -1,7 +1,8 @@
 import { Formik } from 'formik';
+import moment from 'moment';
 import styled from 'styled-components';
 
-import { WardValue } from '../../enums/ward-value.enum';
+import { api } from '../../axios/axios';
 import Button from '../Button/Button';
 
 const CreateWarehouseForm = () => {
@@ -11,14 +12,12 @@ const CreateWarehouseForm = () => {
       <Formik
         initialValues={{
           name: '',
-          ward: WardValue.CAM_LE,
           area: 0,
-          doorQty: 0,
-          floors: 0,
-          minimumMonth: 0,
         }}
         onSubmit={(values, { setSubmitting }) => {
-          console.log(values);
+          setSubmitting(false);
+          const userId = 8; // TODO: get userId from persisted user data
+          api.post(`warehouse/`, { ...values, createdDate: moment().toISOString(), userId });
         }}
       >
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
@@ -38,33 +37,33 @@ const CreateWarehouseForm = () => {
                   </FormField>
                   <FormField>
                     <Label>Quận</Label>
-                    <Input name="ward" onChange={handleChange} />
+                    <Input name="address" onChange={handleChange} />
                   </FormField>
                   <FormField>
                     <Label>Diện tích</Label>
                     <Input name="area" onChange={handleChange} />
                   </FormField>
-                  <FormField>
+                  {/* <FormField>
                     <Label>Số cửa</Label>
                     <Input name="doorQty" onChange={handleChange} />
                   </FormField>
                   <FormField>
                     <Label>Số tầng</Label>
                     <Input name="floors" onChange={handleChange} />
-                  </FormField>
+                  </FormField> */}
                 </LeftSide>
                 <RightSide>
                   <FormField>
                     <Label>Giá</Label>
                     <Input name="price" onChange={handleChange} />
                   </FormField>
-                  <FormField>
+                  {/* <FormField>
                     <Label>Thời gian thuê tối thiểu (tháng)</Label>
                     <Input name="minimumMonth" onChange={handleChange} />
-                  </FormField>
+                  </FormField> */}
                 </RightSide>
               </TextInfo>
-              <Button type="submit" disabled={isSubmitting}>
+              <Button disabled={isSubmitting} type="submit">
                 Submit
               </Button>
             </Body>
@@ -85,6 +84,7 @@ const TextInfo = styled.div`
   display: grid;
   gap: 24px;
   grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 15px;
 `;
 
 const ImageInfo = styled.div``;
@@ -125,4 +125,3 @@ const ImageInputContainer = styled.div``;
 const ImageInput = styled.input.attrs({ type: 'file' })``;
 
 const Text = styled.span``;
-
