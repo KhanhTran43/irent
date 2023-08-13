@@ -13,9 +13,12 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    privateApi.post('api/auth/login', { Email: email, Password: password }).then(({ data, status }) => {
+    privateApi.post('auth/login', { Email: email, Password: password }).then(({ data, status }) => {
       if (status === 200) {
         setAccessToken(data.jwtToken);
+
+        // TODO: Also persist user data
+
         navigate('/home');
       }
     });

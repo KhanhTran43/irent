@@ -1,5 +1,6 @@
-import { blackA, mauve, violet } from '@radix-ui/colors';
+import { violet } from '@radix-ui/colors';
 import { SewingPinFilledIcon, TimerIcon } from '@radix-ui/react-icons';
+import moment from 'moment';
 import styled from 'styled-components';
 
 import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
@@ -11,7 +12,8 @@ type MyWarehouseViewCardProps = {
 };
 
 const MyWarehouseViewCard = ({ warehouse, onClick }: MyWarehouseViewCardProps) => {
-  const { id, name, ward, area, endDate, createdDate, daysLeft } = warehouse;
+  const { id, name, address, area, endDate, createdDate } = warehouse;
+  const daysLeft = warehouse.daysLeft ?? moment(createdDate).diff(moment(endDate), 'days');
 
   return (
     <CardContainer onClick={() => onClick(id)}>
@@ -20,16 +22,14 @@ const MyWarehouseViewCard = ({ warehouse, onClick }: MyWarehouseViewCardProps) =
         <CardName>{name}</CardName>
         <CardAddress>
           <SewingPinFilledIcon />
-          {ward}
+          {address}
         </CardAddress>
         <CardDate>
           <TimerIcon />
           {convertTimestampToDate(createdDate)}
         </CardDate>
         <Progress max={endDate} value={createdDate} />
-        <CardDaysLeft>
-          {daysLeft} {daysLeft === 1 ? 'day' : 'days'} left
-        </CardDaysLeft>
+        <CardDaysLeft>{`${daysLeft} day${daysLeft <= 1 ? '' : 's'} left`}</CardDaysLeft>
       </TextContainer>
     </CardContainer>
   );

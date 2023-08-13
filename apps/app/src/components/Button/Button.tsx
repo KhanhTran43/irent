@@ -7,20 +7,14 @@ type ButtonProps = {
   disabled?: boolean;
   onClick?: () => void;
   children: ReactNode;
-  type?: 'submit'
-}
+  type?: 'submit';
+};
 
 const Button = (props: ButtonProps) => {
   const { onClick, children, color, disabled, type } = props || {};
 
   return (
-    // TODO: please fix the error here hehe
-    <StyledButton
-      color={color || 'primary'}
-      disabled={disabled}
-      onClick={() => onClick && onClick()}
-      type={type}
-    >
+    <StyledButton color={color || 'primary'} disabled={disabled} type={type} onClick={() => onClick && onClick()}>
       {children}
     </StyledButton>
   );
@@ -41,7 +35,7 @@ const StyledButton = stitches.styled('button', {
   color: 'white',
   boxShadow: `0 2px 10px ${blackA.blackA7}`,
   '&:hover': { backgroundColor: violet.violet8 },
-  '&:focus': { boxShadow: `0 0 0 2px black` },
+  // '&:focus': { boxShadow: `0 0 0 2px black` },
   cursor: 'pointer',
   variants: {
     color: {
@@ -49,8 +43,9 @@ const StyledButton = stitches.styled('button', {
         backgroundColor: 'white',
         color: 'black',
         '&:hover': { backgroundColor: 'rgba(0, 0, 0, .1)' },
-        '&:focus': { boxShadow: `0 0 0 2px black` },
+        // '&:focus': { boxShadow: `0 0 0 2px black` },
       },
+      primary: {},
     },
   },
 });
