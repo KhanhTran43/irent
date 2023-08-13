@@ -18,7 +18,7 @@ const Privacy = () => {
       </Body>
       <CheckboxGroup>
         <Checkbox id="agree-checkbox" />
-        <Label for="agree-checkbox">Tôi đồng ý với điều khoản trên</Label>
+        <Label htmlFor="agree-checkbox">Tôi đồng ý với điều khoản trên</Label>
       </CheckboxGroup>
     </Container>
   );
@@ -31,7 +31,8 @@ const Body = styled.div`
   border-radius: 16px;
   border: 1px solid gray;
   max-height: 300px;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 const Paragraph = styled.p``;
 const SubTitle = styled.h4`

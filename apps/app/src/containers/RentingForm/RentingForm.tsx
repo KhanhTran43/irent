@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '../../components/Button/Button';
 import Privacy from '../../components/Privacy/Privacy';
 import RenterInformation from '../../components/RenterInformation/RenterInformation';
 import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
-import { StepperItemModel } from '../../components/Stepper';
+import {
+  StepperBackButton,
+  StepperContentRenderer,
+  StepperItemModel,
+  StepperNextButton,
+  StepperProgression,
+} from '../../components/Stepper';
 import Stepper from '../../components/Stepper/Stepper';
 import { WardValue } from '../../enums/ward-value.enum';
 import { UserModel } from '../../models/user.model';
@@ -13,20 +19,6 @@ import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
 
 const RentingForm = () => {
   const [activeIdx, setActiveIdx] = useState(0);
-  const [stepperItems, setStepperItems] = useState<StepperItemModel[]>([
-    {
-      label: 'Nhập thông tin',
-      status: 'active',
-    },
-    {
-      label: 'Điều khoản',
-      status: 'default',
-    },
-    {
-      label: 'Xác nhận',
-      status: 'default',
-    },
-  ]);
   const [warehouse] = useState<WarehouseDetailsModel>({
     id: 1,
     name: 'Kho bãi rộng rãi thoáng mát sạch sẽ',
@@ -37,6 +29,7 @@ const RentingForm = () => {
     doorQuantity: 3,
     floors: 4,
   });
+
   const [renterInfo, setRenterInfo] = useState<UserModel>({
     id: 1,
     name: 'Haha',
@@ -45,64 +38,46 @@ const RentingForm = () => {
     ioc: '12313',
   });
 
-  const nextPage = () => {
-    let currentActiveIdx: number | null;
-
-    setStepperItems(
-      stepperItems.map((it, idx) => {
-        if (it.status === 'active') {
-          it.status = 'finish';
-          currentActiveIdx = idx + 1;
-        } else if (currentActiveIdx ?? idx === currentActiveIdx) {
-          it.status = 'active';
-          currentActiveIdx = null;
-          setActiveIdx(idx);
-        }
-
-        return it;
-      }),
-    );
-  };
-
-  const backPage = () => {
-    let currentActiveIdx: number | null;
-
-    setStepperItems(
-      stepperItems.reduceRight((prev, curr, idx) => {
-        if (curr.status === 'active') {
-          curr.status = 'default';
-          currentActiveIdx = idx;
-        } else if (currentActiveIdx ?? idx === currentActiveIdx! - 1) {
-          curr.status = 'active';
-          currentActiveIdx = null;
-          setActiveIdx(idx);
-        }
-
-        prev.unshift(curr);
-
-        return prev;
-      }, [] as StepperItemModel[]),
-    );
-  };
+  const stepperItems = useMemo<StepperItemModel[]>(
+    () => [
+      {
+        label: 'Nhập thông tin',
+        status: 'active',
+        content: <RenterInformation price={warehouse.price} setRenterInfo={setRenterInfo} />,
+      },
+      {
+        label: 'Điều khoản',
+        status: 'default',
+        content: <Privacy />,
+      },
+      {
+        label: 'Xác nhận',
+        status: 'default',
+        content: <RentingConfirmation warehouse={warehouse} />,
+      },
+    ],
+    [warehouse],
+  );
 
   return (
     <Container>
-      <Header>
-        <TextContainer>
-          <Title>Thuê kho bãi</Title>
-          <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
-        </TextContainer>
-        <ButtonContainer>
-          <Button disabled={!activeIdx} color="secondary" onClick={() => backPage()}>
-            Quay lại
-          </Button>
-          <Button onClick={() => nextPage()}>Tiếp theo</Button>
-        </ButtonContainer>
-      </Header>
-      <Stepper items={stepperItems} />
-      {activeIdx === 0 && <RenterInformation price={warehouse.price} setRenterInfo={setRenterInfo} />}
-      {activeIdx === 1 && <Privacy />}
-      {activeIdx === 2 && <RentingConfirmation warehouse={warehouse} />}
+      <Stepper items={stepperItems}>
+        <Header>
+          <TextContainer>
+            <Title>Thuê kho bãi</Title>
+            <StepperProgression />
+            <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
+          </TextContainer>
+          <ButtonContainer>
+            <StepperBackButton />
+            <StepperNextButton />
+          </ButtonContainer>
+        </Header>
+        <StepperContentRenderer />
+        {/* {activeIdx === 0 && <RenterInformation price={warehouse.price} setRenterInfo={setRenterInfo} />}
+        {activeIdx === 1 && <Privacy />}
+        {activeIdx === 2 && <RentingConfirmation warehouse={warehouse} />} */}
+      </Stepper>
     </Container>
   );
 };
