@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
-import { useAuthStore } from './auth';
+import { PersistLogin, useAuthStore } from './auth';
 import { AuthProvider } from './auth/context/AuthContext';
 import Header from './components/Header/Header';
 import CreateWarehouse from './containers/CreateWarehouse/CreateWarehouse';
@@ -35,12 +35,8 @@ const Wrapper = styled.div`
 `;
 
 const RootWrapper = () => {
-  const { user } = useAuthStore(({ user }) => ({
-    user,
-  }));
-
   return (
-    <AuthProvider isAuthenticated={user != null} user={user}>
+    <>
       <Header></Header>
       <GlobalStyle />
       <BackgroundWrapper>
@@ -48,7 +44,7 @@ const RootWrapper = () => {
           <Outlet />
         </Wrapper>
       </BackgroundWrapper>
-    </AuthProvider>
+    </>
   );
 };
 
@@ -59,11 +55,13 @@ const AppRouter: React.FC = () => {
         <Route element={<RootWrapper />} path="/">
           <Route element={<Login />} path="login" />
           <Route element={<SignUp />} path="sign-up" />
-          <Route element={<Home />} path="home" />
-          <Route element={<ListWarehouse />} path="list" />
-          <Route element={<WarehouseDetails />} path="warehouse/:id" />
-          <Route element={<RentingForm />} path="warehouse/:id/renting" />
-          <Route element={<CreateWarehouse />} path="create" />
+          <Route element={<PersistLogin />}>
+            <Route element={<Home />} path="home" />
+            <Route element={<ListWarehouse />} path="list" />
+            <Route element={<WarehouseDetails />} path="warehouse/:id" />
+            <Route element={<RentingForm />} path="warehouse/:id/renting" />
+            <Route element={<CreateWarehouse />} path="create" />
+          </Route>
           <Route element={<Login />} path="*" />
         </Route>
       </Routes>

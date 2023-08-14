@@ -9,6 +9,7 @@ const defaultConfigs: CreateAxiosDefaults = {
   paramsSerializer: function (params) {
     return qs.stringify(params);
   },
+  timeout: 5000,
 };
 
 export const api = axios.create({
