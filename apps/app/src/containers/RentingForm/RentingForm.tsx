@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import Privacy from '../../components/Privacy/Privacy';
-import RenterInformation from '../../components/RenterInformation/RenterInformation';
+import { RenterInformationForm, RenterInformationProvider } from '../../components/RenterInformation';
 import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
 import {
   StepperBackButton,
@@ -42,7 +42,7 @@ const RentingForm = () => {
       {
         label: 'Nhập thông tin',
         status: 'active',
-        content: <RenterInformation price={warehouse.price} setRenterInfo={setRenterInfo} />,
+        content: <RenterInformationForm price={warehouse.price} setRenterInfo={setRenterInfo} />,
       },
       {
         label: 'Điều khoản',
@@ -60,20 +60,22 @@ const RentingForm = () => {
 
   return (
     <Container>
-      <Stepper items={stepperItems}>
-        <Header>
-          <TextContainer>
-            <Title>Thuê kho bãi</Title>
-            <StepperProgression />
-            <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
-          </TextContainer>
-          <ButtonContainer>
-            <StepperBackButton color="secondary" />
-            <StepperNextButton />
-          </ButtonContainer>
-        </Header>
-        <StepperContentRenderer />
-      </Stepper>
+      <RenterInformationProvider>
+        <Stepper items={stepperItems}>
+          <Header>
+            <TextContainer>
+              <Title>Thuê kho bãi</Title>
+              <StepperProgression />
+              <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
+            </TextContainer>
+            <ButtonContainer>
+              <StepperBackButton color="secondary" />
+              <StepperNextButton />
+            </ButtonContainer>
+          </Header>
+          <StepperContentRenderer />
+        </Stepper>
+      </RenterInformationProvider>
     </Container>
   );
 };
