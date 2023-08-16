@@ -1,4 +1,4 @@
-import { FormikErrors } from 'formik';
+import { FormikConfig, FormikErrors } from 'formik';
 
 export type FormValidPayload<Values> =
   | {
@@ -6,3 +6,5 @@ export type FormValidPayload<Values> =
       values: Values;
     }
   | { isValid: false; errors: FormikErrors<Values> };
+
+export type ProviderProps<Values> = Omit<FormikConfig<Values>, 'initialValues' | 'onSubmit'>;

@@ -1,7 +1,9 @@
 import { FormikProps } from 'formik';
+import moment from 'moment';
 import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
+import { api } from '../../axios/axios';
 import CreateWarehouseForm, {
   CreateWarehouseFormBase,
   CreateWarehouseFormValuesType,
@@ -18,6 +20,7 @@ import Stepper from '../../components/Stepper/Stepper';
 
 const CreateWarehouse = () => {
   const [stepperCanNext, setStepperCanNext] = useState<boolean>();
+  const createWarehouseFormRef = useRef<FormikProps<CreateWarehouseFormValuesType>>(null);
 
   const stepperItems = useMemo<StepperItemModel[]>(
     () => [
@@ -39,35 +42,44 @@ const CreateWarehouse = () => {
 
   return (
     <Container>
-      <Stepper
-        isCanNext={stepperCanNext}
-        items={stepperItems}
-        onStepChange={(s) => {
-          if (s === 1) {
-            setStepperCanNext(false);
-          }
+      <CreateWarehouseForm
+        innerRef={createWarehouseFormRef}
+        onFormValidChange={(payload) => {
+          console.log(payload);
+
+          if (payload.isValid) setStepperCanNext(true);
+          else setStepperCanNext(false);
         }}
       >
-        <Header>
-          <TextContainer>
-            <Title>Tạo kho bãi</Title>
-            <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
-          </TextContainer>
-          <StepperProgression />
-          <ButtonContainer>
-            <StepperBackButton color="secondary"></StepperBackButton>
-            <StepperNextButton onClick={handleNextButtonClick}></StepperNextButton>
-          </ButtonContainer>
-        </Header>
-        <CreateWarehouseForm
-          onFormValidChange={(payload) => {
-            if (payload.isValid) setStepperCanNext(true);
-            else setStepperCanNext(false);
+        <Stepper
+          isCanNext={stepperCanNext}
+          items={stepperItems}
+          onComplete={() => {
+            const { current: formikProps } = createWarehouseFormRef;
+
+            const userId = 8; // TODO: get userId from persisted user data
+            api.post(`warehouse/`, { ...formikProps?.values, createdDate: moment().format(), userId });
+          }}
+          onStepChange={(s) => {
+            if (s === 1) {
+              setStepperCanNext(false);
+            }
           }}
         >
+          <Header>
+            <TextContainer>
+              <Title>Tạo kho bãi</Title>
+              <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
+            </TextContainer>
+            <StepperProgression />
+            <ButtonContainer>
+              <StepperBackButton color="secondary"></StepperBackButton>
+              <StepperNextButton onClick={handleNextButtonClick}></StepperNextButton>
+            </ButtonContainer>
+          </Header>
           <StepperContentRenderer />
-        </CreateWarehouseForm>
-      </Stepper>
+        </Stepper>
+      </CreateWarehouseForm>
     </Container>
   );
 };

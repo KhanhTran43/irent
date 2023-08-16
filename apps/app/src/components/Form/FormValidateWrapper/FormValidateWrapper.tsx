@@ -21,7 +21,7 @@ export function FormValidateWrapper<Values extends FormikValues = FormikValues>(
     } else {
       onFormValidChange?.({ isValid: false, errors: errors });
     }
-  }, [errors]);
+  }, [errors, children]);
 
   return <>{children}</>;
 }
