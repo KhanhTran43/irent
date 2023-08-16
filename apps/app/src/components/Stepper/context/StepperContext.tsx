@@ -11,9 +11,9 @@ export type StepperContextType = {
   jump: (step: number) => void;
   next: () => void;
   back: () => void;
-  isCanNext: boolean;
+  isCanNext?: boolean;
   setCanNext: (canNext: boolean) => void;
-  isDisable: boolean;
+  isDisable?: boolean;
   setDisable: (disable: boolean) => void;
 };
 

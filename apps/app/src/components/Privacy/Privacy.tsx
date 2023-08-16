@@ -2,7 +2,12 @@ import styled from 'styled-components';
 
 import { PRIVACY } from '../../constants/privacy.constant';
 
-const Privacy = () => {
+export type PrivacyProps = {
+  onAgreedChange?: (value: boolean) => void;
+  defaultAgreed?: boolean;
+};
+
+const Privacy = ({ defaultAgreed, onAgreedChange }: PrivacyProps) => {
   return (
     <Container>
       <Title>Điều khoản và dịch vụ</Title>
@@ -17,7 +22,7 @@ const Privacy = () => {
         </Paragraph>
       </Body>
       <CheckboxGroup>
-        <Checkbox id="agree-checkbox" />
+        <Checkbox defaultChecked={defaultAgreed} id="agree-checkbox" onChange={(e) => onAgreedChange?.(e.target.checked)}/>
         <Label htmlFor="agree-checkbox">Tôi đồng ý với điều khoản trên</Label>
       </CheckboxGroup>
     </Container>
@@ -34,7 +39,7 @@ const Body = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
 `;
-const Paragraph = styled.p``;
+const Paragraph = styled.span``;
 const SubTitle = styled.h4`
   font-weight: bold;
   font-size: 20px;

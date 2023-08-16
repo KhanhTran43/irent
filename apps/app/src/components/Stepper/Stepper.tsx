@@ -1,5 +1,7 @@
+import { useControllableState } from '@radix-ui/react-use-controllable-state';
+import { produce } from 'immer';
 import { findLastIndex } from 'lodash';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo } from 'react';
 import { useImmerReducer } from 'use-immer';
 
 import { StepperProvider } from './context/StepperContext';
@@ -8,6 +10,10 @@ import { StepperAction, StepperItemModel } from './models/stepper-item.model';
 type StepperProps = {
   items: StepperItemModel[];
   children?: ReactNode;
+  isCanNext?: boolean;
+  // TODO: implement this props
+  isDisable?: boolean;
+  onStepChange?: (step: number) => void;
 };
 
 const getStepperItemsState = (items: StepperItemModel[]) => {
@@ -21,9 +27,9 @@ const getStepperItemsState = (items: StepperItemModel[]) => {
 
 // TODO: I think this component need a controllable `items` for further use
 // You may need this to implement that: https://github.com/radix-ui/primitives/tree/main/packages/react/use-controllable-state
-const Stepper = ({ items: propItems, children }: StepperProps) => {
-  const [isCanNext, setCanNext] = useState<boolean>(true);
-  const [isDisable, setDisable] = useState<boolean>(false);
+const Stepper = ({ items: propItems, children, onStepChange, ...props }: StepperProps) => {
+  const [isCanNext, setCanNext] = useControllableState<boolean>({ defaultProp: true, prop: props.isCanNext });
+  const [isDisable, setDisable] = useControllableState<boolean>({ defaultProp: false, prop: props.isDisable });
 
   const stepReducer = (state: StepperItemModel[], action: StepperAction) => {
     function updateIndex(newIndex: number) {
@@ -51,17 +57,17 @@ const Stepper = ({ items: propItems, children }: StepperProps) => {
       case 'back': {
         console.log('back');
 
-        if (isFirstStep) break;
+        if (isFirstStep || currentIndex === undefined) break;
 
         updateIndex(currentIndex - 1);
 
         break;
       }
       case 'set':
-        state = action.new;
-        break;
+        console.log('set', action.new);
+
+        return action.new;
       default:
-        return state;
     }
   };
 
@@ -83,7 +89,7 @@ const Stepper = ({ items: propItems, children }: StepperProps) => {
   }, [propItems]);
 
   useEffect(() => {
-    console.log(items);
+    onStepChange?.(currentIndex);
   }, [items]);
 
   const jump = (step: number) => {

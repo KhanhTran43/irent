@@ -68,14 +68,11 @@ const RentingForm = () => {
             <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
           </TextContainer>
           <ButtonContainer>
-            <StepperBackButton />
+            <StepperBackButton color="secondary" />
             <StepperNextButton />
           </ButtonContainer>
         </Header>
         <StepperContentRenderer />
-        {/* {activeIdx === 0 && <RenterInformation price={warehouse.price} setRenterInfo={setRenterInfo} />}
-        {activeIdx === 1 && <Privacy />}
-        {activeIdx === 2 && <RentingConfirmation warehouse={warehouse} />} */}
       </Stepper>
     </Container>
   );

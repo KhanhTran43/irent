@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { FormikProps } from 'formik';
+import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import Button from '../../components/Button/Button';
-import CreateWarehouseForm from '../../components/CreateWarehouseForm/CreateWarehouseForm';
+import CreateWarehouseForm, {
+  CreateWarehouseFormBase,
+  CreateWarehouseFormValuesType,
+} from '../../components/CreateWarehouseForm/CreateWarehouseForm';
 import Privacy from '../../components/Privacy/Privacy';
 import {
   StepperBackButton,
@@ -14,23 +17,37 @@ import {
 import Stepper from '../../components/Stepper/Stepper';
 
 const CreateWarehouse = () => {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [stepperItems, setStepperItems] = useState<StepperItemModel[]>([
-    {
-      label: 'Nhập thông tin',
-      status: 'active',
-      content: <CreateWarehouseForm />,
-    },
-    {
-      label: 'Điều khoản',
-      status: 'default',
-      content: <Privacy />,
-    },
-  ]);
+  const [stepperCanNext, setStepperCanNext] = useState<boolean>();
+
+  const stepperItems = useMemo<StepperItemModel[]>(
+    () => [
+      {
+        label: 'Nhập thông tin',
+        status: 'active',
+        content: <CreateWarehouseFormBase />,
+      },
+      {
+        label: 'Điều khoản',
+        status: 'default',
+        content: <Privacy onAgreedChange={(value) => setStepperCanNext(value)} />,
+      },
+    ],
+    [],
+  );
+
+  const handleNextButtonClick = (curr: number | undefined) => {};
 
   return (
     <Container>
-      <Stepper items={stepperItems}>
+      <Stepper
+        isCanNext={stepperCanNext}
+        items={stepperItems}
+        onStepChange={(s) => {
+          if (s === 1) {
+            setStepperCanNext(false);
+          }
+        }}
+      >
         <Header>
           <TextContainer>
             <Title>Tạo kho bãi</Title>
@@ -39,12 +56,17 @@ const CreateWarehouse = () => {
           <StepperProgression />
           <ButtonContainer>
             <StepperBackButton color="secondary"></StepperBackButton>
-            <StepperNextButton></StepperNextButton>
+            <StepperNextButton onClick={handleNextButtonClick}></StepperNextButton>
           </ButtonContainer>
         </Header>
-        <StepperContentRenderer />
-        {/* {activeIdx === 0 && <CreateWarehouseForm />}
-        {activeIdx === 1 && <Privacy />} */}
+        <CreateWarehouseForm
+          onFormValidChange={(payload) => {
+            if (payload.isValid) setStepperCanNext(true);
+            else setStepperCanNext(false);
+          }}
+        >
+          <StepperContentRenderer />
+        </CreateWarehouseForm>
       </Stepper>
     </Container>
   );
