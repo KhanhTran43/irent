@@ -71,6 +71,7 @@
         "react/react-in-jsx-scope": "off",
         "react/prop-types": 0,
         "react/display-name": 0,
+        "react/jsx-no-useless-fragment": "off",
         "react/no-unknown-property": "off",
         "react/no-unescaped-entities ": "off",
         "react/jsx-sort-props": [

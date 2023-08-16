@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { ReactNode } from 'react';
 
 import Button, { ButtonProps } from '../Button/Button';
@@ -9,8 +10,9 @@ export type StepperButtonAction = {
   payload?: any;
 };
 
-export type StepperButtonProps = Omit<ButtonProps, 'children'> & {
+export type StepperButtonProps = Omit<ButtonProps, 'children' | 'onClick'> & {
   content?: ReactNode;
+  onClick?: (currentStep: number | undefined) => void;
 };
 
 export type NextStepperButtonProps = StepperButtonProps & {
@@ -24,12 +26,12 @@ export const StepperNextButton = ({
   finishContent = 'Hoàn thành',
   ...otherProps
 }: NextStepperButtonProps) => {
-  const { next, isCanNext, isLastStep } = useStepperContext(StepperNextButton.name);
+  const { next, isCanNext, isLastStep, currentIndex } = useStepperContext(StepperNextButton.name);
   const mergedDisabled = disabled === true ? true : disabled ?? !isCanNext;
 
   const handleNextClick = () => {
+    onClick?.(currentIndex);
     next();
-    onClick?.();
   };
 
   return (
@@ -47,12 +49,12 @@ export const StepperBackButton = ({
   content: buttonContent = 'Quay lại',
   ...otherProps
 }: StepperButtonProps) => {
-  const { back, currentIndex } = useStepperContext(StepperBackButton.name);
-  const mergedDisabled = disabled === true ? true : disabled ?? currentIndex <= 0;
+  const { back, currentIndex, isFirstStep } = useStepperContext(StepperBackButton.name);
+  const mergedDisabled = disabled === true ? true : disabled ?? isFirstStep;
 
   const handleNextClick = () => {
+    onClick?.(currentIndex);
     back();
-    onClick?.();
   };
 
   return (

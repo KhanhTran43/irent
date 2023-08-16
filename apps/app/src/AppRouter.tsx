@@ -2,8 +2,7 @@ import React from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
-import { PersistLogin, useAuthStore } from './auth';
-import { AuthProvider } from './auth/context/AuthContext';
+import { PersistLogin } from './auth';
 import Header from './components/Header/Header';
 import CreateWarehouse from './containers/CreateWarehouse/CreateWarehouse';
 import Home from './containers/Home/Home';
@@ -23,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
 const BackgroundWrapper = styled.div`
   background-color: #eee;
   padding: 16px 0;
-  height: 100%;
+  min-height: calc(100vh - 60px - 32px); //100vh - header_height - total_self_padding
 `;
 
 const Wrapper = styled.div`

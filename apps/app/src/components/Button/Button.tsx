@@ -1,4 +1,4 @@
-import { blackA, green, violet } from '@radix-ui/colors';
+import { blackA, green, violetDark } from '@radix-ui/colors';
 import * as stitches from '@stitches/react';
 import { ReactNode } from 'react';
 
@@ -32,12 +32,11 @@ const StyledButton = stitches.styled('button', {
   lineHeight: 1,
   fontWeight: 500,
   height: 35,
-  backgroundColor: violet.violet9,
+  backgroundColor: violetDark.violet10,
   color: 'white',
   boxShadow: `0 2px 10px ${blackA.blackA7}`,
   transition: 'background-color 0.5s ease, opacity 0.5s ease',
-  '&:hover:enabled': { backgroundColor: violet.violet8 },
-  // '&:focus': { boxShadow: `0 0 0 2px black` },
+  '&:hover:enabled': { backgroundColor: violetDark.violet7 },
   '&:disabled': {
     opacity: 0.5,
     cursor: 'not-allowed',
@@ -49,7 +48,6 @@ const StyledButton = stitches.styled('button', {
         backgroundColor: 'white',
         color: 'black',
         '&:hover:enabled': { backgroundColor: 'rgba(0, 0, 0, .1)' },
-        // '&:focus': { boxShadow: `0 0 0 2px black` },
         '&:disabled': {
           backgroundColor: 'rgba(136, 136, 136, 0.3)',
         },
