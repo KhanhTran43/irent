@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+
 import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
 import { formatPrice } from '../../utils/format-price.util';
 
-interface RentingConfirmationProps {
+type RentingConfirmationProps = {
   warehouse: WarehouseDetailsModel;
   info?: any; // replace later
-}
+};
 
 const RentingConfirmation = (props: RentingConfirmationProps) => {
   const { warehouse, info } = props;
@@ -27,13 +28,10 @@ const RentingConfirmation = (props: RentingConfirmationProps) => {
               </div>
               <div>
                 <WarehouseBodyData>{warehouse.area} m2</WarehouseBodyData>
-                <WarehouseBodyData>
-                  {warehouse.doorQuantity} cửa
-                </WarehouseBodyData>
+                <WarehouseBodyData>{warehouse.doorQuantity} cửa</WarehouseBodyData>
                 <WarehouseBodyData>{warehouse.floors} tầng</WarehouseBodyData>
                 <WarehouseBodyData>
-                  {formatPrice(warehouse.price)} VND / th x 12 ={' '}
-                  {formatPrice(warehouse.price)} VND
+                  {formatPrice(warehouse.price)} VND / th x 12 = {formatPrice(warehouse.price)} VND
                 </WarehouseBodyData>
               </div>
             </WarehouseBody>
@@ -91,9 +89,8 @@ const WarehouseBodyData = styled.span`
 `;
 
 const RenterInfoContainer = styled.div`
-display: flex;
-justify-content: space-between;
-
+  display: flex;
+  justify-content: space-between;
 `;
 
 const RenterInfoContainerLeft = styled.div``;
