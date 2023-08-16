@@ -4,10 +4,11 @@ import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { api } from '../../axios/axios';
-import CreateWarehouseForm, {
-  CreateWarehouseFormBase,
+import {
+  CreateWarehouseForm,
   CreateWarehouseFormValuesType,
-} from '../../components/CreateWarehouseForm/CreateWarehouseForm';
+  CreateWarehouseProvider,
+} from '../../components/CreateWarehouseForm';
 import Privacy from '../../components/Privacy/Privacy';
 import {
   StepperBackButton,
@@ -20,6 +21,7 @@ import Stepper from '../../components/Stepper/Stepper';
 
 const CreateWarehouse = () => {
   const [stepperCanNext, setStepperCanNext] = useState<boolean>();
+  const currentStepRef = useRef<number>();
   const createWarehouseFormRef = useRef<FormikProps<CreateWarehouseFormValuesType>>(null);
 
   const stepperItems = useMemo<StepperItemModel[]>(
@@ -27,7 +29,7 @@ const CreateWarehouse = () => {
       {
         label: 'Nhập thông tin',
         status: 'active',
-        content: <CreateWarehouseFormBase />,
+        content: <CreateWarehouseForm />,
       },
       {
         label: 'Điều khoản',
@@ -42,11 +44,10 @@ const CreateWarehouse = () => {
 
   return (
     <Container>
-      <CreateWarehouseForm
+      <CreateWarehouseProvider
         innerRef={createWarehouseFormRef}
         onFormValidChange={(payload) => {
-          console.log(payload);
-
+          if (currentStepRef.current !== 0) return;
           if (payload.isValid) setStepperCanNext(true);
           else setStepperCanNext(false);
         }}
@@ -61,6 +62,8 @@ const CreateWarehouse = () => {
             api.post(`warehouse/`, { ...formikProps?.values, createdDate: moment().format(), userId });
           }}
           onStepChange={(s) => {
+            currentStepRef.current = s;
+
             if (s === 1) {
               setStepperCanNext(false);
             }
@@ -79,7 +82,7 @@ const CreateWarehouse = () => {
           </Header>
           <StepperContentRenderer />
         </Stepper>
-      </CreateWarehouseForm>
+      </CreateWarehouseProvider>
     </Container>
   );
 };
