@@ -7,7 +7,7 @@ export type PrivacyProps = {
   defaultAgreed?: boolean;
 };
 
-const Privacy = ({ defaultAgreed, onAgreedChange }: PrivacyProps) => {
+const Privacy = ({ defaultAgreed = false, onAgreedChange }: PrivacyProps) => {
   return (
     <Container>
       <Title>Điều khoản và dịch vụ</Title>
@@ -22,7 +22,11 @@ const Privacy = ({ defaultAgreed, onAgreedChange }: PrivacyProps) => {
         </Paragraph>
       </Body>
       <CheckboxGroup>
-        <Checkbox defaultChecked={defaultAgreed} id="agree-checkbox" onChange={(e) => onAgreedChange?.(e.target.checked)}/>
+        <Checkbox
+          defaultChecked={defaultAgreed}
+          id="agree-checkbox"
+          onChange={(e) => onAgreedChange?.(e.target.checked)}
+        />
         <Label htmlFor="agree-checkbox">Tôi đồng ý với điều khoản trên</Label>
       </CheckboxGroup>
     </Container>
