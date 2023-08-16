@@ -126,27 +126,30 @@ const Home = () => {
         let flag = false;
 
         if (type === 'ward') {
-          flag = value === WardValue.ALL ? true : it.ward.toLowerCase().includes((value as string).toLowerCase());
+          flag =
+            value === WardValue.ALL ? true : it.ward?.toLowerCase().includes((value as string).toLowerCase()) ?? false;
         }
 
         if (type === 'price') {
-          const searchValue = value as [number, number]
+          const searchValue = value as [number, number];
           flag = it.price >= searchValue[0] && it.price <= searchValue[1];
         }
 
         return flag;
-      })
+      }),
     );
   };
 
   const navigateToDetails = (id: number) => {
     navigate(`/warehouse/${id}`);
-  }
+  };
+
+  console.log(mockWareHouses);
 
   return (
     <>
       <FilterContainer>
-        <WardSelect onSelect={(value: string) => onFilter(value, 'ward')}/>
+        <WardSelect onSelect={(value: string) => onFilter(value, 'ward')} />
         <PriceRangeSlider max={100} min={1} onInput={(value: [number, number]) => onFilter(value, 'price')} />
       </FilterContainer>
 

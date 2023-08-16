@@ -51,10 +51,11 @@ const AppRouter: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<RootWrapper />} path="/">
+        <Route element={<RootWrapper />} path="/*">
           <Route element={<Login />} path="login" />
           <Route element={<SignUp />} path="sign-up" />
           <Route element={<PersistLogin />}>
+            <Route element={<Home />} path="" />
             <Route element={<Home />} path="home" />
             <Route element={<ListWarehouse />} path="list" />
             <Route element={<WarehouseDetails />} path="warehouse/:id" />
