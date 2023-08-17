@@ -9,6 +9,7 @@ import {
   StepperNextButton,
   StepperProgression,
 } from '@/components/Common/Stepper';
+import { Invalid } from '@/components/Fallback';
 
 import Privacy from '../../components/Privacy/Privacy';
 import { RenterInformationForm, RenterInformationProvider } from '../../components/RenterInformation';
@@ -67,7 +68,7 @@ const RentingForm = () => {
   return (
     <Container>
       {rented ? (
-        <div>Invalid Action</div>
+        <Invalid />
       ) : (
         <RenterInformationProvider>
           <Stepper items={stepperItems}>

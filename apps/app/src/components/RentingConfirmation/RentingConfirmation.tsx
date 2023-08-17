@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
-import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
+import { WareHouseModel } from '@/models/warehouse.model';
+
 import { formatPrice } from '../../utils/format-price.util';
 
 type RentingConfirmationProps = {
-  warehouse: WarehouseDetailsModel;
+  warehouse: WareHouseModel;
   info?: any; // replace later
 };
 
