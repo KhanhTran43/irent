@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import PriceRangeSlider from '../../components/PriceRangeSlider/PriceRangeSlider';
-import WardSelect from '../../components/WardSelect/WardSelect';
+import { PriceRangeSlider } from '@/components/Common/PriceRangeSlider';
+import { WardSelect } from '@/components/Common/WardSelect';
+
+import { api } from '../../axios/axios';
 import WarehouseViewCard from '../../components/WarehouseViewCard/WarehouseViewCard';
 import { WardValue } from '../../enums/ward-value.enum';
 import { WareHouseModel } from '../../models/warehouse.model';
@@ -11,6 +13,7 @@ import { WareHouseModel } from '../../models/warehouse.model';
 const mockWareHouses: WareHouseModel[] = [
   {
     id: 1,
+    userId: 1,
     name: 'A1',
     ward: WardValue.CAM_LE,
     price: 5.4,
@@ -19,6 +22,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 2,
+    userId: 1,
     name: 'A2',
     ward: WardValue.HOANG_SA,
     area: 100,
@@ -27,6 +31,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 3,
+    userId: 1,
     name: 'A3',
     ward: WardValue.THANH_KHE,
     area: 100,
@@ -35,6 +40,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 4,
+    userId: 1,
     name: 'A4',
     ward: WardValue.CAM_LE,
     area: 100,
@@ -43,6 +49,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 5,
+    userId: 1,
     name: 'A5',
     ward: WardValue.HOANG_SA,
     area: 100,
@@ -51,6 +58,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 6,
+    userId: 1,
     name: 'A6',
     ward: WardValue.HOA_VANG,
     area: 100,
@@ -59,6 +67,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 7,
+    userId: 1,
     name: 'A7',
     ward: WardValue.HOANG_SA,
     area: 100,
@@ -67,6 +76,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 8,
+    userId: 1,
     name: 'A8',
     ward: WardValue.NGU_HANH_SON,
     area: 100,
@@ -75,6 +85,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 9,
+    userId: 1,
     name: 'A4',
     ward: WardValue.HOANG_SA,
     area: 100,
@@ -83,6 +94,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 10,
+    userId: 1,
     name: 'A5',
     ward: WardValue.HAI_CHAU,
     area: 100,
@@ -91,6 +103,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 11,
+    userId: 1,
     name: 'A6',
     ward: WardValue.HAI_CHAU,
     area: 100,
@@ -99,6 +112,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 12,
+    userId: 1,
     name: 'A7',
     ward: WardValue.LIEN_CHIEU,
     area: 100,
@@ -107,6 +121,7 @@ const mockWareHouses: WareHouseModel[] = [
   },
   {
     id: 13,
+    userId: 1,
     name: 'A8',
     ward: WardValue.NGU_HANH_SON,
     area: 100,
@@ -116,12 +131,18 @@ const mockWareHouses: WareHouseModel[] = [
 ];
 
 const Home = () => {
-  const [wareHouses, setWareHouse] = useState<WareHouseModel[]>(mockWareHouses);
+  const [warehouses, setWarehouses] = useState<WareHouseModel[]>(mockWareHouses);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    api.get<WareHouseModel[]>('warehouse').then(({ data }) => {
+      if (data.length !== 0) setWarehouses(data);
+    });
+  }, []);
 
   // TODO: If we call api to search, this code should be removed
   const onFilter = (value: [number, number] | string, type: 'ward' | 'price') => {
-    setWareHouse(
+    setWarehouses(
       mockWareHouses.filter((it) => {
         let flag = false;
 
@@ -154,7 +175,7 @@ const Home = () => {
       </FilterContainer>
 
       <GridContainer>
-        {wareHouses.map((it) => (
+        {warehouses.map((it) => (
           <WarehouseViewCard key={it.id} warehouse={it} onClick={navigateToDetails}></WarehouseViewCard>
         ))}
       </GridContainer>

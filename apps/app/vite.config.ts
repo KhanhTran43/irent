@@ -1,5 +1,6 @@
 // / <reference types="vitest" />
 import react from '@vitejs/plugin-react';
+import path from 'path';
 import { defineConfig } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 
@@ -22,6 +23,12 @@ export default defineConfig({
       root: '../../',
     }),
   ],
+
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 
   // Uncomment this if you are using workers.
   // worker: {
