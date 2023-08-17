@@ -3,6 +3,15 @@ import moment from 'moment';
 import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
+import {
+  Stepper,
+  StepperBackButton,
+  StepperContentRenderer,
+  StepperItemModel,
+  StepperNextButton,
+  StepperProgression,
+} from '@/components/Common/Stepper';
+
 import { api } from '../../axios/axios';
 import {
   CreateWarehouseForm,
@@ -10,14 +19,6 @@ import {
   CreateWarehouseProvider,
 } from '../../components/CreateWarehouseForm';
 import Privacy from '../../components/Privacy/Privacy';
-import {
-  StepperBackButton,
-  StepperContentRenderer,
-  StepperItemModel,
-  StepperNextButton,
-  StepperProgression,
-} from '../../components/Stepper';
-import Stepper from '../../components/Stepper/Stepper';
 
 const CreateWarehouse = () => {
   const [stepperCanNext, setStepperCanNext] = useState<boolean>();
@@ -58,7 +59,7 @@ const CreateWarehouse = () => {
           onComplete={() => {
             const { current: formikProps } = createWarehouseFormRef;
 
-            const userId = 8; // TODO: get userId from persisted user data
+            const userId = 1; // TODO: get userId from persisted user data
             api.post(`warehouse/`, { ...formikProps?.values, createdDate: moment().format(), userId });
           }}
           onStepChange={(s) => {

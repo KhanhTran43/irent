@@ -77,12 +77,14 @@ const CardAddress = styled.span`
 `;
 
 const CardDate = styled.span`
-  transform: translateY(50%);
+  position: absolute;
   top: -5px;
   right: 20px;
+  transform: translateY(50%);
+  
   color: #999;
   font-size: 12px;
-  position: absolute;
+
   display: flex;
   gap: 4px;
 `;

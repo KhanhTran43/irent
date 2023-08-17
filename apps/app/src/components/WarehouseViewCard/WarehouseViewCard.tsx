@@ -52,10 +52,14 @@ const CardImage = styled.img`
 `;
 
 const CardDate = styled.span`
+  position: absolute;
+  top: -5px;
+  right: 20px;
+  transform: translateY(50%);
+
   color: #999;
   font-size: 12px;
-  position: absolute;
-  right: 12px;
+
   display: flex;
   gap: 4px;
 `;
@@ -74,18 +78,15 @@ const PriceText = styled.div`
 
 type WarehouseViewCardProps = {
   warehouse: WareHouseModel;
-  onClick: (id: number) => void
-}
+  onClick: (id: number) => void;
+};
 
 const WarehouseViewCard = (props: WarehouseViewCardProps) => {
   const { id, name, ward, price, area, createdDate } = props.warehouse;
 
   return (
     <CardContainer onClick={() => props.onClick(id)}>
-      <CardImage
-        alt="Product"
-        src="https://picsum.photos/seed/picsum/400/300"
-      />
+      <CardImage alt="Product" src="https://picsum.photos/seed/picsum/400/300" />
       <TextContainer>
         <CardName>{name}</CardName>
         <CardAddress>

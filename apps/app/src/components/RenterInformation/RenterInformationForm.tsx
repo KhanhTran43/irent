@@ -3,18 +3,20 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import { UserModel } from '../../models/user.model';
+import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 import { formatPrice } from '../../utils/format-price.util';
-import Button from '../Button/Button';
-import { FieldError } from '../Form';
+import { FieldError } from '../Common/Form';
 
 export type RenterInformationFormProps = {
-  price: number;
   setRenterInfo: (info: UserModel) => void;
 };
 
 export const RenterInformationForm = (props: RenterInformationFormProps) => {
-  const { price, setRenterInfo } = props;
+  const { setRenterInfo } = props;
   const [duration, setDuration] = useState(1);
+  const {
+    warehouse: { price },
+  } = useWarehouseResolver();
 
   const [user] = useState<UserModel>({
     id: 1,
@@ -24,7 +26,7 @@ export const RenterInformationForm = (props: RenterInformationFormProps) => {
     phoneNumber: '0123456789',
   });
 
-  const { handleSubmit, handleChange, handleBlur, isSubmitting } = useFormikContext();
+  const { handleSubmit, handleChange, handleBlur, values } = useFormikContext();
 
   return (
     <Container>
@@ -32,7 +34,7 @@ export const RenterInformationForm = (props: RenterInformationFormProps) => {
       <Form onSubmit={handleSubmit}>
         <Body>
           <LeftSide>
-            <FormField>
+            {/* <FormField>
               <Label>Tên</Label>
               <Input name="name" onChange={handleChange} onBlur={handleBlur} />
               <FieldError errorFor="name" />
@@ -51,7 +53,8 @@ export const RenterInformationForm = (props: RenterInformationFormProps) => {
               <Label>CMND/CCCD</Label>
               <Input name="ioc" onChange={handleChange} onBlur={handleBlur} />
               <FieldError errorFor="ioc" />
-            </FormField>
+            </FormField> */}
+            <PriceContainer>Giá thuê: {formatPrice(price)} VND</PriceContainer>
           </LeftSide>
 
           <RightSide>
@@ -66,6 +69,7 @@ export const RenterInformationForm = (props: RenterInformationFormProps) => {
 
                   handleChange(v);
                 }}
+                defaultValue={values.duration}
                 onBlur={handleBlur}
               />
             </FormField>
@@ -118,3 +122,5 @@ const Input = styled.input`
 `;
 
 const Text = styled.span``;
+
+const PriceContainer = styled.h3``;

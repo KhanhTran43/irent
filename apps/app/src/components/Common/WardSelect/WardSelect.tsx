@@ -1,21 +1,17 @@
 import { blackA, mauve, violet } from '@radix-ui/colors';
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from '@radix-ui/react-icons';
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import * as Select from '@radix-ui/react-select';
 import { styled } from '@stitches/react';
 import { debounce } from 'lodash';
 import React from 'react';
 
-import { WARD_OPTIONS } from '../../constants/ward-options.constant';
+import { WARD_OPTIONS } from '@/constants/ward-options.constant';
 
 type WardSelectProps = {
   onSelect: (value: string) => void;
-}
+};
 
-const WardSelect = (props: WardSelectProps) => {
+export const WardSelect = (props: WardSelectProps) => {
   const { onSelect } = props;
   const debouncedOnSelect = debounce(onSelect, 400);
 
@@ -76,8 +72,7 @@ const SelectContent = styled(Select.Content, {
   overflow: 'hidden',
   backgroundColor: 'white',
   borderRadius: 6,
-  boxShadow:
-    '0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2)',
+  boxShadow: '0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2)',
 });
 
 const SelectViewport = styled(Select.Viewport, {
@@ -153,9 +148,6 @@ const scrollButtonStyles = {
 
 const SelectScrollUpButton = styled(Select.ScrollUpButton, scrollButtonStyles);
 
-const SelectScrollDownButton = styled(
-  Select.ScrollDownButton,
-  scrollButtonStyles
-);
+const SelectScrollDownButton = styled(Select.ScrollDownButton, scrollButtonStyles);
 
 export default WardSelect;

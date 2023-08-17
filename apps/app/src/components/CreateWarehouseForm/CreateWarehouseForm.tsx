@@ -1,7 +1,7 @@
 import { Form, useFormikContext } from 'formik';
 import styled from 'styled-components';
 
-import { FieldError } from '../Form';
+import { FieldError } from '../Common/Form';
 import { CreateWarehouseFormValuesType } from './CreateWarehouseProvider';
 
 export const CreateWarehouseForm = () => {

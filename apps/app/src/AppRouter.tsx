@@ -3,14 +3,15 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import { PersistLogin } from './auth';
-import Header from './components/Header/Header';
+import { Header } from './components/Common/Header';
 import CreateWarehouse from './containers/CreateWarehouse/CreateWarehouse';
 import Home from './containers/Home/Home';
 import ListWarehouse from './containers/ListWarehouse/ListWarehouse';
 import Login from './containers/Login/Login';
 import RentingForm from './containers/RentingForm/RentingForm';
 import SignUp from './containers/SignUp/SignUp';
-import WarehouseDetails from './containers/WarehouseDetails/WarehouseDetails';
+import { WarehouseDetails } from './containers/WarehouseDetails/WarehouseDetails';
+import { WarehouseResolver } from './resolver/WarehouseResolver';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -58,8 +59,10 @@ const AppRouter: React.FC = () => {
             <Route element={<Home />} path="" />
             <Route element={<Home />} path="home" />
             <Route element={<ListWarehouse />} path="list" />
-            <Route element={<WarehouseDetails />} path="warehouse/:id" />
-            <Route element={<RentingForm />} path="warehouse/:id/renting" />
+            <Route element={<WarehouseResolver />} path="warehouse/:id/*">
+              <Route element={<WarehouseDetails />} path="" />
+              <Route element={<RentingForm />} path="renting" />
+            </Route>
             <Route element={<CreateWarehouse />} path="create" />
           </Route>
           <Route element={<Login />} path="*" />

@@ -1,25 +1,28 @@
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import Privacy from '../../components/Privacy/Privacy';
-import { RenterInformationForm, RenterInformationProvider } from '../../components/RenterInformation';
-import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
 import {
+  Stepper,
   StepperBackButton,
   StepperContentRenderer,
   StepperItemModel,
   StepperNextButton,
   StepperProgression,
-} from '../../components/Stepper';
-import Stepper from '../../components/Stepper/Stepper';
+} from '@/components/Common/Stepper';
+import { Invalid } from '@/components/Fallback';
+
+import Privacy from '../../components/Privacy/Privacy';
+import { RenterInformationForm, RenterInformationProvider } from '../../components/RenterInformation';
+import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
 import { WardValue } from '../../enums/ward-value.enum';
 import { UserModel } from '../../models/user.model';
-import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
+import { WareHouseModel } from '../../models/warehouse.model';
+import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 
 const RentingForm = () => {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [warehouse] = useState<WarehouseDetailsModel>({
+  const [warehouse] = useState<WareHouseModel>({
     id: 1,
+    userId: 1,
     name: 'Kho bãi rộng rãi thoáng mát sạch sẽ',
     ward: WardValue.CAM_LE,
     price: 400,
@@ -42,7 +45,7 @@ const RentingForm = () => {
       {
         label: 'Nhập thông tin',
         status: 'active',
-        content: <RenterInformationForm price={warehouse.price} setRenterInfo={setRenterInfo} />,
+        content: <RenterInformationForm setRenterInfo={setRenterInfo} />,
       },
       {
         label: 'Điều khoản',
@@ -58,24 +61,32 @@ const RentingForm = () => {
     [warehouse],
   );
 
+  const {
+    warehouse: { rented },
+  } = useWarehouseResolver();
+
   return (
     <Container>
-      <RenterInformationProvider>
-        <Stepper items={stepperItems}>
-          <Header>
-            <TextContainer>
-              <Title>Thuê kho bãi</Title>
-              <StepperProgression />
-              <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
-            </TextContainer>
-            <ButtonContainer>
-              <StepperBackButton color="secondary" />
-              <StepperNextButton />
-            </ButtonContainer>
-          </Header>
-          <StepperContentRenderer />
-        </Stepper>
-      </RenterInformationProvider>
+      {rented ? (
+        <Invalid />
+      ) : (
+        <RenterInformationProvider>
+          <Stepper items={stepperItems}>
+            <Header>
+              <TextContainer>
+                <Title>Thuê kho bãi</Title>
+                <StepperProgression />
+                <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
+              </TextContainer>
+              <ButtonContainer>
+                <StepperBackButton color="secondary" />
+                <StepperNextButton />
+              </ButtonContainer>
+            </Header>
+            <StepperContentRenderer />
+          </Stepper>
+        </RenterInformationProvider>
+      )}
     </Container>
   );
 };

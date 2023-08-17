@@ -10,6 +10,7 @@ import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model
 const myWarehouseDetailsMock: MyWarehouseDetailsModel[] = [
   {
     id: 1,
+    userId: 1,
     name: 'Kl',
     ward: WardValue.CAM_LE,
     price: 100,
@@ -20,6 +21,7 @@ const myWarehouseDetailsMock: MyWarehouseDetailsModel[] = [
   },
   {
     id: 2,
+    userId: 1,
     name: 'Kl',
     ward: WardValue.HOANG_SA,
     price: 100,
@@ -30,7 +32,9 @@ const myWarehouseDetailsMock: MyWarehouseDetailsModel[] = [
   },
   {
     id: 3,
+    userId: 1,
     name: 'Kl',
+
     ward: WardValue.CAM_LE,
     price: 100,
     area: 100,
@@ -40,6 +44,7 @@ const myWarehouseDetailsMock: MyWarehouseDetailsModel[] = [
   },
   {
     id: 4,
+    userId: 2,
     name: 'Kl',
     ward: WardValue.CAM_LE,
     price: 100,
@@ -50,6 +55,7 @@ const myWarehouseDetailsMock: MyWarehouseDetailsModel[] = [
   },
   {
     id: 5,
+    userId: 2,
     name: 'Kl',
     ward: WardValue.CAM_LE,
     price: 100,
@@ -60,6 +66,7 @@ const myWarehouseDetailsMock: MyWarehouseDetailsModel[] = [
   },
   {
     id: 6,
+    userId: 2,
     name: 'Kl',
     ward: WardValue.CAM_LE,
     price: 100,
@@ -70,6 +77,7 @@ const myWarehouseDetailsMock: MyWarehouseDetailsModel[] = [
   },
   {
     id: 7,
+    userId: 3,
     name: 'Kl',
     ward: WardValue.CAM_LE,
     price: 100,
