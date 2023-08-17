@@ -1,11 +1,14 @@
 import { FormikProps } from 'formik';
+import moment from 'moment';
 import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import CreateWarehouseForm, {
-  CreateWarehouseFormBase,
+import { api } from '../../axios/axios';
+import {
+  CreateWarehouseForm,
   CreateWarehouseFormValuesType,
-} from '../../components/CreateWarehouseForm/CreateWarehouseForm';
+  CreateWarehouseProvider,
+} from '../../components/CreateWarehouseForm';
 import Privacy from '../../components/Privacy/Privacy';
 import {
   StepperBackButton,
@@ -18,13 +21,15 @@ import Stepper from '../../components/Stepper/Stepper';
 
 const CreateWarehouse = () => {
   const [stepperCanNext, setStepperCanNext] = useState<boolean>();
+  const currentStepRef = useRef<number>();
+  const createWarehouseFormRef = useRef<FormikProps<CreateWarehouseFormValuesType>>(null);
 
   const stepperItems = useMemo<StepperItemModel[]>(
     () => [
       {
         label: 'Nhập thông tin',
         status: 'active',
-        content: <CreateWarehouseFormBase />,
+        content: <CreateWarehouseForm />,
       },
       {
         label: 'Điều khoản',
@@ -39,35 +44,45 @@ const CreateWarehouse = () => {
 
   return (
     <Container>
-      <Stepper
-        isCanNext={stepperCanNext}
-        items={stepperItems}
-        onStepChange={(s) => {
-          if (s === 1) {
-            setStepperCanNext(false);
-          }
+      <CreateWarehouseProvider
+        innerRef={createWarehouseFormRef}
+        onFormValidChange={(payload) => {
+          if (currentStepRef.current !== 0) return;
+          if (payload.isValid) setStepperCanNext(true);
+          else setStepperCanNext(false);
         }}
       >
-        <Header>
-          <TextContainer>
-            <Title>Tạo kho bãi</Title>
-            <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
-          </TextContainer>
-          <StepperProgression />
-          <ButtonContainer>
-            <StepperBackButton color="secondary"></StepperBackButton>
-            <StepperNextButton onClick={handleNextButtonClick}></StepperNextButton>
-          </ButtonContainer>
-        </Header>
-        <CreateWarehouseForm
-          onFormValidChange={(payload) => {
-            if (payload.isValid) setStepperCanNext(true);
-            else setStepperCanNext(false);
+        <Stepper
+          isCanNext={stepperCanNext}
+          items={stepperItems}
+          onComplete={() => {
+            const { current: formikProps } = createWarehouseFormRef;
+
+            const userId = 8; // TODO: get userId from persisted user data
+            api.post(`warehouse/`, { ...formikProps?.values, createdDate: moment().format(), userId });
+          }}
+          onStepChange={(s) => {
+            currentStepRef.current = s;
+
+            if (s === 1) {
+              setStepperCanNext(false);
+            }
           }}
         >
+          <Header>
+            <TextContainer>
+              <Title>Tạo kho bãi</Title>
+              <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
+            </TextContainer>
+            <StepperProgression />
+            <ButtonContainer>
+              <StepperBackButton color="secondary"></StepperBackButton>
+              <StepperNextButton onClick={handleNextButtonClick}></StepperNextButton>
+            </ButtonContainer>
+          </Header>
           <StepperContentRenderer />
-        </CreateWarehouseForm>
-      </Stepper>
+        </Stepper>
+      </CreateWarehouseProvider>
     </Container>
   );
 };

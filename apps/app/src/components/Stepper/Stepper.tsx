@@ -14,6 +14,7 @@ type StepperProps = {
   // TODO: implement this props
   isDisable?: boolean;
   onStepChange?: (step: number) => void;
+  onComplete?: () => void;
 };
 
 const getStepperItemsState = (items: StepperItemModel[]) => {
@@ -27,7 +28,7 @@ const getStepperItemsState = (items: StepperItemModel[]) => {
 
 // TODO: I think this component need a controllable `items` for further use
 // You may need this to implement that: https://github.com/radix-ui/primitives/tree/main/packages/react/use-controllable-state
-const Stepper = ({ items: propItems, children, onStepChange, ...props }: StepperProps) => {
+const Stepper = ({ items: propItems, children, onStepChange, onComplete, ...props }: StepperProps) => {
   const [isCanNext, setCanNext] = useControllableState<boolean>({ defaultProp: true, prop: props.isCanNext });
   const [isDisable, setDisable] = useControllableState<boolean>({ defaultProp: false, prop: props.isDisable });
 
@@ -97,7 +98,8 @@ const Stepper = ({ items: propItems, children, onStepChange, ...props }: Stepper
   };
 
   const next = () => {
-    dispatch({ type: 'next' });
+    if (!isLastStep) dispatch({ type: 'next' });
+    else onComplete?.();
   };
 
   const back = () => {

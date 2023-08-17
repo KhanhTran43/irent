@@ -1,58 +1,10 @@
-import { Form, FormikProps, useFormikContext } from 'formik';
-import { forwardRef, ReactNode } from 'react';
+import { Form, useFormikContext } from 'formik';
 import styled from 'styled-components';
-import { number, object, string } from 'yup';
 
-import { FieldError, FormValidPayload } from '../Form';
-import { FormProvider } from '../Form/FormProvider/FormProvider';
+import { FieldError } from '../Form';
+import { CreateWarehouseFormValuesType } from './CreateWarehouseProvider';
 
-export type CreateWarehouseFormValuesType = {
-  name?: string;
-  address?: string;
-  area?: number;
-  price?: number;
-};
-
-const initialFormValues: CreateWarehouseFormValuesType = {
-  name: '',
-};
-
-export type CreateWarehouseFormProps = {
-  children?: ReactNode;
-  onFormValidChange?: (payload: FormValidPayload<CreateWarehouseFormValuesType>) => void;
-};
-
-const CreateWarehouseForm = forwardRef<FormikProps<CreateWarehouseFormValuesType>, CreateWarehouseFormProps>(
-  ({ children, onFormValidChange }: CreateWarehouseFormProps, ref) => {
-    const CreateWareHouseSchema = object().shape({
-      name: string().min(2, 'Quá ngắn!').max(50, 'Quá dài!').required('Bắt buộc'),
-      address: string().max(200, 'Quá dài!').required('Bắt buộc'),
-      area: number().typeError('Diện tích phải là một số').moreThan(0).required('Bắt buộc'),
-      price: number().typeError('Giá phải là một số').moreThan(0).required('Bắt buộc'),
-    });
-
-    return (
-      <FormProvider
-        validateOnBlur
-        validateOnMount
-        initialValues={initialFormValues}
-        innerRef={ref}
-        validationSchema={CreateWareHouseSchema}
-        onFormValidChange={onFormValidChange}
-        onSubmit={(values, { setSubmitting }) => {
-          setSubmitting(false);
-
-          // const userId = 8; // TODO: get userId from persisted user data
-          // api.post(`warehouse/`, { ...values, createdDate: moment().format(), userId });
-        }}
-      >
-        {children}
-      </FormProvider>
-    );
-  },
-);
-
-export const CreateWarehouseFormBase = () => {
+export const CreateWarehouseForm = () => {
   const { handleSubmit, handleChange, handleBlur, values, isSubmitting } =
     useFormikContext<CreateWarehouseFormValuesType>();
 
@@ -71,24 +23,24 @@ export const CreateWarehouseFormBase = () => {
             <LeftSide>
               <FormField>
                 <Label>Tên</Label>
-                <Input name="name" onBlur={handleBlur} onChange={handleChange} defaultValue={values.name} />
+                <Input defaultValue={values.name} name="name" onBlur={handleBlur} onChange={handleChange} />
                 <FieldError errorFor={'name'} />
               </FormField>
               <FormField>
                 <Label>Quận</Label>
-                <Input name="address" onBlur={handleBlur} onChange={handleChange} defaultValue={values.address} />
+                <Input defaultValue={values.address} name="address" onBlur={handleBlur} onChange={handleChange} />
                 <FieldError errorFor={'address'} />
               </FormField>
               <FormField>
                 <Label>Diện tích</Label>
-                <Input name="area" onBlur={handleBlur} onChange={handleChange} defaultValue={values.area} />
+                <Input defaultValue={values.area} name="area" onBlur={handleBlur} onChange={handleChange} />
                 <FieldError errorFor="area" />
               </FormField>
             </LeftSide>
             <RightSide>
               <FormField>
                 <Label>Giá</Label>
-                <Input name="price" onBlur={handleBlur} onChange={handleChange} defaultValue={values.price} />
+                <Input defaultValue={values.price} name="price" onBlur={handleBlur} onChange={handleChange} />
                 <FieldError errorFor={'price'} />
               </FormField>
             </RightSide>
@@ -98,8 +50,6 @@ export const CreateWarehouseFormBase = () => {
     </Container>
   );
 };
-
-export default CreateWarehouseForm;
 
 const Container = styled.div``;
 
