@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { UserModel } from '../../models/user.model';
 import { formatPrice } from '../../utils/format-price.util';
 import Button from '../Button/Button';
+import { FieldError } from '../Form';
 
 export type RenterInformationFormProps = {
   price: number;
@@ -23,7 +24,7 @@ export const RenterInformationForm = (props: RenterInformationFormProps) => {
     phoneNumber: '0123456789',
   });
 
-  const { handleSubmit, handleChange, isSubmitting } = useFormikContext();
+  const { handleSubmit, handleChange, handleBlur, isSubmitting } = useFormikContext();
 
   return (
     <Container>
@@ -33,19 +34,23 @@ export const RenterInformationForm = (props: RenterInformationFormProps) => {
           <LeftSide>
             <FormField>
               <Label>Tên</Label>
-              <Input name="name" onChange={handleChange} />
+              <Input name="name" onChange={handleChange} onBlur={handleBlur} />
+              <FieldError errorFor="name" />
             </FormField>
             <FormField>
               <Label>Số điện thoại</Label>
-              <Input name="phoneNumber" onChange={handleChange} />
+              <Input name="phoneNumber" onChange={handleChange} onBlur={handleBlur} />
+              <FieldError errorFor="phoneNumber" />
             </FormField>
             <FormField>
               <Label>Email</Label>
-              <Input name="email" onChange={handleChange} />
+              <Input name="email" onChange={handleChange} onBlur={handleBlur} />
+              <FieldError errorFor="email" />
             </FormField>
             <FormField>
               <Label>CMND/CCCD</Label>
-              <Input name="ioc" onChange={handleChange} />
+              <Input name="ioc" onChange={handleChange} onBlur={handleBlur} />
+              <FieldError errorFor="ioc" />
             </FormField>
           </LeftSide>
 
@@ -61,13 +66,12 @@ export const RenterInformationForm = (props: RenterInformationFormProps) => {
 
                   handleChange(v);
                 }}
+                onBlur={handleBlur}
               />
             </FormField>
+            <FieldError errorFor="duration" />
             <Text>Thành tiền: {formatPrice(price * duration)} VND</Text>
           </RightSide>
-          <Button disabled={isSubmitting} type="submit">
-            Submit
-          </Button>
         </Body>
       </Form>
     </Container>
