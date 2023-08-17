@@ -21,7 +21,7 @@ export const RenterInformationProvider = ({ children }: RenterInformationProvide
     // email: string().label('Email').email().required(),
     // phoneNumber: string().label('Số điện thoại').phone().required(),
     // ioc: string().label('CMND/CCCD').length(12).required(),
-    duration: number().label('Thời hạn thuê'),
+    duration: number().moreThan(0).label('Thời hạn thuê'),
   });
 
   return (

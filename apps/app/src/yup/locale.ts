@@ -13,6 +13,8 @@ export function setupDefaultYupLocale() {
       max: '${path} cần ít hơn ${max} ký tự',
       length: '${path} cần phải chính xác ${length} chữ số',
     },
-    number: {},
+    number: {
+      moreThan: '${path} cần lớn hơn ${more}',
+    },
   });
 }

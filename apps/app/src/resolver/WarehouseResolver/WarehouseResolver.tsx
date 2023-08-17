@@ -3,6 +3,8 @@ import { isEmpty } from 'lodash';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 
+import { Loading } from '@/components/Fallback';
+
 import { useAuthStore } from '../../auth';
 import { api } from '../../axios/axios';
 import { WareHouseModel } from '../../models/warehouse.model';
@@ -49,7 +51,7 @@ export function WarehouseResolver() {
           <Outlet />
         </WarehouseResolverContext.Provider>
       ) : (
-        <div>Loading...</div>
+        <Loading />
       )}
     </>
   );
