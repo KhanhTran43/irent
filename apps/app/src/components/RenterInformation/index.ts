@@ -1,2 +1,2 @@
-export * from './RenterInformation';
 export * from './RenterInformationForm';
+export * from './RenterInformationProvider';

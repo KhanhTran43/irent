@@ -1,4 +1,4 @@
-import { number, object, string } from 'yup';
+import * as yup from 'yup';
 
 import { FormProvider, FormValidPayload, ProviderProps } from '../Form';
 
@@ -20,11 +20,11 @@ export type CreateWarehouseFormProps = ProviderProps<CreateWarehouseFormValuesTy
 // const CreateWarehouseForm = forwardRef<FormikProps<CreateWarehouseFormValuesType>, CreateWarehouseFormProps>(
 //   ({ children, onFormValidChange }: CreateWarehouseFormProps, ref) => {
 export const CreateWarehouseProvider = ({ children, onFormValidChange, innerRef }: CreateWarehouseFormProps) => {
-  const CreateWareHouseSchema = object().shape({
-    name: string().min(2, 'Quá ngắn!').max(50, 'Quá dài!').required('Bắt buộc'),
-    address: string().max(200, 'Quá dài!').required('Bắt buộc'),
-    area: number().typeError('Diện tích phải là một số').moreThan(0).required('Bắt buộc'),
-    price: number().typeError('Giá phải là một số').moreThan(0).required('Bắt buộc'),
+  const CreateWareHouseSchema = yup.object().shape({
+    name: yup.string().label('Tên kho bãi').min(2).max(50).required(),
+    address: yup.string().label('Địa chỉ').max(200).required(),
+    area: yup.number().label('Diện tích').moreThan(0).required(),
+    price: yup.number().label('Giá').moreThan(0).required(),
   });
 
   return (
