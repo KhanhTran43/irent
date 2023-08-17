@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import { FormProvider, FormValidPayload, ProviderProps } from '../Form';
+import { FormProvider, FormValidPayload, ProviderProps } from '../Common/Form';
 
 export type CreateWarehouseFormValuesType = {
   name?: string;

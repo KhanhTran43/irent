@@ -1,16 +1,15 @@
 import { HeartIcon, RulerSquareIcon, StackIcon, ViewVerticalIcon } from '@radix-ui/react-icons';
-import { isEmpty } from 'lodash';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { api } from '../../axios/axios';
-import Button from '../../components/Button/Button';
+import Button from '@/components/Common/Button/Button';
+
 import { WardValue } from '../../enums/ward-value.enum';
-import { WarehouseDetailsModel } from '../../models/warehouse-details.model';
+import { WareHouseModel } from '../../models/warehouse.model';
+import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
 
-const mockWarehouseDetails: WarehouseDetailsModel = {
+const mockWarehouseDetails: WareHouseModel = {
   id: 1,
   name: 'Thien Thai Ho',
   ward: WardValue.HAI_CHAU,
@@ -22,17 +21,9 @@ const mockWarehouseDetails: WarehouseDetailsModel = {
   floors: 3,
 };
 
-const WarehouseDetails = () => {
-  const { id } = useParams();
+export const WarehouseDetails = () => {
+  const { warehouse, id, isOwner } = useWarehouseResolver();
   const navigate = useNavigate();
-
-  const [warehouseDetails, setWarehouseDetails] = useState(mockWarehouseDetails);
-
-  useEffect(() => {
-    api.get<WarehouseDetailsModel>(`warehouse/${id}`).then(({ data }) => {
-      if (!isEmpty(data)) setWarehouseDetails(data);
-    });
-  }, []);
 
   const goToRentingForm = () => {
     navigate(`/warehouse/${id}/renting`);
@@ -44,36 +35,42 @@ const WarehouseDetails = () => {
         <Image alt="title" src="https://picsum.photos/seed/picsum/900/300" />
       </ImageContainer>
       <HeaderContainer>
-        <Title>{warehouseDetails.name}</Title>
+        <Title>{warehouse?.name}</Title>
         <Address>
-          {warehouseDetails.address}. <DirectionText>See on map</DirectionText>
+          {warehouse?.address}. <DirectionText>See on map</DirectionText>
         </Address>
-        <Date>Created at: {convertTimestampToDate(warehouseDetails.createdDate)}</Date>
+        <Date>Created at: {warehouse?.createdDate ? convertTimestampToDate(warehouse?.createdDate) : ''}</Date>
         <br />
-        <ButtonContainer>
-          <Button onClick={goToRentingForm}>Rent</Button>
-        </ButtonContainer>
-        <IconActions>
-          <IconActionItem>
-            <HeartIcon></HeartIcon>
-            <Text>Shortlist</Text>
-          </IconActionItem>
-        </IconActions>
+        {!isOwner && (
+          <>
+            <ButtonContainer>
+              <Button disabled={warehouse.rented} onClick={goToRentingForm}>
+                {warehouse.rented ? 'Rented' : 'Rent'}
+              </Button>
+            </ButtonContainer>
+            <IconActions>
+              <IconActionItem>
+                <HeartIcon></HeartIcon>
+                <Text>Shortlist</Text>
+              </IconActionItem>
+            </IconActions>
+          </>
+        )}
 
         <MetricsContainer>
-          <Price>{warehouseDetails.price} $ / mth</Price>
+          <Price>{warehouse?.price} $ / mth</Price>
           <OtherMetrics>
             <OtherMetricItem>
               <RulerSquareIcon color="#999" height={32} width={32}></RulerSquareIcon>
-              <Text>{warehouseDetails.area} sqrt</Text>
+              <Text>{warehouse?.area} sqrt</Text>
             </OtherMetricItem>
             <OtherMetricItem>
               <ViewVerticalIcon color="#999" height={32} width={32}></ViewVerticalIcon>
-              <Text>{warehouseDetails.doorQuantity} doors</Text>
+              <Text>{warehouse?.doorQuantity} doors</Text>
             </OtherMetricItem>
             <OtherMetricItem>
               <StackIcon color="#999" height={32} width={32}></StackIcon>
-              <Text>{warehouseDetails.floors} floors</Text>
+              <Text>{warehouse?.floors} floors</Text>
             </OtherMetricItem>
           </OtherMetrics>
         </MetricsContainer>
@@ -82,11 +79,18 @@ const WarehouseDetails = () => {
   );
 };
 
-const ImageContainer = styled.div``;
+const ImageContainer = styled.div`
+  width: 100%;
+  height: 341px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #8080807a;
+`;
 
 const Image = styled.img`
-  border-radius: 16px;
   width: 100%;
+  object-fit: cover;
+  object-position: center center;
 `;
 
 const HeaderContainer = styled.div`
@@ -161,5 +165,3 @@ const ButtonContainer = styled.div`
   text-align: right;
   cursor: pointer;
 `;
-
-export default WarehouseDetails;

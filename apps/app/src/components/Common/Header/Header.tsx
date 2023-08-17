@@ -1,9 +1,7 @@
-import { HeartFilledIcon } from '@radix-ui/react-icons';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useAuthStore } from '../../auth';
-import { useAuthContext } from '../../auth/context/AuthContext';
+import { useAuthStore } from '../../../auth';
 import Logo from '../Logo/Logo';
 
 const Container = styled.header`
@@ -55,7 +53,7 @@ const LeftSideItem = styled.li`
 
 const RightSide = styled.div``;
 
-const Header = () => {
+export const Header = () => {
   const { isAuthenticated, user } = useAuthStore(({ isAuthenticated, user }) => ({
     isAuthenticated,
     user,
@@ -97,5 +95,3 @@ const Header = () => {
     </Container>
   );
 };
-
-export default Header;

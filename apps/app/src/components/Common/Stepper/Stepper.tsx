@@ -28,7 +28,7 @@ const getStepperItemsState = (items: StepperItemModel[]) => {
 
 // TODO: I think this component need a controllable `items` for further use
 // You may need this to implement that: https://github.com/radix-ui/primitives/tree/main/packages/react/use-controllable-state
-const Stepper = ({ items: propItems, children, onStepChange, onComplete, ...props }: StepperProps) => {
+export const Stepper = ({ items: propItems, children, onStepChange, onComplete, ...props }: StepperProps) => {
   const [isCanNext, setCanNext] = useControllableState<boolean>({ defaultProp: true, prop: props.isCanNext });
   const [isDisable, setDisable] = useControllableState<boolean>({ defaultProp: false, prop: props.isDisable });
 
@@ -125,5 +125,3 @@ const Stepper = ({ items: propItems, children, onStepChange, onComplete, ...prop
     </StepperProvider>
   );
 };
-
-export default Stepper;

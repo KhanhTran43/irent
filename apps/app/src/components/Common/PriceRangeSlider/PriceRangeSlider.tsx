@@ -5,15 +5,13 @@ import { useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import styled from 'styled-components';
 
-import { FilterWarehouseOptionModel } from '../../models/filter-warehouse-option.model';
-
 type PriceRangeSliderProps = {
   min: number;
   max: number;
   onInput: (options: [number, number]) => void;
-}
+};
 
-const PriceRangeSlider = (props: PriceRangeSliderProps) => {
+export const PriceRangeSlider = (props: PriceRangeSliderProps) => {
   const { min, max, onInput } = props;
   const [value, setValue] = useState<[number, number]>([min, max]);
   const debouncedOnInput = debounce(onInput, 400);
@@ -51,5 +49,3 @@ const Title = styled.div`
 `;
 
 const Text = styled.span``;
-
-export default PriceRangeSlider;
