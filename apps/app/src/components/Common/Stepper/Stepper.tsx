@@ -11,8 +11,10 @@ type StepperProps = {
   items: StepperItemModel[];
   children?: ReactNode;
   isCanNext?: boolean;
+  defaultCanNextOnNewStep?: boolean;
   // TODO: implement this props
   isDisable?: boolean;
+  onCanNextChange?: (canNext: boolean) => void;
   onStepChange?: (step: number) => void;
   onComplete?: () => void;
 };
@@ -28,8 +30,20 @@ const getStepperItemsState = (items: StepperItemModel[]) => {
 
 // TODO: I think this component need a controllable `items` for further use
 // You may need this to implement that: https://github.com/radix-ui/primitives/tree/main/packages/react/use-controllable-state
-export const Stepper = ({ items: propItems, children, onStepChange, onComplete, ...props }: StepperProps) => {
-  const [isCanNext, setCanNext] = useControllableState<boolean>({ defaultProp: true, prop: props.isCanNext });
+export const Stepper = ({
+  items: propItems,
+  children,
+  onStepChange,
+  onComplete,
+  defaultCanNextOnNewStep = true,
+  onCanNextChange,
+  ...props
+}: StepperProps) => {
+  const [isCanNext, setCanNext] = useControllableState<boolean>({
+    defaultProp: defaultCanNextOnNewStep,
+    prop: props.isCanNext,
+    onChange: onCanNextChange,
+  });
   const [isDisable, setDisable] = useControllableState<boolean>({ defaultProp: false, prop: props.isDisable });
 
   const stepReducer = (state: StepperItemModel[], action: StepperAction) => {
@@ -98,12 +112,15 @@ export const Stepper = ({ items: propItems, children, onStepChange, onComplete, 
   };
 
   const next = () => {
-    if (!isLastStep) dispatch({ type: 'next' });
-    else onComplete?.();
+    if (!isLastStep) {
+      dispatch({ type: 'next' });
+      setCanNext(defaultCanNextOnNewStep);
+    } else onComplete?.();
   };
 
   const back = () => {
     dispatch({ type: 'back' });
+    setCanNext(defaultCanNextOnNewStep);
   };
 
   return (

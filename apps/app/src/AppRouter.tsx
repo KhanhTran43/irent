@@ -50,6 +50,8 @@ const RootWrapper = () => {
 
 const AppRouter: React.FC = () => {
   return (
+    // TODO: RequireAuthResolver for auth user data,
+    // not using AuthStore for getting user anymore (user in store can be undefined)
     <BrowserRouter>
       <Routes>
         <Route element={<RootWrapper />} path="/*">

@@ -12,6 +12,7 @@ export type AuthStoreType = {
   authenticate: (token: string, user: AuthUser) => void;
 };
 
+// TODO: Make it do not persist, use useRefreshToken for initiate value
 export const useAuthStore = create<AuthStoreType>()(
   persist(
     (set) => ({

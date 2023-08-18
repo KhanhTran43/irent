@@ -1,4 +1,4 @@
-import { blackA, green, violetDark } from '@radix-ui/colors';
+import { blackA, violetDark } from '@radix-ui/colors';
 import * as stitches from '@stitches/react';
 import { ReactNode } from 'react';
 
@@ -10,7 +10,7 @@ export type ButtonProps = {
   type?: 'submit';
 };
 
-const Button = (props: ButtonProps) => {
+export const Button = (props: ButtonProps) => {
   const { onClick, children, color, disabled, type } = props || {};
 
   return (

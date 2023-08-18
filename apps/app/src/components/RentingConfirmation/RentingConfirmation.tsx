@@ -38,8 +38,8 @@ const RentingConfirmation = (props: RentingConfirmationProps) => {
             </WarehouseBody>
           </WarehouseContainerInfo>
           <WarehouseContainerImage
-            src="https://picsum.photos/seed/picsum/400/300"
             alt="Product"
+            src="https://picsum.photos/seed/picsum/400/300"
           ></WarehouseContainerImage>
         </WarehouseContainer>
         <RenterInfoContainer>

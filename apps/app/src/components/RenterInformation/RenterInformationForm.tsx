@@ -6,6 +6,7 @@ import { UserModel } from '../../models/user.model';
 import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 import { formatPrice } from '../../utils/format-price.util';
 import { FieldError } from '../Common/Form';
+import { RenterInformationFormValuesType } from './RenterInformationProvider';
 
 export type RenterInformationFormProps = {
   setRenterInfo: (info: UserModel) => void;
@@ -26,7 +27,7 @@ export const RenterInformationForm = (props: RenterInformationFormProps) => {
     phoneNumber: '0123456789',
   });
 
-  const { handleSubmit, handleChange, handleBlur, values } = useFormikContext();
+  const { handleSubmit, handleChange, handleBlur, values } = useFormikContext<RenterInformationFormValuesType>();
 
   return (
     <Container>
@@ -61,16 +62,16 @@ export const RenterInformationForm = (props: RenterInformationFormProps) => {
             <FormField>
               <Label>Thời hạn thuê (tháng)</Label>
               <Input
+                defaultValue={values.duration}
                 min="1"
                 name="duration"
                 type="number"
+                onBlur={handleBlur}
                 onChange={(v) => {
                   setDuration(+v.target.value);
 
                   handleChange(v);
                 }}
-                defaultValue={values.duration}
-                onBlur={handleBlur}
               />
             </FormField>
             <FieldError errorFor="duration" />

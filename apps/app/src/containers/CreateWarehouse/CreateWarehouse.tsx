@@ -1,8 +1,10 @@
 import { FormikProps } from 'formik';
+import { isEmpty } from 'lodash';
 import moment from 'moment';
 import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
+import { useAuthStore } from '@/auth';
 import {
   Stepper,
   StepperBackButton,
@@ -24,6 +26,7 @@ const CreateWarehouse = () => {
   const [stepperCanNext, setStepperCanNext] = useState<boolean>();
   const currentStepRef = useRef<number>();
   const createWarehouseFormRef = useRef<FormikProps<CreateWarehouseFormValuesType>>(null);
+  const { user } = useAuthStore();
 
   const stepperItems = useMemo<StepperItemModel[]>(
     () => [
@@ -48,6 +51,8 @@ const CreateWarehouse = () => {
       <CreateWarehouseProvider
         innerRef={createWarehouseFormRef}
         onFormValidChange={(payload) => {
+          console.log(payload);
+
           if (currentStepRef.current !== 0) return;
           if (payload.isValid) setStepperCanNext(true);
           else setStepperCanNext(false);
@@ -59,14 +64,18 @@ const CreateWarehouse = () => {
           onComplete={() => {
             const { current: formikProps } = createWarehouseFormRef;
 
-            const userId = 1; // TODO: get userId from persisted user data
-            api.post(`warehouse/`, { ...formikProps?.values, createdDate: moment().format(), userId });
+            if (user)
+              api.post(`warehouse/`, { ...formikProps?.values, createdDate: moment().format(), userId: user.id });
           }}
           onStepChange={(s) => {
             currentStepRef.current = s;
 
             if (s === 1) {
               setStepperCanNext(false);
+            } else if (s === 0) {
+              createWarehouseFormRef.current?.validateForm().then((errors) => {
+                setStepperCanNext(isEmpty(errors));
+              });
             }
           }}
         >
