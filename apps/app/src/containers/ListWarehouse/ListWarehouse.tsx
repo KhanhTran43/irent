@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useAuthStore } from '@/auth';
+
 import { api } from '../../axios/axios';
 import MyWarehouseViewCard from '../../components/MyWarehouseViewCard/MyWarehouseViewCard';
 import { WardValue } from '../../enums/ward-value.enum';
@@ -90,15 +92,18 @@ const myWarehouseDetailsMock: MyWarehouseDetailsModel[] = [
 
 const ListWarehouse = () => {
   const navigate = useNavigate();
+  const { user } = useAuthStore();
+  const [warehouses, setWarehouses] = useState<MyWarehouseDetailsModel[]>(myWarehouseDetailsMock);
+
   const onSelect = (id: number) => {
     navigate(`/warehouse/${id}`);
   };
-  const [warehouses, setWarehouses] = useState<MyWarehouseDetailsModel[]>(myWarehouseDetailsMock);
 
   useEffect(() => {
-    api.get<MyWarehouseDetailsModel[]>('warehouse').then(({ data }) => {
-      if (data.length !== 0) setWarehouses(data);
-    });
+    if (user)
+      api.get<MyWarehouseDetailsModel[]>(`warehouse/user/${user.id}`).then(({ data }) => {
+        if (data.length !== 0) setWarehouses(data);
+      });
   }, []);
 
   return (

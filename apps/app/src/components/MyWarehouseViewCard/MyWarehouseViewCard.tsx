@@ -4,7 +4,6 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
-import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
 
 type MyWarehouseViewCardProps = {
   warehouse: MyWarehouseDetailsModel;
@@ -81,7 +80,7 @@ const CardDate = styled.span`
   top: -5px;
   right: 20px;
   transform: translateY(50%);
-  
+
   color: #999;
   font-size: 12px;
 

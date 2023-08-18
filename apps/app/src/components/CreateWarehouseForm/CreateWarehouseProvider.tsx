@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import { FormProvider, FormValidPayload, ProviderProps } from '../Common/Form';
+import { FormProvider, ProviderProps } from '../Common/Form';
 
 export type CreateWarehouseFormValuesType = {
   name?: string;
@@ -13,9 +13,7 @@ const initialFormValues: CreateWarehouseFormValuesType = {
   name: '',
 };
 
-export type CreateWarehouseFormProps = ProviderProps<CreateWarehouseFormValuesType> & {
-  onFormValidChange?: (payload: FormValidPayload<CreateWarehouseFormValuesType>) => void;
-};
+export type CreateWarehouseFormProps = ProviderProps<CreateWarehouseFormValuesType>;
 
 // const CreateWarehouseForm = forwardRef<FormikProps<CreateWarehouseFormValuesType>, CreateWarehouseFormProps>(
 //   ({ children, onFormValidChange }: CreateWarehouseFormProps, ref) => {

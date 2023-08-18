@@ -1,6 +1,12 @@
-import { useMemo, useState } from 'react';
+import { FormikProps } from 'formik';
+import { isEmpty } from 'lodash';
+import { useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useAuthStore } from '@/auth';
+import { api } from '@/axios/axios';
+import { Button } from '@/components/Common/Button';
 import {
   Stepper,
   StepperBackButton,
@@ -10,9 +16,15 @@ import {
   StepperProgression,
 } from '@/components/Common/Stepper';
 import { Invalid } from '@/components/Fallback';
+import { RentedWarehouseModel } from '@/models/rented-warehouse.model';
+import { getEndDate, getStartDate } from '@/utils/rentedWarehouse.util';
 
 import Privacy from '../../components/Privacy/Privacy';
-import { RenterInformationForm, RenterInformationProvider } from '../../components/RenterInformation';
+import {
+  RenterInformationForm,
+  RenterInformationFormValuesType,
+  RenterInformationProvider,
+} from '../../components/RenterInformation';
 import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
 import { WardValue } from '../../enums/ward-value.enum';
 import { UserModel } from '../../models/user.model';
@@ -39,6 +51,13 @@ const RentingForm = () => {
     email: '@gmail.com',
     ioc: '12313',
   });
+  const [isStepperCanNext, setStepperCanNext] = useState(false);
+  const renterInformationProviderRef = useRef<FormikProps<RenterInformationFormValuesType>>(null);
+  const { user } = useAuthStore();
+  const {
+    warehouse: { rented, id: warehouseId },
+  } = useWarehouseResolver();
+  const navigate = useNavigate();
 
   const stepperItems = useMemo<StepperItemModel[]>(
     () => [
@@ -50,28 +69,67 @@ const RentingForm = () => {
       {
         label: 'Điều khoản',
         status: 'default',
-        content: <Privacy />,
+        content: <Privacy onAgreedChange={setStepperCanNext} />,
       },
       {
         label: 'Xác nhận',
         status: 'default',
-        content: <RentingConfirmation warehouse={warehouse} />,
+        content: (
+          <>
+            <RentingConfirmation warehouse={warehouse} />
+            <Button onClick={() => setStepperCanNext(true)}>Mock payment</Button>
+          </>
+        ),
       },
     ],
     [warehouse],
   );
-
-  const {
-    warehouse: { rented },
-  } = useWarehouseResolver();
 
   return (
     <Container>
       {rented ? (
         <Invalid />
       ) : (
-        <RenterInformationProvider>
-          <Stepper items={stepperItems}>
+        <RenterInformationProvider
+          innerRef={renterInformationProviderRef}
+          onFormValidChange={(payload) => {
+            console.log('ddd');
+
+            if (payload.isValid) setStepperCanNext(true);
+            else setStepperCanNext(false);
+          }}
+        >
+          <Stepper
+            defaultCanNextOnNewStep={false}
+            isCanNext={isStepperCanNext}
+            items={stepperItems}
+            onCanNextChange={setStepperCanNext}
+            onComplete={() => {
+              const { current: formikProps } = renterInformationProviderRef;
+
+              if (user && formikProps) {
+                const { duration } = formikProps.values;
+
+                const rentedWarehouse: RentedWarehouseModel = {
+                  renterId: user.id,
+                  warehouseId,
+                  rentedDate: getStartDate(),
+                  endDate: getEndDate(duration),
+                };
+
+                api.post(`rentedWarehouse`, rentedWarehouse).then(() => {
+                  navigate('/home');
+                });
+              }
+            }}
+            onStepChange={(step) => {
+              if (step === 0) {
+                renterInformationProviderRef.current?.validateForm().then((errors) => {
+                  setStepperCanNext(isEmpty(errors));
+                });
+              }
+            }}
+          >
             <Header>
               <TextContainer>
                 <Title>Thuê kho bãi</Title>
