@@ -20,13 +20,13 @@ const Nav = styled.nav`
 const UlContainerRight = styled.ul`
   display: flex;
   flex-direction: row-reverse;
-  gap: 24px;
+  gap: 12px;
   list-style-type: none;
   margin: 0;
 `;
 
 const RightSideItem = styled.li`
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 4px 20px;
   border: 1px solid #505050;
   cursor: pointer;

@@ -1,5 +1,12 @@
 import { WardValue } from '../enums/ward-value.enum';
 
+export type RentedWarehouseInfo =
+  | { rented: false }
+  | {
+      rented: true;
+      rentedInfo: { rentedDate: string; endDate: string };
+    };
+
 export type WareHouseModel = {
   id: number;
   userId: number;
@@ -12,4 +19,4 @@ export type WareHouseModel = {
   doorQuantity?: number;
   floors?: number;
   rented?: boolean;
-};
+} & RentedWarehouseInfo;
