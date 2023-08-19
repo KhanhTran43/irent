@@ -1,3 +1,4 @@
+import { noop } from 'lodash';
 import React from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -10,6 +11,7 @@ import ListWarehouse from './containers/ListWarehouse/ListWarehouse';
 import Login from './containers/Login/Login';
 import RentingForm from './containers/RentingForm/RentingForm';
 import SignUp from './containers/SignUp/SignUp';
+import { UploadImageButton } from './containers/UploadImageButton/UploadImageButton';
 import { WarehouseDetails } from './containers/WarehouseDetails/WarehouseDetails';
 import { WarehouseResolver } from './resolver/WarehouseResolver';
 
@@ -70,6 +72,7 @@ const AppRouter: React.FC = () => {
           <Route element={<Login />} path="login" />
           <Route element={<SignUp />} path="sign-up" />
           <Route element={<Login />} path="*" />
+          <Route element={<UploadImageButton setImageUrl={noop} />} path="upload" />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -77,3 +80,4 @@ const AppRouter: React.FC = () => {
 };
 
 export default AppRouter;
+

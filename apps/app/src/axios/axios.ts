@@ -21,6 +21,15 @@ export const privateApi = axios.create({
   withCredentials: true,
 });
 
+export const imageApi = axios.create({
+  headers: { 'Content-Type': 'application/json' },
+  baseURL: import.meta.env.VITE_IMAGE_UPLOAD_URL,
+  paramsSerializer: function (params) {
+    return qs.stringify(params);
+  },
+  timeout: 5000,
+});
+
 privateApi.interceptors.request.use(
   async (config) => {
     const { accessToken } = useAuthStore.getState();
@@ -31,3 +40,4 @@ privateApi.interceptors.request.use(
   },
   (error) => Promise.reject(error),
 );
+
