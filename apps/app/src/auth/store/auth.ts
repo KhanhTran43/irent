@@ -3,27 +3,30 @@ import { persist } from 'zustand/middleware';
 
 import { AuthUser } from '../models/auth';
 
+type AuthenticateOptions = {
+  token: string;
+  user: AuthUser;
+};
+
 export type AuthStoreType = {
-  accessToken: string;
+  accessToken?: string;
   setAccessToken: (token: string) => void;
   user?: AuthUser;
-  isAuthenticated: boolean;
+  isAuthenticated?: boolean;
   setUser: (user: AuthUser) => void;
-  authenticate: (token: string, user: AuthUser) => void;
+  authenticate: (options?: AuthenticateOptions) => void;
+  logout: () => void;
 };
 
 // TODO: Make it do not persist, use useRefreshToken for initiate value
-export const useAuthStore = create<AuthStoreType>()(
-  persist(
-    (set) => ({
-      accessToken: '',
-      isAuthenticated: false,
-      setAccessToken: (token: string) => set({ accessToken: token }),
-      setUser: (user) => set({ user }),
-      authenticate: (token, user) => set({ accessToken: token, user, isAuthenticated: true }),
-    }),
-    {
-      name: 'auth',
-    },
-  ),
-);
+export const useAuthStore = create<AuthStoreType>((set) => ({
+  setAccessToken: (token: string) => set({ accessToken: token }),
+  setUser: (user) => set({ user }),
+  authenticate: (options) => {
+    if (options) {
+      const { token, user } = options;
+      set({ accessToken: token, user, isAuthenticated: true });
+    } else set({ isAuthenticated: false });
+  },
+  logout: () => set({ accessToken: undefined, user: undefined, isAuthenticated: false }),
+}));

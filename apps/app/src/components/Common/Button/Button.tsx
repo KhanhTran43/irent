@@ -6,7 +6,7 @@ export type ButtonProps = {
   color?: 'primary' | 'secondary';
   disabled?: boolean;
   onClick?: () => void;
-  children: ReactNode;
+  children?: ReactNode;
   type?: 'submit';
 };
 
