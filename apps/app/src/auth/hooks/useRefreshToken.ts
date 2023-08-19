@@ -6,11 +6,15 @@ export const useRefreshToken = () => {
   const { user, authenticate } = useAuthStore(({ user, authenticate }) => ({ user, authenticate }));
 
   const refresh = async () => {
-    const response = await privateApi.post<AuthenticateResponse>(`auth/refresh-token`, {});
+    try {
+      const response = await privateApi.post<AuthenticateResponse>(`auth/refresh-token`, {});
 
-    const { id, username, jwtToken } = response.data;
+      const { id, username, jwtToken } = response.data;
 
-    authenticate(jwtToken, { id, username });
+      authenticate({ token: jwtToken, user: { id, username } });
+    } catch (error) {
+      authenticate();
+    }
   };
 
   return refresh;

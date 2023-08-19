@@ -4,10 +4,12 @@ import { Outlet } from 'react-router-dom';
 import { Loading } from '@/components/Fallback';
 
 import { useRefreshToken } from '../hooks';
+import { useAuthStore } from '../store';
 
 export const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   useEffect(() => {
     let isMounted = true;
@@ -21,7 +23,8 @@ export const PersistLogin = () => {
       }
     };
 
-    verifyRefreshToken();
+    if (!isAuthenticated) verifyRefreshToken();
+    else setIsLoading(false);
 
     return () => {
       isMounted = false;

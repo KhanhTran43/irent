@@ -1,7 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { privateApi } from '@/axios/axios';
+
 import { useAuthStore } from '../../../auth';
+import { Button } from '../Button';
 import Logo from '../Logo/Logo';
 
 const Container = styled.header`
@@ -40,6 +43,14 @@ const UlContainerLeft = styled.ul`
   margin: 0;
 `;
 
+const UserContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
 const LeftSideItem = styled.li`
   padding: 4px 20px;
   cursor: pointer;
@@ -54,10 +65,21 @@ const LeftSideItem = styled.li`
 const RightSide = styled.div``;
 
 export const Header = () => {
-  const { isAuthenticated, user } = useAuthStore(({ isAuthenticated, user }) => ({
+  const { isAuthenticated, user, logout } = useAuthStore(({ isAuthenticated, user, logout }) => ({
     isAuthenticated,
     user,
+    logout,
   }));
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    privateApi.post('auth/revoke-token').catch((e) => console.error(e));
+    logout();
+    navigate('/login');
+  };
+
+  console.log(isAuthenticated);
 
   return (
     <Container>
@@ -78,8 +100,13 @@ export const Header = () => {
       </LeftSide>
       <RightSide>
         <Nav>
-          {isAuthenticated ? (
-            <div>{`Hi, ${user?.username}`}</div>
+          {isAuthenticated === undefined ? (
+            <></>
+          ) : isAuthenticated === true ? (
+            <UserContainer>
+              <div>{`Hi, ${user?.username}`}</div>
+              <Button onClick={handleLogout}>Log out</Button>
+            </UserContainer>
           ) : (
             <UlContainerRight>
               <Link to={'/sign-up'}>

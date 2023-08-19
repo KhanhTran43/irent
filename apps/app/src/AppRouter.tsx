@@ -54,10 +54,8 @@ const AppRouter: React.FC = () => {
     // not using AuthStore for getting user anymore (user in store can be undefined)
     <BrowserRouter>
       <Routes>
-        <Route element={<RootWrapper />} path="/*">
-          <Route element={<Login />} path="login" />
-          <Route element={<SignUp />} path="sign-up" />
-          <Route element={<PersistLogin />}>
+        <Route element={<PersistLogin />} path='/*'>
+          <Route element={<RootWrapper />}>
             <Route element={<Home />} path="" />
             <Route element={<Home />} path="home" />
             <Route element={<ListWarehouse />} path="list" />
@@ -67,6 +65,10 @@ const AppRouter: React.FC = () => {
             </Route>
             <Route element={<CreateWarehouse />} path="create" />
           </Route>
+        </Route>
+        <Route element={<RootWrapper />} path="/*">
+          <Route element={<Login />} path="login" />
+          <Route element={<SignUp />} path="sign-up" />
           <Route element={<Login />} path="*" />
         </Route>
       </Routes>
