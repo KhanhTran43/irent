@@ -3,17 +3,20 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons
 import * as Select from '@radix-ui/react-select';
 import { styled } from '@stitches/react';
 import { debounce } from 'lodash';
-import React from 'react';
+import React, { ReactNode, useCallback } from 'react';
 
 import { WARD_OPTIONS } from '@/constants/ward-options.constant';
 
 type WardSelectProps = {
-  onSelect: (value: string) => void;
+  onSelect?: (value: string) => void;
 };
 
 export const WardSelect = (props: WardSelectProps) => {
   const { onSelect } = props;
-  const debouncedOnSelect = debounce(onSelect, 400);
+  const debouncedOnSelect = useCallback(
+    debounce((value: string) => onSelect?.(value), 400),
+    [],
+  );
 
   return (
     <Select.Root onValueChange={(value) => debouncedOnSelect(value)}>
@@ -79,7 +82,12 @@ const SelectViewport = styled(Select.Viewport, {
   padding: 5,
 });
 
-const SelectItem = React.forwardRef(({ children, ...props }, forwardedRef) => {
+type SelectItemProps = {
+  children: ReactNode;
+  value: string;
+};
+
+const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(({ children, ...props }, forwardedRef) => {
   return (
     <StyledItem {...props} ref={forwardedRef}>
       <Select.ItemText>{children}</Select.ItemText>

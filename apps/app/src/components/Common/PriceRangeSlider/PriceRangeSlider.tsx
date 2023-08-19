@@ -2,19 +2,23 @@ import 'react-range-slider-input/dist/style.css';
 
 import { debounce } from 'lodash';
 import { useState } from 'react';
+import { useCallback } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import styled from 'styled-components';
 
 type PriceRangeSliderProps = {
   min: number;
   max: number;
-  onInput: (options: [number, number]) => void;
+  onInput?: (options: [number, number]) => void;
 };
 
 export const PriceRangeSlider = (props: PriceRangeSliderProps) => {
   const { min, max, onInput } = props;
   const [value, setValue] = useState<[number, number]>([min, max]);
-  const debouncedOnInput = debounce(onInput, 400);
+  const debouncedOnInput = useCallback(
+    debounce((options: [number, number]) => onInput?.(options), 400),
+    [],
+  );
 
   return (
     <Container>
