@@ -42,6 +42,7 @@ const RentingForm = () => {
     createdDate: Date.now(),
     doorQuantity: 3,
     floors: 4,
+    rented: false,
   });
 
   const [renterInfo, setRenterInfo] = useState<UserModel>({
