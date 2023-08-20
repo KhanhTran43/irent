@@ -1,12 +1,15 @@
+import { Elements } from '@stripe/react-stripe-js';
+import { Appearance, StripeElementsOptions } from '@stripe/stripe-js';
 import { FormikProps } from 'formik';
 import { isEmpty } from 'lodash';
-import { useMemo, useRef, useState } from 'react';
+import { ReactNode, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAuthStore } from '@/auth';
 import { api } from '@/axios/axios';
 import { Button } from '@/components/Common/Button';
+import { Dialog } from '@/components/Common/Dialog';
 import {
   Stepper,
   StepperBackButton,
@@ -16,6 +19,7 @@ import {
   StepperProgression,
 } from '@/components/Common/Stepper';
 import { Invalid } from '@/components/Fallback';
+import { stripePromise } from '@/libs';
 import { RentedWarehouseModel } from '@/models/rented-warehouse.model';
 import { getEndDate, getStartDate } from '@/utils/rentedWarehouse.util';
 
@@ -30,6 +34,7 @@ import { WardValue } from '../../enums/ward-value.enum';
 import { UserModel } from '../../models/user.model';
 import { WareHouseModel } from '../../models/warehouse.model';
 import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
+import { CheckoutForm } from './CheckoutForm';
 
 const RentingForm = () => {
   const [warehouse] = useState<WareHouseModel>({
@@ -42,6 +47,7 @@ const RentingForm = () => {
     createdDate: Date.now(),
     doorQuantity: 3,
     floors: 4,
+    rented: false,
   });
 
   const [renterInfo, setRenterInfo] = useState<UserModel>({
@@ -51,13 +57,67 @@ const RentingForm = () => {
     email: '@gmail.com',
     ioc: '12313',
   });
-  const [isStepperCanNext, setStepperCanNext] = useState(false);
-  const renterInformationProviderRef = useRef<FormikProps<RenterInformationFormValuesType>>(null);
+
   const { user } = useAuthStore();
   const {
-    warehouse: { rented, id: warehouseId },
+    warehouse: { rented, id: warehouseId, price },
   } = useWarehouseResolver();
+
   const navigate = useNavigate();
+
+  const [isStepperCanNext, setStepperCanNext] = useState(false);
+  const renterInformationProviderRef = useRef<FormikProps<RenterInformationFormValuesType>>(null);
+
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
+  const dialogContentRef = useRef<ReactNode>(null);
+  const stripeAppearance: Appearance = {
+    theme: 'stripe',
+    variables: {
+      fontFamily: 'GeneralSans-Variable, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
+      fontWeightNormal: '500',
+    },
+  };
+
+  const handleSaveRentedWarehouse = () => {
+    const { current: formikProps } = renterInformationProviderRef;
+
+    if (user && formikProps) {
+      const { duration } = formikProps.values;
+
+      const rentedWarehouse: RentedWarehouseModel = {
+        renterId: user.id,
+        warehouseId,
+        rentedDate: getStartDate(),
+        endDate: getEndDate(duration),
+      };
+
+      api.post(`rentedWarehouse`, rentedWarehouse).then(() => {
+        navigate('/home');
+      });
+    }
+  };
+
+  const handleOnPayment = (price: number) => {
+    const { current: formikProps } = renterInformationProviderRef;
+
+    if (formikProps) {
+      const amount = price * formikProps.values.duration;
+      api.post<{ clientSecret: string }>('/payment', { amount }).then((response) => {
+        const options: StripeElementsOptions = {
+          clientSecret: response.data.clientSecret,
+          appearance: stripeAppearance,
+        };
+
+        dialogContentRef.current = (
+          <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm total={amount} onSucceed={handleSaveRentedWarehouse} />
+          </Elements>
+        );
+
+        setPaymentDialogOpen(true);
+      });
+    }
+  };
 
   const stepperItems = useMemo<StepperItemModel[]>(
     () => [
@@ -93,8 +153,6 @@ const RentingForm = () => {
         <RenterInformationProvider
           innerRef={renterInformationProviderRef}
           onFormValidChange={(payload) => {
-            console.log('ddd');
-
             if (payload.isValid) setStepperCanNext(true);
             else setStepperCanNext(false);
           }}
@@ -104,24 +162,7 @@ const RentingForm = () => {
             isCanNext={isStepperCanNext}
             items={stepperItems}
             onCanNextChange={setStepperCanNext}
-            onComplete={() => {
-              const { current: formikProps } = renterInformationProviderRef;
-
-              if (user && formikProps) {
-                const { duration } = formikProps.values;
-
-                const rentedWarehouse: RentedWarehouseModel = {
-                  renterId: user.id,
-                  warehouseId,
-                  rentedDate: getStartDate(),
-                  endDate: getEndDate(duration),
-                };
-
-                api.post(`rentedWarehouse`, rentedWarehouse).then(() => {
-                  navigate('/home');
-                });
-              }
-            }}
+            onComplete={() => handleOnPayment(price)}
             onStepChange={(step) => {
               if (step === 0) {
                 renterInformationProviderRef.current?.validateForm().then((errors) => {
@@ -143,6 +184,9 @@ const RentingForm = () => {
             </Header>
             <StepperContentRenderer />
           </Stepper>
+          <PaymentDialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
+            {dialogContentRef.current}
+          </PaymentDialog>
         </RenterInformationProvider>
       )}
     </Container>
@@ -168,6 +212,10 @@ const Title = styled.h1``;
 
 const Detail = styled.span`
   color: #999;
+`;
+
+const PaymentDialog = styled(Dialog)`
+  background-color: white;
 `;
 
 export default RentingForm;
