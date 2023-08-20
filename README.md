@@ -4,7 +4,7 @@
 
 ## Installation
 
-Run `npm install` to install dependencies.
+Run `npm install` or `yarn install` to install dependencies.
 
 ## Development
 
