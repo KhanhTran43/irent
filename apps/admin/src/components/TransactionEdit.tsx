@@ -9,7 +9,6 @@ export const TransactionEdit = () => (
       <NumberInput className='w-100' source="price" disabled={true} label="Giá (VND)" />
       <TextInput className='w-100' source="duration" disabled={true} label="Thời hạn thuê (tháng)" />
       <DateInput className='w-100' source="createdAt" disabled={true} label="Ngày tạo" />
-      <BooleanInput source="isConfirmed" label="Xác nhận" />
     </SimpleForm>
   </Edit>
 );

@@ -10,8 +10,9 @@ export const TransactionList = () => (
       <NumberField source="price" label="Giá (VND)"/>
       <NumberField source="duration" label="Thời hạn (tháng)"/>
       <DateField source="createdAt" label="Thời gian tạo" showTime={true} textAlign='right'/>
-      <BooleanField source="isConfirmed" label="Xác nhận" />
+      {/* <BooleanField source="isConfirmed" label="Xác nhận" /> */}
       <NumberField className='color-success' source="fee" label="Phí (VND)" />
     </Datagrid>
   </List>
 );
+
