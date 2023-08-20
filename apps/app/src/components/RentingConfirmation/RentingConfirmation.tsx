@@ -11,6 +11,7 @@ type RentingConfirmationProps = {
 
 const RentingConfirmation = (props: RentingConfirmationProps) => {
   const { warehouse, info } = props;
+
   return (
     <Container>
       <Title>Xác nhận thông tin</Title>

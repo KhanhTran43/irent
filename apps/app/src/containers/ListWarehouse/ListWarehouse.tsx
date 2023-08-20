@@ -123,7 +123,6 @@ const ListWarehouse = () => {
         {warehouses.map((it) => (
           <MyWarehouseViewCard key={it.id} warehouse={it} onClick={onSelect}></MyWarehouseViewCard>
         ))}
-        <WarehouseViewCardBase showRentedProgression warehouse={warehouses[0]}></WarehouseViewCardBase>
       </GridContainer>
     </>
   );
