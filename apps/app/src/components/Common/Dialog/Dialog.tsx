@@ -1,5 +1,6 @@
 import * as RadixDialog from '@radix-ui/react-dialog';
 import { DialogProps as RadixDialogProps } from '@radix-ui/react-dialog';
+import { Cross1Icon } from '@radix-ui/react-icons';
 import { useCallbackRef } from '@radix-ui/react-use-callback-ref';
 import { useControllableState } from '@radix-ui/react-use-controllable-state';
 import {
@@ -14,8 +15,6 @@ import {
   useState,
 } from 'react';
 import styled, { keyframes } from 'styled-components';
-
-import { ReactComponent as CrossIcon } from '@/assets/icons/cross.svg';
 
 type PointerDownOutsideEvent = CustomEvent<{
   originalEvent: PointerEvent;
@@ -132,7 +131,7 @@ export const Dialog = forwardRef<DialogRef, DialogProps>(
               <DialogContentBody>{content ?? children}</DialogContentBody>
               <RadixDialog.Close asChild>
                 <CloseButton>
-                  <CrossIcon />
+                  <Cross1Icon></Cross1Icon>
                 </CloseButton>
               </RadixDialog.Close>
             </DialogContent>
@@ -216,7 +215,7 @@ export const DialogDescription = styled(RadixDialog.Description)`
 export const CloseButton = styled.button`
   width: 28px;
   height: 28px;
-  background: hsla(225, 5%, 29%, 1);
+  background-color: rgba(0, 0, 0, 0);
   border-radius: 11.2px;
   border-width: 0;
 
@@ -231,6 +230,6 @@ export const CloseButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: hsla(225, 5%, 39%, 1);
+    background-color: rgba(126, 126, 126, 0.5);
   }
 `;

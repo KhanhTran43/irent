@@ -1,11 +1,8 @@
-import { Elements } from '@stripe/react-stripe-js';
-import { Appearance, StripeElementsOptions } from '@stripe/stripe-js';
 import styled from 'styled-components';
 
 import { WareHouseModel } from '@/models/warehouse.model';
 
 import { formatPrice } from '../../utils/format-price.util';
-import { Dialog } from '../Common/Dialog';
 
 type RentingConfirmationProps = {
   warehouse: WareHouseModel;
@@ -14,19 +11,6 @@ type RentingConfirmationProps = {
 
 const RentingConfirmation = (props: RentingConfirmationProps) => {
   const { warehouse, info } = props;
-
-  const stripeAppearance: Appearance = {
-    theme: 'night',
-    variables: {
-      fontFamily: 'GeneralSans-Variable, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
-      fontWeightNormal: '500',
-    },
-  };
-
-  const options: StripeElementsOptions = {
-    clientSecret: data.clientSecret,
-    appearance: stripeAppearance,
-  };
 
   return (
     <Container>
@@ -68,11 +52,6 @@ const RentingConfirmation = (props: RentingConfirmationProps) => {
           </RenterInfoContainerRight>
         </RenterInfoContainer>
       </Body>
-      <Dialog>
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm total={item.price} onSucceed={() => handlePaymentSucceed(item._id)} />
-        </Elements>
-      </Dialog>
     </Container>
   );
 };

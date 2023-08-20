@@ -8,13 +8,20 @@ export type ButtonProps = {
   onClick?: () => void;
   children?: ReactNode;
   type?: 'submit';
+  className?: string;
 };
 
 export const Button = (props: ButtonProps) => {
-  const { onClick, children, color, disabled, type } = props || {};
+  const { onClick, children, color, disabled, type, className } = props || {};
 
   return (
-    <StyledButton color={color || 'primary'} disabled={disabled} type={type} onClick={() => onClick && onClick()}>
+    <StyledButton
+      className={className}
+      color={color || 'primary'}
+      disabled={disabled}
+      type={type}
+      onClick={() => onClick && onClick()}
+    >
       {children}
     </StyledButton>
   );
