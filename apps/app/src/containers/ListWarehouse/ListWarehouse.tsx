@@ -109,11 +109,9 @@ const ListWarehouse = () => {
 
   useEffect(() => {
     if (user)
-      api
-        .get<MyWarehouseDetailsModel[]>(`warehouse/user/${user.id}`, { params: { Includes: 'RentedWarehouses' } })
-        .then(({ data }) => {
-          if (data.length !== 0) setWarehouses(data);
-        });
+      api.get<MyWarehouseDetailsModel[]>(`warehouse/owner/${user.id}`).then(({ data }) => {
+        if (data.length !== 0) setWarehouses(data);
+      });
   }, []);
 
   return (

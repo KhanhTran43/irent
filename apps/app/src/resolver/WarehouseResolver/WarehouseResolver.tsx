@@ -36,8 +36,7 @@ export function WarehouseResolver() {
   }, [id]);
 
   const getWarehouse = async () => {
-    const warehouse = (await api.get<WareHouseModel>(`warehouse/${id}`, { params: { Includes: 'RentedWarehouses' } }))
-      .data;
+    const warehouse = (await api.get<WareHouseModel>(`warehouse/${id}`)).data;
 
     setWarehouse(warehouse);
   };

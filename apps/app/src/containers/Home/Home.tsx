@@ -136,7 +136,7 @@ const Home = () => {
 
   useEffect(() => {
     api.get<WareHouseModel[]>('warehouse').then(({ data }) => {
-      if (data.length !== 0) setWarehouses(data);
+      if (data.length !== 0) setWarehouses(data.filter((d) => !d.rented));
     });
   }, []);
 

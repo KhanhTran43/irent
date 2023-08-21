@@ -23,6 +23,8 @@ const Login = () => {
           const { jwtToken, id, username } = data;
           authenticate({ token: jwtToken, user: { id, username } });
           navigate('/home');
+        } else {
+          setLoading(false);
         }
       });
   };
