@@ -1,6 +1,6 @@
 import * as ReactDOM from 'react-dom/client';
 
-import AppRouter from './AppRouter';
+import { AppRouter } from './AppRouter';
 import { setupDefaultYupLocale } from './yup';
 
 setupDefaultYupLocale();

@@ -13,7 +13,8 @@ export function FormValidateWrapper<Values extends FormikValues = FormikValues>(
   children,
   onFormValidChange,
 }: FormValidateWrapperProps<Values>) {
-  const { errors, values } = useFormikContext<Values>();
+  const props = useFormikContext<Values>();
+  const { errors, values } = props;
 
   useEffect(() => {
     if (isEmpty(errors)) {
@@ -23,5 +24,5 @@ export function FormValidateWrapper<Values extends FormikValues = FormikValues>(
     }
   }, [errors]);
 
-  return <>{children}</>;
+  return <>{typeof children === 'function' ? children(props) : children}</>;
 }

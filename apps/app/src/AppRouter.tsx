@@ -5,12 +5,12 @@ import styled, { createGlobalStyle } from 'styled-components';
 
 import { PersistLogin } from './auth';
 import { Header } from './components/Common/Header';
+import { SignUp } from './containers';
 import CreateWarehouse from './containers/CreateWarehouse/CreateWarehouse';
 import Home from './containers/Home/Home';
 import ListWarehouse from './containers/ListWarehouse/ListWarehouse';
 import Login from './containers/Login/Login';
 import RentingForm from './containers/RentingForm/RentingForm';
-import SignUp from './containers/SignUp/SignUp';
 import { UploadImageButton } from './containers/UploadImageButton/UploadImageButton';
 import { WarehouseDetails } from './containers/WarehouseDetails/WarehouseDetails';
 import { WarehouseResolver } from './resolver/WarehouseResolver';
@@ -50,13 +50,15 @@ const RootWrapper = () => {
   );
 };
 
-const AppRouter: React.FC = () => {
+export const AppRouter = () => {
+  console.log();
+
   return (
     // TODO: RequireAuthResolver for auth user data,
     // not using AuthStore for getting user anymore (user in store can be undefined)
     <BrowserRouter>
       <Routes>
-        <Route element={<PersistLogin />} path='/*'>
+        <Route element={<PersistLogin />} path="/*">
           <Route element={<RootWrapper />}>
             <Route element={<Home />} path="" />
             <Route element={<Home />} path="home" />
@@ -78,6 +80,3 @@ const AppRouter: React.FC = () => {
     </BrowserRouter>
   );
 };
-
-export default AppRouter;
-

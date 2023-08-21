@@ -1,2 +1,2 @@
 export * from './locale';
-export * from './yup-phone';
+export * from './yup-extensions';

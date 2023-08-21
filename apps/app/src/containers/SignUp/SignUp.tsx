@@ -1,90 +1,125 @@
-import { useState } from 'react';
+import { FormikHelpers } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const SignUp = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('user');
+import { api } from '@/axios/axios';
+import { FieldError, FormProvider } from '@/components/Common/Form';
 
-  const isFormValid =
-    name &&
-    email &&
-    password &&
-    confirmPassword &&
-    password === confirmPassword;
+import { signUpFormValidateSchema, SignUpFormValues } from './SignUpItem';
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(
-      'Signup submitted:',
-      name,
-      email,
-      password,
-      confirmPassword,
-      role
-    );
-    // Add your signup logic here
+const signUpFormInitialValues: SignUpFormValues = {
+  name: '',
+  address: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  dob: new Date(),
+  ioc: '',
+  phoneNumber: '',
+  role: 'Renter',
+};
+
+export const SignUp = () => {
+  const navigate = useNavigate();
+
+  const handleOnFormSubmit = (
+    values: SignUpFormValues,
+    { setSubmitting, setErrors }: FormikHelpers<SignUpFormValues>,
+  ) => {
+    setSubmitting(true);
+    api
+      .post('user', values)
+      .then(() => {
+        navigate('login');
+      })
+      .catch((e) => {
+        if (e.response.status === 400) {
+          if (e.response.data.errors.Email !== undefined) setErrors({ email: 'Email đã tồn tại' });
+        }
+        setSubmitting(false);
+      });
   };
 
   return (
-    <FormContainer>
-      <h2>Sign Up</h2>
-      <Form onSubmit={handleSubmit}>
-        <Input
-          placeholder="Name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <Input
-          placeholder="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          placeholder="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Input
-          placeholder="Confirm Password"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <RadioButtonContainer>
-          <RadioButtonLabel>
-            <RadioButton
-              checked={role === 'user'}
-              type="radio"
-              value="user"
-              onChange={() => setRole('user')}
-            />
-            User
-          </RadioButtonLabel>
-          <RadioButtonLabel>
-            <RadioButton
-              checked={role === 'admin'}
-              type="radio"
-              value="admin"
-              onChange={() => setRole('admin')}
-            />
-            Admin
-          </RadioButtonLabel>
-        </RadioButtonContainer>
-        <Button disabled={!isFormValid} type="submit">
-          Sign Up
-        </Button>
-      </Form>
-    </FormContainer>
+    <FormProvider
+      initialValues={signUpFormInitialValues}
+      validationSchema={signUpFormValidateSchema}
+      onSubmit={handleOnFormSubmit}
+    >
+      {({ values, handleSubmit, handleBlur, handleChange, setErrors }) => (
+        <FormContainer>
+          <h2>Đăng ký</h2>
+          <Form onSubmit={handleSubmit}>
+            <Label htmlFor="name">Tên:</Label>
+            <Field>
+              <Input id="name" placeholder="Tên" type="text" onBlur={handleBlur} onChange={handleChange} />
+              <FieldError errorFor="name"></FieldError>
+            </Field>
+            <Label htmlFor="email">Địa chỉ email:</Label>
+            <Field>
+              <Input id="email" placeholder="Địa chỉ email" type="email" onBlur={handleBlur} onChange={handleChange} />
+              <FieldError errorFor="email"></FieldError>
+            </Field>
+            <Label htmlFor="ioc">CCCD/CMND:</Label>
+            <Field>
+              <Input id="ioc" placeholder="CCCD/CMND" type="text" onBlur={handleBlur} onChange={handleChange} />
+              <FieldError errorFor="ioc"></FieldError>
+            </Field>
+            <Label htmlFor="phoneNumber">Số điện thoại:</Label>
+            <Field>
+              <Input
+                id="phoneNumber"
+                placeholder="Số điện thoại"
+                type="text"
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              <FieldError errorFor="phoneNumber"></FieldError>
+            </Field>
+            <Label htmlFor="address">Địa chỉ:</Label>
+            <Field>
+              <Input id="address" placeholder="Địa chỉ" type="text" onBlur={handleBlur} onChange={handleChange} />
+              <FieldError errorFor="address"></FieldError>
+            </Field>
+            <Label htmlFor="dob">Ngày sinh:</Label>
+            <Field>
+              <Input id="dob" placeholder="Ngày sinh" type="date" onBlur={handleBlur} onChange={handleChange} />
+              <FieldError errorFor="dob"></FieldError>
+            </Field>
+            <Label htmlFor="password">Mật khẩu:</Label>
+            <Field>
+              <Input id="password" placeholder="Mật khẩu" type="password" onBlur={handleBlur} onChange={handleChange} />
+              <FieldError errorFor="password"></FieldError>
+            </Field>
+            <Label htmlFor="confirmPassword">Xác nhận mật khẩu:</Label>
+            <Field>
+              <Input
+                id="confirmPassword"
+                placeholder="Xác nhận mật khẩu"
+                type="password"
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              <FieldError errorFor="confirmPassword"></FieldError>
+            </Field>
+
+            <RadioButtonContainer>
+              <RadioButtonLabel>
+                <RadioButton defaultChecked={values.role === 'Renter'} type="radio" value="Renter" />
+                Người thuê
+              </RadioButtonLabel>
+              <RadioButtonLabel>
+                <RadioButton defaultChecked={values.role === 'Owner'} type="radio" value="Owner" />
+                Chủ kho bãi
+              </RadioButtonLabel>
+            </RadioButtonContainer>
+            <Button type="submit">Đăng ký</Button>
+          </Form>
+        </FormContainer>
+      )}
+    </FormProvider>
   );
 };
-
-export default SignUp;
 
 const FormContainer = styled.div`
   display: flex;
@@ -99,9 +134,21 @@ const Form = styled.form`
   gap: 10px;
 `;
 
+const Label = styled.label`
+  width: 100%;
+  text-align: left;
+`;
+
+const Field = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 const Input = styled.input`
   padding: 10px;
-  width: 200px;
+  width: 350px;
   border: 1px solid gray;
   border-radius: 5px;
 `;
