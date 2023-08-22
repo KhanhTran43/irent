@@ -2,10 +2,11 @@ import { Form, useFormikContext } from 'formik';
 import styled from 'styled-components';
 
 import { FieldError } from '../Common/Form';
+import { WardSelect } from '../Common/WardSelect';
 import { CreateWarehouseFormValuesType } from './CreateWarehouseProvider';
 
 export const CreateWarehouseForm = () => {
-  const { handleSubmit, handleChange, handleBlur, values, isSubmitting } =
+  const { handleSubmit, handleChange, handleBlur, values, isSubmitting, setFieldValue } =
     useFormikContext<CreateWarehouseFormValuesType>();
 
   return (
@@ -27,9 +28,21 @@ export const CreateWarehouseForm = () => {
                 <FieldError errorFor={'name'} />
               </FormField>
               <FormField>
-                <Label>Quận</Label>
+                <Label>Địa chỉ</Label>
                 <Input defaultValue={values.address} name="address" onBlur={handleBlur} onChange={handleChange} />
                 <FieldError errorFor={'address'} />
+              </FormField>
+              <FormField>
+                <Label>Quận</Label>
+                <WardSelect
+                  allSelect
+                  name="ward"
+                  triggerStyles={{
+                    height: 50,
+                  }}
+                  onSelect={(value) => setFieldValue('ward', Number(value))}
+                />
+                <FieldError errorFor={'ward'} />
               </FormField>
               <FormField>
                 <Label>Diện tích</Label>
@@ -93,6 +106,12 @@ const Label = styled.label``;
 
 const Input = styled.input`
   padding: 16px;
+  border-radius: 8px;
+  border: 1px solid gray;
+`;
+
+const Select = styled.select`
+  height: 50px;
   border-radius: 8px;
   border: 1px solid gray;
 `;
