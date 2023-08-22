@@ -3,23 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Button from '@/components/Common/Button/Button';
+import { formatPrice } from '@/utils/format-price.util';
 
-import { WardValue } from '../../enums/ward-value.enum';
-import { WareHouseModel } from '../../models/warehouse.model';
 import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
 
-const mockWarehouseDetails: WareHouseModel = {
-  id: 1,
-  name: 'Thien Thai Ho',
-  ward: WardValue.HAI_CHAU,
-  address: '73 Ha Huy Tap, Thanh Khe, Khue My',
-  price: 45,
-  area: 100,
-  createdDate: 1,
-  doorQuantity: 3,
-  floors: 3,
-};
+// const mockWarehouseDetails: WareHouseModel = {
+//   id: 1,
+//   name: 'Thien Thai Ho',
+//   ward: WardValue.HAI_CHAU,
+//   address: '73 Ha Huy Tap, Thanh Khe, Khue My',
+//   price: 45,
+//   area: 100,
+//   createdDate: 1,
+//   doorQuantity: 3,
+//   floors: 3,
+// };
 
 export const WarehouseDetails = () => {
   const { warehouse, id, isOwner } = useWarehouseResolver();
@@ -37,9 +36,9 @@ export const WarehouseDetails = () => {
       <HeaderContainer>
         <Title>{warehouse?.name}</Title>
         <Address>
-          {warehouse?.address}. <DirectionText>See on map</DirectionText>
+          {warehouse?.address}. <DirectionText>Xem trên bản đồ</DirectionText>
         </Address>
-        <Date>Created at: {warehouse?.createdDate ? convertTimestampToDate(warehouse?.createdDate) : ''}</Date>
+        <Date>Tạo vào lúc: {warehouse?.createdDate ? convertTimestampToDate(warehouse?.createdDate) : ''}</Date>
         <br />
         {!isOwner && (
           <>
@@ -51,26 +50,26 @@ export const WarehouseDetails = () => {
             <IconActions>
               <IconActionItem>
                 <HeartIcon></HeartIcon>
-                <Text>Shortlist</Text>
+                <Text>Yêu thích</Text>
               </IconActionItem>
             </IconActions>
           </>
         )}
 
         <MetricsContainer>
-          <Price>{warehouse?.price} $ / mth</Price>
+          <Price>{formatPrice(warehouse?.price)} VND/tháng</Price>
           <OtherMetrics>
             <OtherMetricItem>
               <RulerSquareIcon color="#999" height={32} width={32}></RulerSquareIcon>
-              <Text>{warehouse?.area} sqrt</Text>
+              <Text>{warehouse?.area} nét vuông</Text>
             </OtherMetricItem>
             <OtherMetricItem>
               <ViewVerticalIcon color="#999" height={32} width={32}></ViewVerticalIcon>
-              <Text>{warehouse?.doorQuantity} doors</Text>
+              <Text>{warehouse?.doorQuantity ?? 0} cửa</Text>
             </OtherMetricItem>
             <OtherMetricItem>
               <StackIcon color="#999" height={32} width={32}></StackIcon>
-              <Text>{warehouse?.floors} floors</Text>
+              <Text>{warehouse?.floors ?? 0} tầng</Text>
             </OtherMetricItem>
           </OtherMetrics>
         </MetricsContainer>

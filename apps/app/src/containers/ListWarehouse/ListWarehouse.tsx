@@ -117,7 +117,7 @@ const ListWarehouse = () => {
   return (
     <>
       <Button>
-        <Link to={'/create'}>Create Warehouse</Link>
+        <Link to={'/create'}>Tạo kho bãi</Link>
       </Button>
       <GridContainer>
         {warehouses.map((it) => (

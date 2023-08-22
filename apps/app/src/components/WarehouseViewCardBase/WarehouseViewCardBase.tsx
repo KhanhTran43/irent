@@ -33,7 +33,7 @@ export const WarehouseViewCardBase = ({
           {[ward, address].filter(Boolean).join(' - ')}
         </CardAddress>
         {showPrice && <PriceText>$ {price}</PriceText>}
-        <CardArea>{area} sqrt</CardArea>
+        <CardArea>{area} mét vuông</CardArea>
         {showRentedProgression &&
           (rented === true ? (
             <RentedProgress endDate={warehouse.rentedInfo.endDate} rentedDate={warehouse.rentedInfo.rentedDate} />
@@ -63,7 +63,7 @@ const RentedProgress = ({ rentedDate, endDate }: RentedProgressProps) => {
       {
         <>
           <Progress max={daysLeft} value={daysPassed} />
-          <CardDaysLeft>{`${daysLeft} day${daysLeft <= 1 ? '' : 's'} left`}</CardDaysLeft>
+          <CardDaysLeft>{`Còn ${daysLeft} ngày`}</CardDaysLeft>
         </>
       }
     </>

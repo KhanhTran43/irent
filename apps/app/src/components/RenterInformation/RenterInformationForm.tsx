@@ -31,7 +31,7 @@ export const RenterInformationForm = (props: RenterInformationFormProps) => {
 
   return (
     <Container>
-      <Title>Thông tin người thuê</Title>
+      <Title>Thông tin thuê</Title>
       <Form onSubmit={handleSubmit}>
         <Body>
           <LeftSide>

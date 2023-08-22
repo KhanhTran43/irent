@@ -1,5 +1,5 @@
 export type AuthenticateResponse = {
   id: number;
-  username: string;
+  name: string;
   jwtToken: string;
 };

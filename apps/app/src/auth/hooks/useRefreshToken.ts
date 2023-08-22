@@ -9,9 +9,9 @@ export const useRefreshToken = () => {
     try {
       const response = await privateApi.post<AuthenticateResponse>(`auth/refresh-token`, {});
 
-      const { id, username, jwtToken } = response.data;
+      const { id, name, jwtToken } = response.data;
 
-      authenticate({ token: jwtToken, user: { id, username } });
+      authenticate({ token: jwtToken, user: { id, name } });
     } catch (error) {
       authenticate();
     }

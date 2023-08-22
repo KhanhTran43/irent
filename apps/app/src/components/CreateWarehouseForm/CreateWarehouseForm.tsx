@@ -22,7 +22,7 @@ export const CreateWarehouseForm = () => {
           <TextInfo>
             <LeftSide>
               <FormField>
-                <Label>Tên</Label>
+                <Label>Tên kho bãi</Label>
                 <Input defaultValue={values.name} name="name" onBlur={handleBlur} onChange={handleChange} />
                 <FieldError errorFor={'name'} />
               </FormField>

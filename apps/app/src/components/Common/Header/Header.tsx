@@ -90,10 +90,10 @@ export const Header = () => {
         <Nav>
           <UlContainerLeft>
             <Link to={'/home'}>
-              <LeftSideItem>Home</LeftSideItem>
+              <LeftSideItem>Trang chủ</LeftSideItem>
             </Link>
             <Link to={'/list'}>
-              <LeftSideItem>My Warehouses</LeftSideItem>
+              <LeftSideItem>Kho bãi của tôi</LeftSideItem>
             </Link>
           </UlContainerLeft>
         </Nav>
@@ -104,16 +104,16 @@ export const Header = () => {
             <></>
           ) : isAuthenticated === true ? (
             <UserContainer>
-              <div>{`Hi, ${user?.username}`}</div>
-              <Button onClick={handleLogout}>Log out</Button>
+              <div>{`Hi, ${user?.name}`}</div>
+              <Button onClick={handleLogout}>Đăng xuất</Button>
             </UserContainer>
           ) : (
             <UlContainerRight>
               <Link to={'/sign-up'}>
-                <RightSideItem>Sign up</RightSideItem>
+                <RightSideItem>Đăng ký</RightSideItem>
               </Link>
               <Link to={'/login'}>
-                <RightSideItem>Log in</RightSideItem>
+                <RightSideItem>Đăng nhập</RightSideItem>
               </Link>
             </UlContainerRight>
           )}

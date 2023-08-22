@@ -21,7 +21,7 @@ const Login = () => {
       .then(({ data, status }) => {
         if (status === 200) {
           const { jwtToken, id, username } = data;
-          authenticate({ token: jwtToken, user: { id, username } });
+          authenticate({ token: jwtToken, user: { id, name: username } });
           navigate('/home');
         } else {
           setLoading(false);
