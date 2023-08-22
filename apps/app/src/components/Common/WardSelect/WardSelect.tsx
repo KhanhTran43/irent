@@ -6,9 +6,13 @@ import { debounce } from 'lodash';
 import React, { ReactNode, useCallback } from 'react';
 
 import { WARD_OPTIONS } from '@/constants/ward-options.constant';
+import { WardValue } from '@/enums/ward-value.enum';
 
 type WardSelectProps = {
+  triggerStyles?: React.CSSProperties;
+  name?: string;
   onSelect?: (value: string) => void;
+  allSelect?: boolean;
 };
 
 export const WardSelect = (props: WardSelectProps) => {
@@ -19,8 +23,8 @@ export const WardSelect = (props: WardSelectProps) => {
   );
 
   return (
-    <Select.Root onValueChange={(value) => debouncedOnSelect(value)}>
-      <SelectTrigger aria-label="Food">
+    <Select.Root name={props.name} onValueChange={(value) => debouncedOnSelect(value)}>
+      <SelectTrigger aria-label="Food" style={props.triggerStyles}>
         <Select.Value placeholder="Chọn quận" />
         <SelectIcon>
           <ChevronDownIcon />
@@ -33,11 +37,13 @@ export const WardSelect = (props: WardSelectProps) => {
           </SelectScrollUpButton>
           <SelectViewport>
             <Select.Group>
-              {WARD_OPTIONS.map((it) => (
-                <SelectItem key={it.value} value={it.value}>
-                  {it.label}
-                </SelectItem>
-              ))}
+              {WARD_OPTIONS.filter((ward) => (props.allSelect ? ward.value !== WardValue.ALL.toString() : true)).map(
+                (it) => (
+                  <SelectItem key={it.value} value={it.value}>
+                    {it.label}
+                  </SelectItem>
+                ),
+              )}
             </Select.Group>
           </SelectViewport>
           <SelectScrollDownButton>
@@ -48,6 +54,7 @@ export const WardSelect = (props: WardSelectProps) => {
     </Select.Root>
   );
 };
+
 const SelectTrigger = styled(Select.SelectTrigger, {
   all: 'unset',
   display: 'inline-flex',
@@ -72,6 +79,7 @@ const SelectIcon = styled(Select.SelectIcon, {
 });
 
 const SelectContent = styled(Select.Content, {
+  zIndex: 99,
   overflow: 'hidden',
   backgroundColor: 'white',
   borderRadius: 6,

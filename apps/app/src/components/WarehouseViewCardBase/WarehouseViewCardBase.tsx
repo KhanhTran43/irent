@@ -3,8 +3,11 @@ import { SewingPinFilledIcon, TimerIcon } from '@radix-ui/react-icons';
 import moment from 'moment';
 import styled from 'styled-components';
 
+import { WardLabel } from '@/constants/ward-label.constant';
+import { WardValue } from '@/enums/ward-value.enum';
 import { WareHouseModel } from '@/models/warehouse.model';
 import { convertTimestampToDate } from '@/utils/convert-timestamp-to-date.util';
+import { formatPrice } from '@/utils/format-price.util';
 
 type WarehouseViewCardProps = {
   warehouse: WareHouseModel;
@@ -19,9 +22,7 @@ export const WarehouseViewCardBase = ({
   showPrice = false,
   onClick,
 }: WarehouseViewCardProps) => {
-  const { id, name, price, area, createdDate, address, rented } = warehouse;
-
-  const ward = 'test_ward';
+  const { id, name, price, area, createdDate, address, rented, ward } = warehouse;
 
   return (
     <CardContainer onClick={() => onClick?.(id)}>
@@ -30,9 +31,9 @@ export const WarehouseViewCardBase = ({
         <CardName>{name}</CardName>
         <CardAddress>
           <SewingPinFilledIcon />
-          {[ward, address].filter(Boolean).join(' - ')}
+          {[ward === WardValue.ALL ? undefined : WardLabel[ward], address].filter(Boolean).join(' - ')}
         </CardAddress>
-        {showPrice && <PriceText>$ {price}</PriceText>}
+        {showPrice && <PriceText>{formatPrice(price)} VND</PriceText>}
         <CardArea>{area} mét vuông</CardArea>
         {showRentedProgression &&
           (rented === true ? (
@@ -86,7 +87,7 @@ const CardContainer = styled.div`
 `;
 
 const TextContainer = styled.div`
-  padding: 20px;
+  padding: 25px 20px 20px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -125,7 +126,7 @@ const CardImage = styled.img`
 
 const CardDate = styled.span`
   position: absolute;
-  top: -5px;
+  top: 0px;
   right: 20px;
   transform: translateY(50%);
 
@@ -137,7 +138,7 @@ const CardDate = styled.span`
 `;
 
 const PriceText = styled.div`
-  width: 60px;
+  min-width: 60px;
   height: 16px;
   padding: 4px;
   background: #3891e3;

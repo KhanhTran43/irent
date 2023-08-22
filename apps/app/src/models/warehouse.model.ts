@@ -11,7 +11,7 @@ export type WareHouseModel = {
   id: number;
   userId: number;
   name: string;
-  ward?: WardValue;
+  ward: WardValue;
   address?: string;
   price: number;
   area: number;

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { PriceRangeSlider } from '@/components/Common/PriceRangeSlider';
 import { WardSelect } from '@/components/Common/WardSelect';
+import { WardValue } from '@/enums/ward-value.enum';
 
 import { api } from '../../axios/axios';
 import WarehouseViewCard from '../../components/WarehouseViewCard/WarehouseViewCard';
-import { WardValue } from '../../enums/ward-value.enum';
 import { WareHouseModel } from '../../models/warehouse.model';
 
 // const mockWareHouses: WareHouseModel[] = [
@@ -132,13 +132,32 @@ import { WareHouseModel } from '../../models/warehouse.model';
 
 const Home = () => {
   const [warehouses, setWarehouses] = useState<WareHouseModel[]>([]);
+  const warehouseRef = useRef<WareHouseModel[]>();
   const navigate = useNavigate();
+  const [priceFilter, setPriceFilter] = useState<[number, number]>();
+  const [wardFilter, setWardFilter] = useState<WardValue>();
 
   useEffect(() => {
     api.get<WareHouseModel[]>('warehouse').then(({ data }) => {
-      if (data.length !== 0) setWarehouses(data.filter((d) => !d.rented));
+      if (data.length !== 0) {
+        const notRentedWarehouse = data.filter((d) => !d.rented);
+        warehouseRef.current = notRentedWarehouse;
+        setWarehouses(warehouseRef.current);
+      }
     });
   }, []);
+
+  useEffect(() => {
+    if (warehouseRef.current) {
+      let filterResult = warehouseRef.current;
+      if (priceFilter)
+        filterResult = filterResult.filter(
+          (warehouse) => warehouse.price >= priceFilter[0] && warehouse.price <= priceFilter[1],
+        );
+      if (wardFilter) filterResult = filterResult.filter((warehouse) => warehouse.ward === wardFilter);
+      setWarehouses(filterResult);
+    }
+  }, [priceFilter, wardFilter]);
 
   // TODO: If we call api to search, this code should be removed
   // const onFilter = (value: [number, number] | string, type: 'ward' | 'price') => {
@@ -168,14 +187,8 @@ const Home = () => {
   return (
     <>
       <FilterContainer>
-        <WardSelect
-        // onSelect={(value: string) => onFilter(value, 'ward')}
-        />
-        <PriceRangeSlider
-          max={100}
-          min={1}
-          // onInput={(value: [number, number]) => onFilter(value, 'price')}
-        />
+        <WardSelect onSelect={(value: string) => setWardFilter(Number(value))} />
+        <PriceRangeSlider max={1000000} min={1} onInput={(value: [number, number]) => setPriceFilter(value)} />
       </FilterContainer>
 
       <GridContainer>

@@ -20,8 +20,8 @@ const Login = () => {
       .post<AuthenticateResponse>('auth/login', { Email: email, Password: password })
       .then(({ data, status }) => {
         if (status === 200) {
-          const { jwtToken, id, username } = data;
-          authenticate({ token: jwtToken, user: { id, name: username } });
+          const { jwtToken, id, name } = data;
+          authenticate({ token: jwtToken, user: { id, name } });
           navigate('/home');
         } else {
           setLoading(false);

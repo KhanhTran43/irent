@@ -1,42 +1,42 @@
-import { WardValue } from "../enums/ward-value.enum";
-import { SelectOption } from "../models/select-option.model";
-import { WardLabel } from "./ward-label.constant";
+import { WardValue } from '../enums/ward-value.enum';
+import { SelectOption } from '../models/select-option.model';
+import { WardLabel } from './ward-label.constant';
 
 export const WARD_OPTIONS: SelectOption[] = [
-    {
-        label: WardLabel.ALL,
-        value: WardValue.ALL
-    },
-    {
-        label: WardLabel.CAM_LE,
-        value: WardValue.CAM_LE
-    },
-    {
-        label: WardLabel.HAI_CHAU,
-        value: WardValue.HAI_CHAU
-    },
-    {
-        label: WardLabel.LIEN_CHIEU,
-        value: WardValue.LIEN_CHIEU
-    },
-    {
-        label: WardLabel.NGU_HANH_SON,
-        value: WardValue.NGU_HANH_SON
-    },
-    {
-        label: WardLabel.SON_TRA,
-        value: WardValue.SON_TRA
-    },
-    {
-        label: WardLabel.THANH_KHE,
-        value: WardValue.THANH_KHE
-    },
-    {
-        label: WardLabel.HOA_VANG,
-        value: WardValue.HOA_VANG
-    },
-    {
-        label: WardLabel.HOANG_SA,
-        value: WardValue.HOANG_SA
-    }
-]
+  {
+    label: WardLabel[WardValue.ALL],
+    value: WardValue.ALL.toString(),
+  },
+  {
+    label: WardLabel[WardValue.CAM_LE],
+    value: WardValue.CAM_LE.toString(),
+  },
+  {
+    label: WardLabel[WardValue.HAI_CHAU],
+    value: WardValue.HAI_CHAU.toString(),
+  },
+  {
+    label: WardLabel[WardValue.LIEN_CHIEU],
+    value: WardValue.LIEN_CHIEU.toString(),
+  },
+  {
+    label: WardLabel[WardValue.NGU_HANH_SON],
+    value: WardValue.NGU_HANH_SON.toString(),
+  },
+  {
+    label: WardLabel[WardValue.SON_TRA],
+    value: WardValue.SON_TRA.toString(),
+  },
+  {
+    label: WardLabel[WardValue.THANH_KHE],
+    value: WardValue.THANH_KHE.toString(),
+  },
+  {
+    label: WardLabel[WardValue.HOA_VANG],
+    value: WardValue.HOA_VANG.toString(),
+  },
+  {
+    label: WardLabel[WardValue.HOANG_SA],
+    value: WardValue.HOANG_SA.toString(),
+  },
+];

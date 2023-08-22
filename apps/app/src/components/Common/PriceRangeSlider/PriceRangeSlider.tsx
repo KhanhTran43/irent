@@ -6,6 +6,8 @@ import { useCallback } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import styled from 'styled-components';
 
+import { formatPrice } from '@/utils/format-price.util';
+
 type PriceRangeSliderProps = {
   min: number;
   max: number;
@@ -23,9 +25,9 @@ export const PriceRangeSlider = (props: PriceRangeSliderProps) => {
   return (
     <Container>
       <Title>
-        <Text>{value[0]}$</Text>
+        <Text>{formatPrice(value[0])} VND</Text>
         <Text>-</Text>
-        <Text>{value[1]}$</Text>
+        <Text>{formatPrice(value[1])} VND</Text>
       </Title>
       <RangeSlider
         defaultValue={[min, max]}
