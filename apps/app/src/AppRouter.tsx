@@ -31,7 +31,8 @@ const BackgroundWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: 1024px;
+  min-width: 1024px;
+  width: fit-content;
   margin: 0 auto 32px;
   background-color: white;
   padding: 16px;
