@@ -1,14 +1,14 @@
 import { violetDark } from '@radix-ui/colors';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 type UploadImageButtonProps = {
-  setImageUrl: (url: string) => void
-}
+  onImageUploaded?: (url: string) => void;
+};
 
 export const UploadImageButton = (props: UploadImageButtonProps) => {
-  const { setImageUrl } = props;
-  const [fileInfo, setFileInfo] = useState(null)
+  const { onImageUploaded } = props;
+  const [fileInfo, setFileInfo] = useState(null);
   const [widget, setWidget] = useState<any>(null);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export const UploadImageButton = (props: UploadImageButtonProps) => {
         if (!error && result && result.event === 'success') {
           console.log('Done! Here is the image info: ', result.info);
 
-          setImageUrl(result.info.secure_url);
+          onImageUploaded?.(result.info.secure_url);
           setFileInfo(result.info);
 
           document.getElementById('uploaded-image')!.setAttribute('src', result.info.secure_url);
@@ -45,7 +45,7 @@ export const UploadImageButton = (props: UploadImageButtonProps) => {
       >
         <label>Thêm ảnh</label>
       </UploadButton>
-      <Image $hasSrc={!!fileInfo}/>
+      <Image $hasSrc={!!fileInfo} />
     </>
   );
 };
@@ -63,10 +63,17 @@ const UploadButton = styled.div`
   }
 `;
 
-const Image = styled.img.attrs({ id: 'uploaded-image' })<{ $hasSrc?: boolean; }>`
-  width: 100%;
-  height: ${props => props.$hasSrc ? '200px' : '0xp'};
-  margin-top: 24px;
-  border-radius: 16px;
-`
+const ShowImageStyle = css`
+  height: 300px;
+  outline: 1px gray solid;
+  padding: 4px;
+`;
 
+const Image = styled.img.attrs({ id: 'uploaded-image' })<{ $hasSrc?: boolean }>`
+  ${({ $hasSrc }) => ($hasSrc ? ShowImageStyle : '')}
+  padding: 4px;
+  margin-top: 18px;
+  border-radius: 16px;
+  object-fit: cover;
+  object-position: center;
+`;

@@ -75,8 +75,8 @@ export const AppRouter = () => {
         <Route element={<RootWrapper />} path="/*">
           <Route element={<Login />} path="login" />
           <Route element={<SignUp />} path="sign-up" />
+          <Route element={<UploadImageButton onImageUploaded={noop} />} path="upload" />
           <Route element={<Login />} path="*" />
-          <Route element={<UploadImageButton setImageUrl={noop} />} path="upload" />
         </Route>
         <Route element={<MapSearchBox setValue={() => {}} />} path="/map-search-box"></Route>
         <Route element={<MapView lat={16.02298393469663} lng={108.1880701495974} />} path="/map-search-box"></Route>

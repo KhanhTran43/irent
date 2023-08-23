@@ -8,6 +8,7 @@ export type CreateWarehouseFormValuesType = {
   ward?: number;
   area?: number;
   price?: number;
+  image?: string;
 };
 
 const initialFormValues: CreateWarehouseFormValuesType = {
@@ -25,6 +26,7 @@ export const CreateWarehouseProvider = ({ children, onFormValidChange, innerRef 
     address: yup.string().label('Địa chỉ').max(200).required(),
     area: yup.number().label('Diện tích').moreThan(0).required(),
     price: yup.number().label('Giá').moreThan(0).required(),
+    image: yup.string().label('Ảnh kho bãi').required(),
   });
 
   return (

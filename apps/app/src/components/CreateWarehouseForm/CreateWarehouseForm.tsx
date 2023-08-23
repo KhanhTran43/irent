@@ -1,12 +1,15 @@
 import { Form, useFormikContext } from 'formik';
+import { useState } from 'react';
 import styled from 'styled-components';
+
+import { UploadImageButton } from '@/containers/UploadImageButton/UploadImageButton';
 
 import { FieldError } from '../Common/Form';
 import { WardSelect } from '../Common/WardSelect';
 import { CreateWarehouseFormValuesType } from './CreateWarehouseProvider';
 
 export const CreateWarehouseForm = () => {
-  const { handleSubmit, handleChange, handleBlur, values, isSubmitting, setFieldValue } =
+  const { handleSubmit, handleChange, handleBlur, values, setFieldValue } =
     useFormikContext<CreateWarehouseFormValuesType>();
 
   return (
@@ -17,7 +20,7 @@ export const CreateWarehouseForm = () => {
           <ImageInfo>
             <Text>Ảnh</Text>
             <ImageInputContainer>
-              <ImageInput></ImageInput>
+              <UploadImageButton onImageUploaded={(url) => setFieldValue('image', url)} />
             </ImageInputContainer>
           </ImageInfo>
           <TextInfo>
@@ -110,14 +113,6 @@ const Input = styled.input`
   border: 1px solid gray;
 `;
 
-const Select = styled.select`
-  height: 50px;
-  border-radius: 8px;
-  border: 1px solid gray;
-`;
-
 const ImageInputContainer = styled.div``;
-
-const ImageInput = styled.input.attrs({ type: 'file' })``;
 
 const Text = styled.span``;
