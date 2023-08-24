@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 
-import { MapContainer } from './MapContainer';
+import { AddressLocation } from '@/models/warehouse.model';
+
+import { MapContainer } from './MapSearchBoxItem';
 
 async function initMap(lat: number, lng: number) {
-  const { Map } = await google.maps.importLibrary('maps');
-  const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
-  const map = new Map(document.getElementById('map'), {
+  const { Map } = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary;
+  const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary;
+  const map = new Map(document.getElementById('map') as HTMLElement, {
     center: { lat, lng },
     zoom: 14,
     mapId: '4504f8b37365c3d0',
@@ -17,19 +19,15 @@ async function initMap(lat: number, lng: number) {
 }
 
 type MapViewProps = {
-  lat: number;
-  lng: number;
+  location?: AddressLocation;
 };
 
 export const MapView = (props: MapViewProps) => {
-  const { lat, lng } = props;
+  const { location } = props;
 
   useEffect(() => {
-    initMap(lat, lng);
-  }, [lat, lng]);
+    if (location) initMap(location?.lat, location?.lng);
+  }, [location]);
 
   return <MapContainer />;
 };
-
-
-

@@ -34,7 +34,7 @@ export const AutocompleteMap = () => {
 
   return (
     <>
-      <input id="pac-input" className="controls" type="text" placeholder="Search Box" />
+      <input className="controls" id="pac-input" placeholder="Search Box" type="text" />
       <MapContainer />
     </>
   );

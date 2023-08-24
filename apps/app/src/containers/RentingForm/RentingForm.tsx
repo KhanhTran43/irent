@@ -21,7 +21,7 @@ import {
 import { Invalid } from '@/components/Fallback';
 import { stripePromise } from '@/libs';
 import { RentedWarehouseModel } from '@/models/rented-warehouse.model';
-import { getEndDate, getStartDate } from '@/utils/rentedWarehouse.util';
+import { getEndDate, getStartDate } from '@/utils/rented-warehouse.util';
 
 import Privacy from '../../components/Privacy/Privacy';
 import {

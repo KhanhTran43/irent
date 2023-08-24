@@ -39,6 +39,7 @@ const Body = styled.div`
   padding: 16px 24px;
   border-radius: 16px;
   border: 1px solid gray;
+  max-width: 1024px;
   max-height: 300px;
   overflow-x: hidden;
   overflow-y: auto;

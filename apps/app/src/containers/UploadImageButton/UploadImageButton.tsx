@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 
 type UploadImageButtonProps = {
   onImageUploaded?: (url: string) => void;
+  url?: string;
 };
 
 export const UploadImageButton = (props: UploadImageButtonProps) => {
@@ -45,7 +46,7 @@ export const UploadImageButton = (props: UploadImageButtonProps) => {
       >
         <label>Thêm ảnh</label>
       </UploadButton>
-      <Image $hasSrc={!!fileInfo} />
+      <Image $hasSrc={!!fileInfo || !!props.url} src={props.url} />
     </>
   );
 };

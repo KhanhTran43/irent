@@ -1,22 +1,23 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { MapContainer } from './MapContainer';
+import { MapContainer, MapSearchBoxInput } from './MapSearchBoxItem';
 
-function initAutocomplete(setValueCb: (data: SearchBoxValue) => void) {
-  const map = new google.maps.Map(document.getElementById('map'), {
+function initAutocomplete(setValueCb?: (data: PlaceChangeAfterSearchPayload) => void) {
+  const map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
     center: { lat: 16.06571795654765, lng: 108.2169500477852 },
     zoom: 13,
     mapTypeId: 'roadmap',
   });
   // Create the search box and link it to the UI element.
-  const input = document.getElementById('pac-input');
+  const input = document.getElementById('pac-input') as HTMLInputElement;
   const searchBox = new google.maps.places.SearchBox(input);
 
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
   // Bias the SearchBox results towards current map's viewport.
   map.addListener('bounds_changed', () => {
-    searchBox.setBounds(map.getBounds());
+    const mapBounds = map.getBounds();
+    mapBounds && searchBox.setBounds(mapBounds);
   });
 
   let markers: any[] = [];
@@ -26,7 +27,7 @@ function initAutocomplete(setValueCb: (data: SearchBoxValue) => void) {
   searchBox.addListener('places_changed', () => {
     const places = searchBox.getPlaces();
 
-    if (places.length == 0) {
+    if (!places || places.length === 0) {
       return;
     }
 
@@ -73,10 +74,10 @@ function initAutocomplete(setValueCb: (data: SearchBoxValue) => void) {
       name = place.name;
     });
 
-    const lat = bounds.Va.lo;
-    const lng = bounds.Ia.lo;
+    const lat = (bounds as any).Va.lo;
+    const lng = (bounds as any).Ia.lo;
 
-    setValueCb({
+    setValueCb?.({
       name,
       lat,
       lng,
@@ -86,33 +87,31 @@ function initAutocomplete(setValueCb: (data: SearchBoxValue) => void) {
 }
 
 type MapSearchBoxProps = {
-  setValue: (data: SearchBoxValue) => void;
+  className?: string;
+  onPlaceChangeAfterSearch?: (data: PlaceChangeAfterSearchPayload) => void;
 };
 
-type SearchBoxValue = {
+type PlaceChangeAfterSearchPayload = {
   name: string;
   lat: number;
   lng: number;
 };
 
 export const MapSearchBox = (props: MapSearchBoxProps) => {
-  const { setValue } = props;
+  const { onPlaceChangeAfterSearch } = props;
 
   useEffect(() => {
-    initAutocomplete(setValue);
+    initAutocomplete(onPlaceChangeAfterSearch);
   }, []);
 
   return (
-    <>
-      <PacInput />
+    <MapSearchBoxRoot className={props.className}>
+      <MapSearchBoxInput />
       <MapContainer />
-    </>
+    </MapSearchBoxRoot>
   );
 };
 
-const PacInput = styled.input.attrs({ id: 'pac-input', className: 'controls', placeholder: 'Search Box' })`
-    width: 300px;
-    padding: 8px 16px;
-    border-radius: 4px;
+const MapSearchBoxRoot = styled.div`
+  height: 100%;
 `;
-

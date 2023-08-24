@@ -4,11 +4,10 @@ import { isEmpty } from 'lodash';
 import moment from 'moment';
 import styled from 'styled-components';
 
-import { WardLabel } from '@/constants/ward-label.constant';
-import { WardValue } from '@/enums/ward-value.enum';
 import { WareHouseModel } from '@/models/warehouse.model';
 import { convertTimestampToDate } from '@/utils/convert-timestamp-to-date.util';
 import { formatPrice } from '@/utils/format-price.util';
+import { resolveAddress } from '@/utils/warehouse-address.util';
 
 type WarehouseViewCardProps = {
   warehouse: WareHouseModel;
@@ -23,7 +22,8 @@ export const WarehouseViewCardBase = ({
   showPrice = false,
   onClick,
 }: WarehouseViewCardProps) => {
-  const { id, name, price, area, createdDate, address, rented, ward, image } = warehouse;
+  const { id, name, price, area, createdDate, rented, ward, image } = warehouse;
+  const address = resolveAddress(warehouse.address);
 
   return (
     <CardContainer onClick={() => onClick?.(id)}>
@@ -31,8 +31,10 @@ export const WarehouseViewCardBase = ({
       <TextContainer>
         <CardName>{name}</CardName>
         <CardAddress>
-          <SewingPinFilledIcon />
-          {[ward === WardValue.ALL ? undefined : WardLabel[ward], address].filter(Boolean).join(' - ')}
+          <CardAddressIcon>
+            <SewingPinFilledIcon />
+          </CardAddressIcon>
+          <AddressText title={address}>{address}</AddressText>
         </CardAddress>
         {showPrice && <PriceText>{formatPrice(price)} VND</PriceText>}
         <CardArea>{area} mét vuông</CardArea>
@@ -73,6 +75,7 @@ const RentedProgress = ({ rentedDate, endDate }: RentedProgressProps) => {
 };
 
 const CardContainer = styled.div`
+  width: 283px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -118,6 +121,15 @@ const CardAddress = styled.span`
   font-weight: normal;
   color: #505050;
 `;
+
+const AddressText = styled.p`
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+const CardAddressIcon = styled.div``;
 
 const CardImage = styled.img`
   width: 283px;

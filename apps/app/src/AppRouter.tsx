@@ -5,6 +5,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 
 import { PersistLogin } from './auth';
 import { Header } from './components/Common/Header';
+import { NotFound } from './components/Fallback';
 import { MapView } from './components/Map';
 import { MapSearchBox } from './components/Map/MapSearchBox';
 import { SignUp } from './containers';
@@ -77,10 +78,20 @@ export const AppRouter = () => {
           <Route element={<Login />} path="login" />
           <Route element={<SignUp />} path="sign-up" />
           <Route element={<UploadImageButton onImageUploaded={noop} />} path="upload" />
-          <Route element={<Login />} path="*" />
+          <Route element={<NotFound />} path="*" />
         </Route>
-        <Route element={<MapSearchBox setValue={() => {}} />} path="/map-search-box"></Route>
-        <Route element={<MapView lat={16.02298393469663} lng={108.1880701495974} />} path="/map-search-box"></Route>
+        <Route element={<MapSearchBox />} path="/map-search-box"></Route>
+        <Route
+          element={
+            <MapView
+              location={{
+                lat: 16.02298393469663,
+                lng: 108.1880701495974,
+              }}
+            />
+          }
+          path="/map-view"
+        ></Route>
       </Routes>
     </BrowserRouter>
   );

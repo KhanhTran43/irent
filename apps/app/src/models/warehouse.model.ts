@@ -21,3 +21,10 @@ export type WareHouseModel = {
   floors?: number;
   rented?: boolean;
 } & RentedWarehouseInfo;
+
+export type AddressModel = {
+  address: string;
+  position: AddressLocation;
+};
+
+export type AddressLocation = { lat: number; lng: number };

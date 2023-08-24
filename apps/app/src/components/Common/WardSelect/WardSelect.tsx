@@ -13,6 +13,7 @@ type WardSelectProps = {
   name?: string;
   onSelect?: (value: string) => void;
   allSelect?: boolean;
+  defaultValue?: string;
 };
 
 export const WardSelect = (props: WardSelectProps) => {
@@ -23,7 +24,11 @@ export const WardSelect = (props: WardSelectProps) => {
   );
 
   return (
-    <Select.Root name={props.name} onValueChange={(value) => debouncedOnSelect(value)}>
+    <Select.Root
+      defaultValue={props.defaultValue}
+      name={props.name}
+      onValueChange={(value) => debouncedOnSelect(value)}
+    >
       <SelectTrigger aria-label="Food" style={props.triggerStyles}>
         <Select.Value placeholder="Chọn quận" />
         <SelectIcon>

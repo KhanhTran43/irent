@@ -64,8 +64,12 @@ const CreateWarehouse = () => {
           onComplete={() => {
             const { current: formikProps } = createWarehouseFormRef;
 
-            if (user)
-              api.post(`warehouse/`, { ...formikProps?.values, createdDate: moment().format(), userId: user.id });
+            console.log(formikProps?.values);
+
+            if (user) {
+              const warehouse = { ...formikProps?.values, createdDate: moment().format(), userId: user.id };
+              api.post(`warehouse/`, warehouse);
+            }
           }}
           onStepChange={(s) => {
             currentStepRef.current = s;

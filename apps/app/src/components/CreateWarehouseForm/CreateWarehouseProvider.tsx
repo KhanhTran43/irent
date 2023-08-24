@@ -5,6 +5,7 @@ import { FormProvider, ProviderProps } from '../Common/Form';
 export type CreateWarehouseFormValuesType = {
   name?: string;
   address?: string;
+  mapSearch?: string;
   ward?: number;
   area?: number;
   price?: number;
@@ -13,6 +14,7 @@ export type CreateWarehouseFormValuesType = {
 
 const initialFormValues: CreateWarehouseFormValuesType = {
   name: '',
+  mapSearch: '',
 };
 
 export type CreateWarehouseFormProps = ProviderProps<CreateWarehouseFormValuesType>;

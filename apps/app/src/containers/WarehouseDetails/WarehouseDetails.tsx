@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Button from '@/components/Common/Button/Button';
+import { MapView } from '@/components/Map';
 import { formatPrice } from '@/utils/format-price.util';
+import { resolveAddress, resolveLocation } from '@/utils/warehouse-address.util';
 
 import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
@@ -28,16 +30,24 @@ export const WarehouseDetails = () => {
     navigate(`/warehouse/${id}/renting`);
   };
 
+  const address = resolveAddress(warehouse.address);
+  const location = resolveLocation(warehouse.address);
+
   return (
     <Container>
       <ImageContainer>
-        <Image alt="title" src="https://picsum.photos/seed/picsum/900/300" />
+        <Image alt="title" src={warehouse.image ?? 'https://picsum.photos/seed/picsum/900/300'} />
       </ImageContainer>
       <HeaderContainer>
         <Title>{warehouse?.name}</Title>
         <Address>
-          {warehouse?.address}. <DirectionText>Xem trên bản đồ</DirectionText>
+          {address}. <DirectionText>Xem trên bản đồ</DirectionText>
         </Address>
+        {!!location && (
+          <MapViewContainer>
+            <MapView location={resolveLocation(warehouse.address)} />
+          </MapViewContainer>
+        )}
         <Date>Tạo vào lúc: {warehouse?.createdDate ? convertTimestampToDate(warehouse?.createdDate) : ''}</Date>
         <br />
         {!isOwner && (
@@ -99,6 +109,10 @@ const HeaderContainer = styled.div`
 const Title = styled.h1``;
 
 const Address = styled.h4``;
+
+const MapViewContainer = styled.div`
+  height: 500px;
+`;
 
 const Date = styled.span`
   color: #999;

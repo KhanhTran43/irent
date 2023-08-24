@@ -1,16 +1,23 @@
 import { Form, useFormikContext } from 'formik';
-import { useState } from 'react';
-import styled from 'styled-components';
+import { useEffect } from 'react';
+import styled, { css } from 'styled-components';
 
 import { UploadImageButton } from '@/containers/UploadImageButton/UploadImageButton';
 
 import { FieldError } from '../Common/Form';
 import { WardSelect } from '../Common/WardSelect';
+import { MapContainer, MapSearchBoxInput, useMapWithSearchBox } from '../Map';
 import { CreateWarehouseFormValuesType } from './CreateWarehouseProvider';
 
 export const CreateWarehouseForm = () => {
   const { handleSubmit, handleChange, handleBlur, values, setFieldValue } =
     useFormikContext<CreateWarehouseFormValuesType>();
+  const { currentSearchPayload } = useMapWithSearchBox();
+
+  useEffect(() => {
+    setFieldValue('address', JSON.stringify(currentSearchPayload));
+    setFieldValue('mapSearch', currentSearchPayload?.address);
+  }, [currentSearchPayload]);
 
   return (
     <Container>
@@ -20,7 +27,7 @@ export const CreateWarehouseForm = () => {
           <ImageInfo>
             <Text>Ảnh</Text>
             <ImageInputContainer>
-              <UploadImageButton onImageUploaded={(url) => setFieldValue('image', url)} />
+              <UploadImageButton url={values.image} onImageUploaded={(url) => setFieldValue('image', url)} />
             </ImageInputContainer>
           </ImageInfo>
           <TextInfo>
@@ -32,13 +39,20 @@ export const CreateWarehouseForm = () => {
               </FormField>
               <FormField>
                 <Label>Địa chỉ</Label>
-                <Input defaultValue={values.address} name="address" onBlur={handleBlur} onChange={handleChange} />
+                <CreateWarehouseMapSearchBoxInput
+                  defaultValue={values.mapSearch}
+                  name="mapSearch"
+                  placeholder=""
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
                 <FieldError errorFor={'address'} />
               </FormField>
               <FormField>
                 <Label>Quận</Label>
                 <WardSelect
                   allSelect
+                  defaultValue={values.ward?.toString()}
                   name="ward"
                   triggerStyles={{
                     height: 50,
@@ -59,6 +73,7 @@ export const CreateWarehouseForm = () => {
                 <Input defaultValue={values.price} name="price" onBlur={handleBlur} onChange={handleChange} />
                 <FieldError errorFor={'price'} />
               </FormField>
+              <CreateFormMapContainer />
             </RightSide>
           </TextInfo>
         </Body>
@@ -107,12 +122,26 @@ const FormField = styled.div`
 
 const Label = styled.label``;
 
-const Input = styled.input`
+const inputStyles = css`
   padding: 16px;
   border-radius: 8px;
   border: 1px solid gray;
 `;
 
+const Input = styled.input`
+  ${inputStyles}
+`;
+
+const CreateWarehouseMapSearchBoxInput = styled(MapSearchBoxInput)`
+  ${inputStyles}
+  width: inherit;
+`;
+
 const ImageInputContainer = styled.div``;
 
 const Text = styled.span``;
+
+const CreateFormMapContainer = styled(MapContainer)`
+  height: 300px;
+  width: 100%;
+`;
