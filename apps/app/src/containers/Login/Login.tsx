@@ -26,7 +26,8 @@ const Login = () => {
         } else {
           setLoading(false);
         }
-      });
+      })
+      .catch(() => setLoading(false));
   };
 
   return (

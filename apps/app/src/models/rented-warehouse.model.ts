@@ -3,4 +3,5 @@ export type RentedWarehouseModel = {
   warehouseId: number;
   rentedDate: string;
   endDate: string;
+  contractBase64: string;
 };

@@ -1,10 +1,12 @@
+import { convertISOtoLocaleDateFormat } from './datetime-format.util';
+
 type User = {
   name: string;
   phone: string;
   ioc: string;
 };
 
-type PdfOptions = {
+export type PdfOptions = {
   renter: User;
   owner: User;
   warehouse: {
@@ -14,19 +16,21 @@ type PdfOptions = {
     floors: number;
     doors: number;
     area: number;
-  },
-  duration: number
+  };
+  duration: number;
+  rentedDate: string;
+  endDate: string;
 };
 
 export function generatePdf(options: PdfOptions): void {
-  const docDefinition = generateContent(options);
+  const docDefinition = generatePdfContent(options);
   (window as any).pdfMake.createPdf(docDefinition).print();
 }
 
-function generateContent(options: PdfOptions): unknown {
-    const { renter, owner, warehouse, duration } = options;
+export function generatePdfContent(options: PdfOptions) {
+  const { renter, owner, warehouse, duration, endDate, rentedDate } = options;
 
-    return {
+  return {
     watermark: { text: 'iRent', color: 'blue', opacity: 0.05, bold: false, italics: true, fontSize: 128 },
     content: [
       {
@@ -57,7 +61,7 @@ function generateContent(options: PdfOptions): unknown {
         style: 'normalText',
       },
       {
-        text: `- Số CMND: ${owner.ioc}`,
+        text: `- Số CMND/CCCD: ${owner.ioc}`,
         style: 'normalText',
       },
       {
@@ -73,7 +77,7 @@ function generateContent(options: PdfOptions): unknown {
         style: 'normalText',
       },
       {
-        text: `- Số CMND: ${renter.ioc}`,
+        text: `- Số CMND/CCCD: ${renter.ioc}`,
         style: 'normalText',
       },
       {
@@ -113,11 +117,13 @@ function generateContent(options: PdfOptions): unknown {
         style: 'boldText',
       },
       {
-        text: `1. Giá cho thuê là ${warehouse.price}VNĐ / 01 tháng`,
+        text: `1. Giá cho thuê là ${warehouse.price} VNĐ / 01 tháng`,
         style: 'normalText',
       },
       {
-        text: `2. Thời hạn thuê là ${duration} tháng`,
+        text: `2. Thời hạn thuê là ${duration} tháng. Bắt đầu từ ${convertISOtoLocaleDateFormat(
+          rentedDate,
+        )} đến ${convertISOtoLocaleDateFormat(endDate)}`,
         style: 'normalText',
       },
       {
@@ -270,4 +276,3 @@ function generateContent(options: PdfOptions): unknown {
     },
   };
 }
-

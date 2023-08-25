@@ -4,7 +4,7 @@ export type RentedWarehouseInfo =
   | { rented: false }
   | {
       rented: true;
-      rentedInfo: { rentedDate: string; endDate: string };
+      rentedInfo: { rentedDate: string; endDate: string, contractBase64: string };
     };
 
 export type WareHouseModel = {

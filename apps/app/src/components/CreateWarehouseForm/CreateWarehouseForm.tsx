@@ -109,7 +109,7 @@ const RightSide = styled.div`
   gap: 16px;
 `;
 
-const Title = styled.h1``;
+const Title = styled.h2``;
 
 const FormField = styled.div`
   display: flex;

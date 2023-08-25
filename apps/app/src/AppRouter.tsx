@@ -1,5 +1,4 @@
 import { noop } from 'lodash';
-import React from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
@@ -9,6 +8,7 @@ import { NotFound } from './components/Fallback';
 import { MapView } from './components/Map';
 import { MapSearchBox } from './components/Map/MapSearchBox';
 import { SignUp } from './containers';
+import { Contract } from './containers/Contract';
 import CreateWarehouse from './containers/CreateWarehouse/CreateWarehouse';
 import Home from './containers/Home/Home';
 import ListWarehouse from './containers/ListWarehouse/ListWarehouse';
@@ -70,6 +70,7 @@ export const AppRouter = () => {
             <Route element={<WarehouseResolver />} path="warehouse/:id/*">
               <Route element={<WarehouseDetails />} path="" />
               <Route element={<RentingForm />} path="renting" />
+              <Route element={<Contract />} path="contract"></Route>
             </Route>
             <Route element={<CreateWarehouse />} path="create" />
           </Route>
@@ -77,21 +78,24 @@ export const AppRouter = () => {
         <Route element={<RootWrapper />} path="/*">
           <Route element={<Login />} path="login" />
           <Route element={<SignUp />} path="sign-up" />
-          <Route element={<UploadImageButton onImageUploaded={noop} />} path="upload" />
           <Route element={<NotFound />} path="*" />
         </Route>
-        <Route element={<MapSearchBox />} path="/map-search-box"></Route>
-        <Route
-          element={
-            <MapView
-              location={{
-                lat: 16.02298393469663,
-                lng: 108.1880701495974,
-              }}
-            />
-          }
-          path="/map-view"
-        ></Route>
+        <Route path="dev/*">
+          <Route element={<UploadImageButton onImageUploaded={noop} />} path="upload" />
+          <Route element={<MapSearchBox />} path="map-search-box"></Route>
+          <Route
+            element={
+              <MapView
+                location={{
+                  lat: 16.02298393469663,
+                  lng: 108.1880701495974,
+                }}
+              />
+            }
+            path="map-view"
+          ></Route>
+          <Route element={<Contract />} path="contract"></Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

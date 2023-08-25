@@ -13,6 +13,7 @@ import {
   StepperNextButton,
   StepperProgression,
 } from '@/components/Common/Stepper';
+import Privacy from '@/components/Privacy/Privacy';
 
 import { api } from '../../axios/axios';
 import {
@@ -20,7 +21,6 @@ import {
   CreateWarehouseFormValuesType,
   CreateWarehouseProvider,
 } from '../../components/CreateWarehouseForm';
-import Privacy from '../../components/Privacy/Privacy';
 
 const CreateWarehouse = () => {
   const [stepperCanNext, setStepperCanNext] = useState<boolean>();
@@ -36,7 +36,7 @@ const CreateWarehouse = () => {
         content: <CreateWarehouseForm />,
       },
       {
-        label: 'Điều khoản',
+        label: 'Xem hợp đồng',
         status: 'default',
         content: <Privacy onAgreedChange={(value) => setStepperCanNext(value)} />,
       },

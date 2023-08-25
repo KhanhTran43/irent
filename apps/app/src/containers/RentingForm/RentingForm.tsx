@@ -18,12 +18,12 @@ import {
   StepperNextButton,
   StepperProgression,
 } from '@/components/Common/Stepper';
+import { ContractConfirmation } from '@/components/ContractConfirmation';
 import { Invalid } from '@/components/Fallback';
 import { stripePromise } from '@/libs';
 import { RentedWarehouseModel } from '@/models/rented-warehouse.model';
 import { getEndDate, getStartDate } from '@/utils/rented-warehouse.util';
 
-import Privacy from '../../components/Privacy/Privacy';
 import {
   RenterInformationForm,
   RenterInformationFormValuesType,
@@ -58,16 +58,20 @@ const RentingForm = () => {
     ioc: '12313',
   });
 
+  // store
   const { user } = useAuthStore();
   const {
     warehouse: { rented, id: warehouseId, price },
   } = useWarehouseResolver();
 
+  // router
   const navigate = useNavigate();
 
+  // stepper
   const [isStepperCanNext, setStepperCanNext] = useState(false);
   const renterInformationProviderRef = useRef<FormikProps<RenterInformationFormValuesType>>(null);
 
+  // stripe
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const dialogContentRef = useRef<ReactNode>(null);
   const stripeAppearance: Appearance = {
@@ -77,6 +81,9 @@ const RentingForm = () => {
       fontWeightNormal: '500',
     },
   };
+
+  // contract
+  const contractRef = useRef<string>('');
 
   const handleSaveRentedWarehouse = () => {
     const { current: formikProps } = renterInformationProviderRef;
@@ -89,6 +96,7 @@ const RentingForm = () => {
         warehouseId,
         rentedDate: getStartDate(),
         endDate: getEndDate(duration),
+        contractBase64: contractRef.current,
       };
 
       api.post(`rentedWarehouse`, rentedWarehouse).then(() => {
@@ -127,9 +135,16 @@ const RentingForm = () => {
         content: <RenterInformationForm setRenterInfo={setRenterInfo} />,
       },
       {
-        label: 'Điều khoản',
+        label: 'Xem hợp đồng',
         status: 'default',
-        content: <Privacy onAgreedChange={setStepperCanNext} />,
+        content: (
+          <ContractConfirmation
+            getContract={(contract) => {
+              contractRef.current = contract;
+            }}
+            onAgreedChange={setStepperCanNext}
+          />
+        ),
       },
       {
         label: 'Xác nhận',

@@ -1,4 +1,5 @@
 import { HeartIcon, RulerSquareIcon, StackIcon, ViewVerticalIcon } from '@radix-ui/react-icons';
+import { isEmpty } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -30,18 +31,26 @@ export const WarehouseDetails = () => {
     navigate(`/warehouse/${id}/renting`);
   };
 
+  const handleViewContract = () => {
+    navigate('contract');
+  };
+
   const address = resolveAddress(warehouse.address);
   const location = resolveLocation(warehouse.address);
 
   return (
     <Container>
       <ImageContainer>
-        <Image alt="title" src={warehouse.image ?? 'https://picsum.photos/seed/picsum/900/300'} />
+        <Image
+          alt="title"
+          src={isEmpty(warehouse.image) ? 'https://picsum.photos/seed/picsum/900/300' : warehouse.image}
+        />
       </ImageContainer>
       <HeaderContainer>
         <Title>{warehouse?.name}</Title>
         <Address>
-          {address}. <DirectionText>Xem trên bản đồ</DirectionText>
+          {address}
+          {/* <DirectionText>Xem trên bản đồ</DirectionText> */}
         </Address>
         {!!location && (
           <MapViewContainer>
@@ -54,8 +63,9 @@ export const WarehouseDetails = () => {
           <>
             <ButtonContainer>
               <Button disabled={warehouse.rented} onClick={goToRentingForm}>
-                {warehouse.rented ? 'Rented' : 'Rent'}
+                {warehouse.rented ? 'Đã thuê' : 'Thuê'}
               </Button>
+              <Button onClick={handleViewContract}>Xem hợp đồng</Button>
             </ButtonContainer>
             <IconActions>
               <IconActionItem>
@@ -174,6 +184,9 @@ const Text = styled.span``;
 const Container = styled.div``;
 
 const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
   margin-top: 24px;
   text-align: right;
   cursor: pointer;

@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+import { formatPrice } from '@/utils/format-price.util';
+import { generatePdf } from '@/utils/generate-pdf.util';
+
 import { PRIVACY } from '../../constants/privacy.constant';
 
 export type PrivacyProps = {
@@ -25,7 +28,9 @@ const Privacy = ({ defaultAgreed = false, onAgreedChange }: PrivacyProps) => {
         <Checkbox
           defaultChecked={defaultAgreed}
           id="agree-checkbox"
-          onChange={(e) => onAgreedChange?.(e.target.checked)}
+          onChange={(e) => {
+            onAgreedChange?.(e.target.checked);
+          }}
         />
         <Label htmlFor="agree-checkbox">Tôi đồng ý với điều khoản trên</Label>
       </CheckboxGroup>
