@@ -1,7 +1,6 @@
-import { isEmpty } from 'lodash';
 import { ReactNode } from 'react';
 
-import Button, { ButtonProps } from '../Button/Button';
+import { Button, ButtonProps } from '../Button/Button';
 import { useStepperContext } from './context';
 import { StepperActionType } from './models/stepper-item.model';
 

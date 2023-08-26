@@ -5,7 +5,7 @@ import { privateApi } from '@/axios/axios';
 
 import { useAuthStore } from '../../../auth';
 import { Button } from '../Button';
-import Logo from '../Logo/Logo';
+import { Logo } from '../Logo/Logo';
 
 const Container = styled.header`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.108);

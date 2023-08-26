@@ -13,7 +13,7 @@ import {
   StepperNextButton,
   StepperProgression,
 } from '@/components/Common/Stepper';
-import Privacy from '@/components/Privacy/Privacy';
+import { Privacy } from '@/components/Privacy/Privacy';
 
 import { api } from '../../axios/axios';
 import {
@@ -22,7 +22,7 @@ import {
   CreateWarehouseProvider,
 } from '../../components/CreateWarehouseForm';
 
-const CreateWarehouse = () => {
+export const CreateWarehouse = () => {
   const [stepperCanNext, setStepperCanNext] = useState<boolean>();
   const currentStepRef = useRef<number>();
   const createWarehouseFormRef = useRef<FormikProps<CreateWarehouseFormValuesType>>(null);
@@ -121,5 +121,3 @@ const Title = styled.h1``;
 const Detail = styled.span`
   color: #999;
 `;
-
-export default CreateWarehouse;

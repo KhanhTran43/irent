@@ -1,7 +1,7 @@
 import { HeartFilledIcon } from '@radix-ui/react-icons';
 import styled from 'styled-components';
 
-const Logo = () => {
+export const Logo = () => {
   return (
     <Container>
       <Icon>
@@ -29,5 +29,3 @@ const Icon = styled.div`
   top: -12px;
   left: 34px;
 `;
-
-export default Logo;

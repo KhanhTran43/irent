@@ -7,7 +7,7 @@ import { WardSelect } from '@/components/Common/WardSelect';
 import { WardValue } from '@/enums/ward-value.enum';
 
 import { api } from '../../axios/axios';
-import WarehouseViewCard from '../../components/WarehouseViewCard/WarehouseViewCard';
+import { WarehouseViewCard } from '../../components/WarehouseViewCard/WarehouseViewCard';
 import { WareHouseModel } from '../../models/warehouse.model';
 
 // const mockWareHouses: WareHouseModel[] = [
@@ -130,7 +130,7 @@ import { WareHouseModel } from '../../models/warehouse.model';
 //   },
 // ];
 
-const Home = () => {
+export const Home = () => {
   const [warehouses, setWarehouses] = useState<WareHouseModel[]>([]);
   const warehouseRef = useRef<WareHouseModel[]>();
   const navigate = useNavigate();
@@ -199,8 +199,6 @@ const Home = () => {
     </>
   );
 };
-
-export default Home;
 
 const FilterContainer = styled.div`
   display: flex;

@@ -2,11 +2,11 @@ import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { debounce } from 'lodash';
 import styled from 'styled-components';
 
-import { FilterWarehouseOptionModel } from '../../models/filter-warehouse-option.model';
+import { FilterWarehouseOptionModel } from '@/models/filter-warehouse-option.model';
 
 const InputSearch = styled.div`
   position: relative;
-  margin: auto: 0;
+  margin: auto 0;
 `;
 
 const Input = styled.input`
@@ -28,9 +28,9 @@ const Icon = styled.div`
 type SearchBarProps = {
   onSearch: (options: FilterWarehouseOptionModel) => void;
   placeholder: string;
-}
+};
 
-const SearchBar = (props: SearchBarProps) => {
+export const SearchBar = (props: SearchBarProps) => {
   const { onSearch, placeholder } = props;
   const debouncedOnSearch = debounce(onSearch, 400);
 
@@ -50,5 +50,3 @@ const SearchBar = (props: SearchBarProps) => {
     </InputSearch>
   );
 };
-
-export default SearchBar;

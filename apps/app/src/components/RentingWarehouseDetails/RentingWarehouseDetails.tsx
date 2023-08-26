@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { WareHouseModel } from '../../models/warehouse.model';
 
-const RentingWarehouseDetails = (warehouse: WareHouseModel) => {
+export const RentingWarehouseDetails = (warehouse: WareHouseModel) => {
   const { name } = warehouse;
   return (
     <Container>
@@ -23,5 +23,3 @@ const Title = styled.h1``;
 const Body = styled.div``;
 
 const Text = styled.span``;
-
-export default RentingWarehouseDetails;

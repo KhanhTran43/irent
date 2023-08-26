@@ -8,16 +8,17 @@ import { NotFound } from './components/Fallback';
 import { MapView } from './components/Map';
 import { MapSearchBox } from './components/Map/MapSearchBox';
 import { GuardRoute } from './components/Route';
-import { SignUp } from './containers';
-import { Contract } from './containers/Contract';
-import CreateWarehouse from './containers/CreateWarehouse/CreateWarehouse';
-import Home from './containers/Home/Home';
-import ListWarehouse from './containers/ListWarehouse/ListWarehouse';
-import Login from './containers/Login/Login';
-import RentingForm from './containers/RentingForm/RentingForm';
-import { UploadImageButton } from './containers/UploadImageButton/UploadImageButton';
-import { WarehouseDetails } from './containers/WarehouseDetails/WarehouseDetails';
-import { Role } from './enums/role.enum';
+import {
+  Contract,
+  CreateWarehouse,
+  Home,
+  Login,
+  MyWarehouse,
+  RentingForm,
+  SignUp,
+  UploadImageButton,
+  WarehouseDetails,
+} from './containers';
 import { AuthGuard } from './guard';
 import { WarehouseResolver } from './resolver/WarehouseResolver';
 
@@ -69,7 +70,7 @@ export const AppRouter = () => {
           <Route element={<RootWrapper />}>
             <Route element={<Home />} path="" />
             <Route element={<Home />} path="home" />
-            <Route element={<ListWarehouse />} path="list" />
+            <Route element={<MyWarehouse />} path="list" />
             <Route element={<WarehouseResolver />} path="warehouse/:id/*">
               <Route element={<WarehouseDetails />} path="" />
               <Route element={<RentingForm />} path="renting" />

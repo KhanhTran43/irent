@@ -20,6 +20,7 @@ import {
 } from '@/components/Common/Stepper';
 import { ContractConfirmation } from '@/components/ContractConfirmation';
 import { Invalid } from '@/components/Fallback';
+import { RentingConfirmation } from '@/components/RentingConfirmation';
 import { stripePromise } from '@/libs';
 import { RentedWarehouseModel } from '@/models/rented-warehouse.model';
 import { getEndDate, getStartDate } from '@/utils/rented-warehouse.util';
@@ -29,14 +30,13 @@ import {
   RenterInformationFormValuesType,
   RenterInformationProvider,
 } from '../../components/RenterInformation';
-import RentingConfirmation from '../../components/RentingConfirmation/RentingConfirmation';
 import { WardValue } from '../../enums/ward-value.enum';
 import { UserModel } from '../../models/user.model';
 import { WareHouseModel } from '../../models/warehouse.model';
 import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 import { CheckoutForm } from './CheckoutForm';
 
-const RentingForm = () => {
+export const RentingForm = () => {
   const [warehouse] = useState<WareHouseModel>({
     id: 1,
     userId: 1,
@@ -48,6 +48,7 @@ const RentingForm = () => {
     doorQuantity: 3,
     floors: 4,
     rented: false,
+    image: '',
   });
 
   const [renterInfo, setRenterInfo] = useState<UserModel>({
@@ -56,6 +57,7 @@ const RentingForm = () => {
     phoneNumber: '+84 002992922',
     email: '@gmail.com',
     ioc: '12313',
+    role: 1,
   });
 
   // store
@@ -232,5 +234,3 @@ const Detail = styled.span`
 const PaymentDialog = styled(Dialog)`
   background-color: white;
 `;
-
-export default RentingForm;

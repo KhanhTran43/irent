@@ -9,7 +9,7 @@ type RentingConfirmationProps = {
   info?: any; // replace later
 };
 
-const RentingConfirmation = (props: RentingConfirmationProps) => {
+export const RentingConfirmation = (props: RentingConfirmationProps) => {
   const { warehouse, info } = props;
 
   return (
@@ -98,5 +98,3 @@ const RenterInfoContainer = styled.div`
 const RenterInfoContainerLeft = styled.div``;
 
 const RenterInfoContainerRight = styled.div``;
-
-export default RentingConfirmation;

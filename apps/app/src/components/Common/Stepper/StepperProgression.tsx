@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { useStepperContext } from './context/StepperContext';
-import StepperItem from './StepperItem';
+import { StepperItem } from './StepperItem';
 
 export function StepperProgression() {
   const { items } = useStepperContext(StepperProgression.name);

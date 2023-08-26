@@ -20,6 +20,7 @@ type GuardRouteProps = {
 };
 
 export function GuardRoute({ guards }: GuardRouteProps) {
+  
   const resolveGuard = (): ReactNode => {
     return guards.reduce<ReactNode>(
       (prev, curr, idx, arr) => {

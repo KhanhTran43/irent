@@ -6,8 +6,6 @@ type WarehouseViewCardProps = {
   onClick: (id: number) => void;
 };
 
-const WarehouseViewCard = (props: WarehouseViewCardProps) => {
+export const WarehouseViewCard = (props: WarehouseViewCardProps) => {
   return <WarehouseViewCardBase {...props} showPrice></WarehouseViewCardBase>;
 };
-
-export default WarehouseViewCard;

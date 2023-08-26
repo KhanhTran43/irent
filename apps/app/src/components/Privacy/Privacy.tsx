@@ -1,8 +1,5 @@
 import styled from 'styled-components';
 
-import { formatPrice } from '@/utils/format-price.util';
-import { generatePdf } from '@/utils/generate-pdf.util';
-
 import { PRIVACY } from '../../constants/privacy.constant';
 
 export type PrivacyProps = {
@@ -10,7 +7,7 @@ export type PrivacyProps = {
   defaultAgreed?: boolean;
 };
 
-const Privacy = ({ defaultAgreed = false, onAgreedChange }: PrivacyProps) => {
+export const Privacy = ({ defaultAgreed = false, onAgreedChange }: PrivacyProps) => {
   return (
     <Container>
       <Title>Điều khoản và dịch vụ</Title>
@@ -69,5 +66,3 @@ const Checkbox = styled.input.attrs({ type: 'checkbox' })`
   width: 24px;
   height: 24px;
 `;
-
-export default Privacy;

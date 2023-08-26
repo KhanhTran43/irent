@@ -63,5 +63,3 @@ const StyledButton = stitches.styled('button', {
     },
   },
 });
-
-export default Button;

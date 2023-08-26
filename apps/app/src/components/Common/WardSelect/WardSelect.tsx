@@ -170,5 +170,3 @@ const scrollButtonStyles = {
 const SelectScrollUpButton = styled(Select.ScrollUpButton, scrollButtonStyles);
 
 const SelectScrollDownButton = styled(Select.ScrollDownButton, scrollButtonStyles);
-
-export default WardSelect;

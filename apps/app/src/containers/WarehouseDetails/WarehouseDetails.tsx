@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Button from '@/components/Common/Button/Button';
+import { Button } from '@/components/Common/Button/Button';
 import { MapView } from '@/components/Map';
 import { formatPrice } from '@/utils/format-price.util';
 import { resolveAddress, resolveLocation } from '@/utils/warehouse-address.util';

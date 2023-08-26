@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { StepperItemModel } from './models/stepper-item.model';
 
-const StepperItem = (item: StepperItemModel) => {
+export const StepperItem = (item: StepperItemModel) => {
   return (
     <Container>
       <Item>
@@ -70,5 +70,3 @@ const Text = styled.span`
   font-size: 12px;
   color: gray;
 `;
-
-export default StepperItem;

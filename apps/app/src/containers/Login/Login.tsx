@@ -6,7 +6,7 @@ import { useAuthStore } from '../../auth';
 import { AuthenticateResponse } from '../../auth/models';
 import { privateApi } from '../../axios/axios';
 
-const Login = () => {
+export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authenticate] = useAuthStore((state) => [state.authenticate]);
@@ -20,8 +20,8 @@ const Login = () => {
       .post<AuthenticateResponse>('auth/login', { Email: email, Password: password })
       .then(({ data, status }) => {
         if (status === 200) {
-          const { jwtToken, id, name } = data;
-          authenticate({ token: jwtToken, user: { id, name } });
+          const { jwtToken, id, name, role } = data;
+          authenticate({ token: jwtToken, user: { id, name, role } });
           navigate('/home');
         } else {
           setLoading(false);
@@ -43,8 +43,6 @@ const Login = () => {
     </FormContainer>
   );
 };
-
-export default Login;
 
 const FormContainer = styled.div`
   display: flex;
