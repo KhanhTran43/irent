@@ -2,30 +2,29 @@ import { isEmpty } from 'lodash';
 
 import { useAuthStore } from '@/auth';
 import { Unauthorized } from '@/components/Fallback';
-import { GuardRouteFunc } from '@/components/Route';
 import { Role } from '@/enums/role.enum';
 
-type AuthGuardOptions = {
+import { GuardResolveFunc, GuardResolver } from './GuardResolver';
+
+type AuthGuardProps = {
   requireRoles?: Role[];
 };
 
-export function AuthGuard(options?: AuthGuardOptions) {
+export function AuthGuard({ requireRoles }: AuthGuardProps) {
   const { isAuthenticated, user } = useAuthStore();
 
-  const resolve: GuardRouteFunc = () => {
-    let result;
-
+  const resolve: GuardResolveFunc = () => {
     if (isAuthenticated) {
-      if (options?.requireRoles === undefined || isEmpty(options.requireRoles)) result = true;
+      if (requireRoles === undefined || isEmpty(requireRoles)) return { result: true };
       else {
-        result = user?.role ? options.requireRoles.includes(user.role) : false;
+        return user?.role && requireRoles.includes(user.role)
+          ? { result: true }
+          : { result: false, fallback: <Unauthorized /> };
       }
     } else {
-      result = '/login';
+      return { result: '/login' };
     }
-
-    return result === false ? { result, fallback: <Unauthorized /> } : { result };
   };
 
-  return resolve;
+  return <GuardResolver guardFuncs={[resolve]}></GuardResolver>;
 }

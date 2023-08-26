@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-export type GuardRouteFuncReturn =
+export type GuardResolveFuncReturn =
   | {
       result: false;
       fallback: ReactNode;
@@ -13,16 +13,15 @@ export type GuardRouteFuncReturn =
       result: string;
     };
 
-export type GuardRouteFunc = (...args: any) => GuardRouteFuncReturn;
+export type GuardResolveFunc = (...args: any) => GuardResolveFuncReturn;
 
 type GuardRouteProps = {
-  guards: GuardRouteFunc[];
+  guardFuncs: GuardResolveFunc[];
 };
 
-export function GuardRoute({ guards }: GuardRouteProps) {
-  
+export function GuardResolver({ guardFuncs }: GuardRouteProps) {
   const resolveGuard = (): ReactNode => {
-    return guards.reduce<ReactNode>(
+    return guardFuncs.reduce<ReactNode>(
       (prev, curr, idx, arr) => {
         const guardResult = curr();
         const element =

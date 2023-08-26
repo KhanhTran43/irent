@@ -1,24 +1,25 @@
 import { useAuthStore } from '@/auth';
 import { Invalid } from '@/components/Fallback';
-import { GuardRouteFunc } from '@/components/Route';
 import { useWarehouseResolver } from '@/resolver/WarehouseResolver';
+
+import { GuardResolveFunc, GuardResolver } from './GuardResolver';
 
 export function RentedWarehouseGuard() {
   const { user } = useAuthStore();
   const { warehouse } = useWarehouseResolver();
 
-  const resolve: GuardRouteFunc = () => {
-    let result;
+  console.log(user, warehouse);
 
+  const resolve: GuardResolveFunc = () => {
     if (warehouse.rented) {
-      if (warehouse.userId === user?.id || warehouse.rentedInfo.renterId === user?.id) result = true;
-      else result = false;
+      if (warehouse.userId === user?.id || warehouse.rentedInfo.renterId === user?.id) return { result: true };
+      else {
+        return { result: false, fallback: <Invalid /> };
+      }
     } else {
-      result = true;
+      return { result: true };
     }
-
-    return result === false ? { result, fallback: <Invalid /> } : { result };
   };
 
-  return resolve;
+  return <GuardResolver guardFuncs={[resolve]}></GuardResolver>;
 }
