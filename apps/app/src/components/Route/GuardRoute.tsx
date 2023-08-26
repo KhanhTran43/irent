@@ -20,9 +20,8 @@ type GuardRouteProps = {
 };
 
 export function GuardRoute({ guards }: GuardRouteProps) {
-
   const resolveGuard = (): ReactNode => {
-    return guards.reverse().reduce<ReactNode>(
+    return guards.reduce<ReactNode>(
       (prev, curr, idx, arr) => {
         const guardResult = curr();
         const element =
