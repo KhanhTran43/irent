@@ -70,7 +70,6 @@ export const AppRouter = () => {
             <Route element={<WarehouseResolver />} path="warehouse/:id/*">
               <Route element={<WarehouseDetails />} path="" />
               <Route element={<RentingForm />} path="renting" />
-              <Route element={<Contract />} path="contract"></Route>
             </Route>
             <Route element={<CreateWarehouse />} path="create" />
           </Route>

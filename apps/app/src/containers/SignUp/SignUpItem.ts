@@ -11,7 +11,7 @@ export const signUpFormValidateSchema = object().shape({
   dob: date().required(),
   ioc: string().label('CCCD/CMND').integer().lengths([9, 12]).required(),
   phoneNumber: string().phone().required(),
-  role: mixed<'Renter' | 'Owner'>().required(),
+  role: number().required(),
 });
 
 export type SignUpFormValues = InferType<typeof signUpFormValidateSchema>;

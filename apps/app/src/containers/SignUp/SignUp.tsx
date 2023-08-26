@@ -16,7 +16,7 @@ const signUpFormInitialValues: SignUpFormValues = {
   dob: new Date(),
   ioc: '',
   phoneNumber: '',
-  role: 'Renter',
+  role: 1,
 };
 
 export const SignUp = () => {
@@ -30,7 +30,7 @@ export const SignUp = () => {
     api
       .post('user', values)
       .then(() => {
-        navigate('login');
+        navigate('/login');
       })
       .catch((e) => {
         if (e.response.status === 400) {
@@ -105,11 +105,11 @@ export const SignUp = () => {
 
             <RadioButtonContainer>
               <RadioButtonLabel>
-                <RadioButton defaultChecked={values.role === 'Renter'} type="radio" value="Renter" />
+                <RadioButton defaultChecked={values.role === 1} name="role" type="radio" value="1" />
                 Người thuê
               </RadioButtonLabel>
               <RadioButtonLabel>
-                <RadioButton defaultChecked={values.role === 'Owner'} type="radio" value="Owner" />
+                <RadioButton defaultChecked={values.role === 2} name="role" type="radio" value="2" />
                 Chủ kho bãi
               </RadioButtonLabel>
             </RadioButtonContainer>
