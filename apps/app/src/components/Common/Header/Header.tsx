@@ -92,9 +92,11 @@ export const Header = () => {
             <Link to={'/home'}>
               <LeftSideItem>Trang chủ</LeftSideItem>
             </Link>
-            <Link to={'/list'}>
-              <LeftSideItem>Kho bãi của tôi</LeftSideItem>
-            </Link>
+            {isAuthenticated && (
+              <Link to={'/list'}>
+                <LeftSideItem>Kho bãi của tôi</LeftSideItem>
+              </Link>
+            )}
           </UlContainerLeft>
         </Nav>
       </LeftSide>

@@ -7,6 +7,7 @@ import { Header } from './components/Common/Header';
 import { NotFound } from './components/Fallback';
 import { MapView } from './components/Map';
 import { MapSearchBox } from './components/Map/MapSearchBox';
+import { GuardRoute } from './components/Route';
 import { SignUp } from './containers';
 import { Contract } from './containers/Contract';
 import CreateWarehouse from './containers/CreateWarehouse/CreateWarehouse';
@@ -16,6 +17,8 @@ import Login from './containers/Login/Login';
 import RentingForm from './containers/RentingForm/RentingForm';
 import { UploadImageButton } from './containers/UploadImageButton/UploadImageButton';
 import { WarehouseDetails } from './containers/WarehouseDetails/WarehouseDetails';
+import { Role } from './enums/role.enum';
+import { AuthGuard } from './guard';
 import { WarehouseResolver } from './resolver/WarehouseResolver';
 
 const GlobalStyle = createGlobalStyle`
@@ -70,6 +73,9 @@ export const AppRouter = () => {
             <Route element={<WarehouseResolver />} path="warehouse/:id/*">
               <Route element={<WarehouseDetails />} path="" />
               <Route element={<RentingForm />} path="renting" />
+              <Route element={<GuardRoute guards={[AuthGuard()]} />}>
+                <Route element={<Contract />} path="contract"></Route>
+              </Route>
             </Route>
             <Route element={<CreateWarehouse />} path="create" />
           </Route>
