@@ -5,11 +5,11 @@ import { formatPrice } from '@/utils/format-price.util';
 import { generatePdfContent, PdfOptions } from '@/utils/generate-pdf.util';
 
 export const testOptions: PdfOptions = {
-  owner: { name: 'Trần Quốc Khánh', ioc: '123457', phone: '09055513099' },
+  owner: { name: 'Trần Quốc Khánh', ioc: '123457', phoneNumber: '09055513099' },
   duration: 1,
   rentedDate: moment().startOf('days').format(),
   endDate: moment().startOf('days').add(30, 'days').format(),
-  renter: { name: 'Hồ Hữu Tình', ioc: '123456', phone: '09055513095' },
+  renter: { name: 'Hồ Hữu Tình', ioc: '123456', phoneNumber: '09055513095' },
   warehouse: {
     address: 'abc',
     area: 123,

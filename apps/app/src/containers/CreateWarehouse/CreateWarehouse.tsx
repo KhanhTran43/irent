@@ -9,7 +9,7 @@ import {
   Stepper,
   StepperBackButton,
   StepperContentRenderer,
-  StepperItemModel,
+  StepperItemType,
   StepperNextButton,
   StepperProgression,
 } from '@/components/Common/Stepper';
@@ -28,7 +28,7 @@ export const CreateWarehouse = () => {
   const createWarehouseFormRef = useRef<FormikProps<CreateWarehouseFormValuesType>>(null);
   const { user } = useAuthStore();
 
-  const stepperItems = useMemo<StepperItemModel[]>(
+  const stepperItems = useMemo<StepperItemType[]>(
     () => [
       {
         label: 'Nhập thông tin',

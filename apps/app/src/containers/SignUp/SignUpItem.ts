@@ -4,8 +4,9 @@ export const signUpFormValidateSchema = object().shape({
   name: string().label('Tên').max(50).required(),
   address: string().label('Địa chỉ email').required(),
   email: string().label('Địa chỉ email').required(),
-  password: string().label('Mật khẩu').required(),
+  password: string().min(8).label('Mật khẩu').required(),
   confirmPassword: string()
+    .min(8)
     .oneOf([ref('password')], 'Mật khẩu không khớp')
     .required(),
   dob: date().required(),

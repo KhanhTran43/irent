@@ -6,12 +6,12 @@ export type WareHouseModel = {
   name: string;
   image: string;
   ward: WardValue;
-  address?: string;
+  address: string;
   price: number;
   area: number;
   createdDate: number;
-  doorQuantity?: number;
-  floors?: number;
+  doors: number;
+  floors: number;
   rented?: boolean;
 } & RentedWarehouseAttributes;
 

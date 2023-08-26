@@ -1,9 +1,8 @@
-import { produce } from 'immer';
-import { isEmpty } from 'lodash';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 
 import { Loading } from '@/components/Fallback';
+import { UserModel } from '@/models/user.model';
 
 import { useAuthStore } from '../../auth';
 import { api } from '../../axios/axios';
@@ -23,6 +22,24 @@ export function useWarehouseResolver() {
   if (context === undefined) throw Error(`WarehouseResolver: The component is not inside the resolver`);
 
   return context;
+}
+
+export function useRentingWarehouseResolver() {
+  const context = useContext(WarehouseResolverContext);
+  const { user } = useAuthStore();
+  const [renter, setRenter] = useState<UserModel>();
+  const [owner, setOwner] = useState<UserModel>();
+
+  useEffect(() => {
+    if (!!context && !!user) {
+      api.get<UserModel>(`user/${context.warehouse.userId}`).then((response) => setOwner(response.data));
+      api.get<UserModel>(`user/${user.id}`).then((response) => setRenter(response.data));
+    }
+  }, [context?.id]);
+
+  if (context === undefined) throw Error(`WarehouseResolver: The component is not inside the resolver`);
+
+  return { ...context, owner, renter };
 }
 
 export function WarehouseResolver() {

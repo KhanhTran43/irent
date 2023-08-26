@@ -2,7 +2,7 @@ import { convertISOtoLocaleDateFormat } from './datetime-format.util';
 
 type User = {
   name: string;
-  phone: string;
+  phoneNumber: string;
   ioc: string;
 };
 
@@ -12,7 +12,7 @@ export type PdfOptions = {
   warehouse: {
     name: string;
     address: string;
-    price: string;
+    price: number;
     floors: number;
     doors: number;
     area: number;
@@ -65,7 +65,7 @@ export function generatePdfContent(options: PdfOptions) {
         style: 'normalText',
       },
       {
-        text: `- Điện thoại: ${owner.phone}`,
+        text: `- Điện thoại: ${owner.phoneNumber}`,
         style: 'normalText',
       },
       {
@@ -81,7 +81,7 @@ export function generatePdfContent(options: PdfOptions) {
         style: 'normalText',
       },
       {
-        text: `- Điện thoại: ${renter.phone}`,
+        text: `- Điện thoại: ${renter.phoneNumber}`,
         style: 'normalText',
       },
       {
@@ -105,11 +105,11 @@ export function generatePdfContent(options: PdfOptions) {
         style: 'normalText',
       },
       {
-        text: `4. Tổng số tầng là ${warehouse.floors} tầng`,
+        text: `4. Tổng số tầng là ${warehouse.floors ?? 0} tầng`,
         style: 'normalText',
       },
       {
-        text: `5. Tổng số cửa là ${warehouse.doors} cửa`,
+        text: `5. Tổng số cửa là ${warehouse.doors ?? 0} cửa`,
         style: 'normalText',
       },
       {

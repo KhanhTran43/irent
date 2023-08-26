@@ -1,42 +1,35 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { CreateContract, useContract } from '@/hooks';
+import { useContract } from '@/hooks';
+import { PdfOptions } from '@/utils/generate-pdf.util';
 
 export type ContractConfirmationProps = {
+  contractOptions: PdfOptions;
   onAgreedChange?: (value: boolean) => void;
   getContract?: (contract: string) => void;
   defaultAgreed?: boolean;
 };
 
 export const ContractConfirmation = ({
+  contractOptions,
   defaultAgreed = false,
   onAgreedChange,
   getContract,
 }: ContractConfirmationProps) => {
-  const { createContract, testOptions, viewContract } = useContract();
-  //   const contractRef = useRef<CreateContract>();
+  const { createContract, viewContract } = useContract();
 
   useEffect(() => {
-    createContract({ pdfOptions: testOptions }).getBase64((data) => {
+    createContract({ pdfOptions: contractOptions }).getBase64((data) => {
       getContract?.(data);
       viewContract({ containerId: 'contract', base64: data });
     });
   }, []);
 
-  //   const handleViewContract = () => {
-  //     const { current: contract } = contractRef;
-
-  //     if (contract) {
-  //       contract.getBase64((data) => viewContract({ containerId: 'contract', base64: data }));
-  //     }
-  //   };
-
   return (
     <Container>
       <Title>Xem trước hợp đồng</Title>
       <Body>
-        {/* <Button onClick={handleViewContract}>Xem trước hợp đồng</Button> */}
         <ContractContainer />
       </Body>
       <CheckboxGroup>

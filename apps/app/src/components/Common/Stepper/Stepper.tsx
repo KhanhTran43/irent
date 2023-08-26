@@ -5,10 +5,10 @@ import { ReactNode, useEffect, useMemo } from 'react';
 import { useImmerReducer } from 'use-immer';
 
 import { StepperProvider } from './context/StepperContext';
-import { StepperAction, StepperItemModel } from './models/stepper-item.model';
+import { StepperAction, StepperItemType } from './models/stepper-item.model';
 
-type StepperProps = {
-  items: StepperItemModel[];
+export type StepperProps = {
+  items: StepperItemType[];
   children?: ReactNode;
   isCanNext?: boolean;
   defaultCanNextOnNewStep?: boolean;
@@ -19,7 +19,7 @@ type StepperProps = {
   onComplete?: () => void;
 };
 
-const getStepperItemsState = (items: StepperItemModel[]) => {
+const getStepperItemsState = (items: StepperItemType[]) => {
   const currentItem = items.find((i) => i.status === 'active');
   const currentIndex = currentItem !== undefined ? items.indexOf(currentItem) : -1;
   const isLastStep = currentIndex === items.length - 1;
@@ -46,7 +46,7 @@ export const Stepper = ({
   });
   const [isDisable, setDisable] = useControllableState<boolean>({ defaultProp: false, prop: props.isDisable });
 
-  const stepReducer = (state: StepperItemModel[], action: StepperAction) => {
+  const stepReducer = (state: StepperItemType[], action: StepperAction) => {
     function updateIndex(newIndex: number) {
       state.forEach((item, index) => {
         if (index < newIndex) item.status = 'finish';
@@ -105,7 +105,7 @@ export const Stepper = ({
 
   useEffect(() => {
     onStepChange?.(currentIndex);
-  }, [items]);
+  }, [currentIndex]);
 
   const jump = (step: number) => {
     dispatch({ type: 'jump', step });

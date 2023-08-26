@@ -1,8 +1,12 @@
+import { useFormikContext } from 'formik';
 import styled from 'styled-components';
 
+import { WardLabel } from '@/constants/ward-label.constant';
+import { WardValue } from '@/enums/ward-value.enum';
 import { WareHouseModel } from '@/models/warehouse.model';
 
 import { formatPrice } from '../../utils/format-price.util';
+import { RenterInformationFormValuesType } from '../RenterInformation';
 
 type RentingConfirmationProps = {
   warehouse: WareHouseModel;
@@ -11,6 +15,9 @@ type RentingConfirmationProps = {
 
 export const RentingConfirmation = (props: RentingConfirmationProps) => {
   const { warehouse, info } = props;
+  const {
+    values: { duration },
+  } = useFormikContext<RenterInformationFormValuesType>();
 
   return (
     <Container>
@@ -20,7 +27,7 @@ export const RentingConfirmation = (props: RentingConfirmationProps) => {
           <WarehouseContainerInfo>
             <Subtitle>Thông tin kho bãi</Subtitle>
             <ProductName>{warehouse.name}</ProductName>
-            <Address>Quận Ngũ Hành Sơn</Address>
+            <Address>Quận: {warehouse.ward === WardValue.ALL ? '' : WardLabel[warehouse.ward]}</Address>
             <WarehouseBody>
               <div>
                 <WarehouseBodyLabel>Diện tích</WarehouseBodyLabel>
@@ -29,11 +36,11 @@ export const RentingConfirmation = (props: RentingConfirmationProps) => {
                 <WarehouseBodyLabel>Giá</WarehouseBodyLabel>
               </div>
               <div>
-                <WarehouseBodyData>{warehouse.area} m2</WarehouseBodyData>
-                <WarehouseBodyData>{warehouse.doorQuantity} cửa</WarehouseBodyData>
-                <WarehouseBodyData>{warehouse.floors} tầng</WarehouseBodyData>
+                <WarehouseBodyData>{warehouse.area} mét vuông</WarehouseBodyData>
+                <WarehouseBodyData>{warehouse.doors ?? 0} cửa</WarehouseBodyData>
+                <WarehouseBodyData>{warehouse.floors ?? 0} tầng</WarehouseBodyData>
                 <WarehouseBodyData>
-                  {formatPrice(warehouse.price)} VND / th x 12 = {formatPrice(warehouse.price)} VND
+                  {formatPrice(warehouse.price)} VND / th x {duration} = {formatPrice(warehouse.price * duration)} VND
                 </WarehouseBodyData>
               </div>
             </WarehouseBody>

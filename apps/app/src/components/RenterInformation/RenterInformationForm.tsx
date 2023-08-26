@@ -2,30 +2,18 @@ import { Form, useFormikContext } from 'formik';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { UserModel } from '../../models/user.model';
 import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 import { formatPrice } from '../../utils/format-price.util';
 import { FieldError } from '../Common/Form';
 import { RenterInformationFormValuesType } from './RenterInformationProvider';
 
-export type RenterInformationFormProps = {
-  setRenterInfo: (info: UserModel) => void;
-};
+export type RenterInformationFormProps = unknown;
 
-export const RenterInformationForm = (props: RenterInformationFormProps) => {
-  const { setRenterInfo } = props;
+export const RentingInformationForm = (props: RenterInformationFormProps) => {
   const [duration, setDuration] = useState(1);
   const {
     warehouse: { price },
   } = useWarehouseResolver();
-
-  const [user] = useState<UserModel>({
-    id: 1,
-    name: 'Trần Quốc Khánh',
-    email: 'khanhbeo@gmail.com',
-    ioc: '201797784',
-    phoneNumber: '0123456789',
-  });
 
   const { handleSubmit, handleChange, handleBlur, values } = useFormikContext<RenterInformationFormValuesType>();
 

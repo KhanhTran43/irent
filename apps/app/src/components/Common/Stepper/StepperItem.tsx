@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import { StepperItemModel } from './models/stepper-item.model';
+import { StepperItemType } from './models/stepper-item.model';
 
-export const StepperItem = (item: StepperItemModel) => {
+export const StepperItem = (item: StepperItemType) => {
   return (
     <Container>
       <Item>

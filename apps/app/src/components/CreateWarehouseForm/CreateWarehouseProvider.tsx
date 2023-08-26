@@ -22,6 +22,7 @@ export type CreateWarehouseFormProps = ProviderProps<CreateWarehouseFormValuesTy
 // const CreateWarehouseForm = forwardRef<FormikProps<CreateWarehouseFormValuesType>, CreateWarehouseFormProps>(
 //   ({ children, onFormValidChange }: CreateWarehouseFormProps, ref) => {
 export const CreateWarehouseProvider = ({ children, onFormValidChange, innerRef }: CreateWarehouseFormProps) => {
+  // TODO: add floors and doors
   const CreateWareHouseSchema = yup.object().shape({
     name: yup.string().label('Tên kho bãi').min(2).max(50).required(),
     ward: yup.number().label('Quận').required(),

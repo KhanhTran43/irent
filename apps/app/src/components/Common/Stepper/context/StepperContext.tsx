@@ -1,13 +1,13 @@
 import { createContext, ReactNode, useContext, useMemo, useReducer, useState } from 'react';
 
-import { StepperItemModel } from '../models/stepper-item.model';
+import { StepperItemType } from '../models/stepper-item.model';
 
 export type StepperContextType = {
-  currentItem: StepperItemModel | undefined;
+  currentItem: StepperItemType | undefined;
   currentIndex: number;
   isFirstStep: boolean;
   isLastStep: boolean;
-  items: StepperItemModel[];
+  items: StepperItemType[];
   jump: (step: number) => void;
   next: () => void;
   back: () => void;

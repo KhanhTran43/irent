@@ -48,10 +48,7 @@ export const WarehouseDetails = () => {
       </ImageContainer>
       <HeaderContainer>
         <Title>{warehouse?.name}</Title>
-        <Address>
-          {address}
-          {/* <DirectionText>Xem trên bản đồ</DirectionText> */}
-        </Address>
+        <Address>{address}</Address>
         {!!location && (
           <MapViewContainer>
             <MapView location={resolveLocation(warehouse.address)} />
@@ -59,21 +56,21 @@ export const WarehouseDetails = () => {
         )}
         <Date>Tạo vào lúc: {warehouse?.createdDate ? convertTimestampToDate(warehouse?.createdDate) : ''}</Date>
         <br />
+        <ButtonContainer>
+          {!isOwner && (
+            <Button disabled={warehouse.rented} onClick={goToRentingForm}>
+              {warehouse.rented ? 'Đã thuê' : 'Thuê'}
+            </Button>
+          )}
+          {warehouse.rented && <Button onClick={handleViewContract}>Xem hợp đồng</Button>}
+        </ButtonContainer>
         {!isOwner && (
-          <>
-            <ButtonContainer>
-              <Button disabled={warehouse.rented} onClick={goToRentingForm}>
-                {warehouse.rented ? 'Đã thuê' : 'Thuê'}
-              </Button>
-              <Button onClick={handleViewContract}>Xem hợp đồng</Button>
-            </ButtonContainer>
-            <IconActions>
-              <IconActionItem>
-                <HeartIcon></HeartIcon>
-                <Text>Yêu thích</Text>
-              </IconActionItem>
-            </IconActions>
-          </>
+          <IconActions>
+            <IconActionItem>
+              <HeartIcon></HeartIcon>
+              <Text>Yêu thích</Text>
+            </IconActionItem>
+          </IconActions>
         )}
 
         <MetricsContainer>
@@ -85,7 +82,7 @@ export const WarehouseDetails = () => {
             </OtherMetricItem>
             <OtherMetricItem>
               <ViewVerticalIcon color="#999" height={32} width={32}></ViewVerticalIcon>
-              <Text>{warehouse?.doorQuantity ?? 0} cửa</Text>
+              <Text>{warehouse?.doors ?? 0} cửa</Text>
             </OtherMetricItem>
             <OtherMetricItem>
               <StackIcon color="#999" height={32} width={32}></StackIcon>
