@@ -90,6 +90,8 @@ export const Stepper = ({
 
   const { currentIndex, currentItem, isLastStep, isFirstStep } = useMemo(() => getStepperItemsState(items), [items]);
 
+  console.log(currentIndex, currentItem, isLastStep, isFirstStep);
+
   useEffect(() => {
     let farthestActiveIndex = findLastIndex(propItems, { status: 'active' });
     farthestActiveIndex = farthestActiveIndex === -1 ? 0 : farthestActiveIndex;

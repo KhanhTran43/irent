@@ -1,14 +1,14 @@
-import { Dialog } from '@radix-ui/react-dialog';
 import { Elements } from '@stripe/react-stripe-js';
 import { Appearance, StripeElementsOptions } from '@stripe/stripe-js';
 import { useFormikContext } from 'formik';
 import { isEmpty } from 'lodash';
-import { ReactNode, useMemo, useRef, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAuthStore } from '@/auth';
 import { api } from '@/axios/axios';
+import { Dialog } from '@/components/Common/Dialog';
 import {
   Stepper,
   StepperBackButton,
@@ -31,7 +31,7 @@ export function RentingFormContent() {
   const { user } = useAuthStore();
   const { warehouse, owner, renter } = useRentingWarehouseResolver();
 
-  const { values, validateForm } = useFormikContext<RenterInformationFormValuesType>();
+  const { values, validateForm, errors } = useFormikContext<RenterInformationFormValuesType>();
 
   const [isStepperCanNext, setStepperCanNext] = useState(false);
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
@@ -64,6 +64,12 @@ export function RentingFormContent() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (isEmpty(errors)) {
+      setStepperCanNext(true);
+    } else setStepperCanNext(false);
+  }, [errors]);
+
   const stripeAppearance: Appearance = {
     theme: 'stripe',
     variables: {
@@ -72,23 +78,26 @@ export function RentingFormContent() {
     },
   };
 
-  const stepperItems: StepperItemType[] = [
-    {
-      label: 'Nhập thông tin',
-      status: 'active',
-      content: <RentingInformationForm />,
-    },
-    {
-      label: 'Xem hợp đồng',
-      status: 'default',
-      content: contractConfirmationElement,
-    },
-    {
-      label: 'Xác nhận',
-      status: 'default',
-      content: rentingConfirmationElement,
-    },
-  ];
+  const stepperItems: StepperItemType[] = useMemo(
+    () => [
+      {
+        label: 'Nhập thông tin',
+        status: 'active',
+        content: <RentingInformationForm />,
+      },
+      {
+        label: 'Xem hợp đồng',
+        status: 'default',
+        content: contractConfirmationElement,
+      },
+      {
+        label: 'Xác nhận',
+        status: 'default',
+        content: rentingConfirmationElement,
+      },
+    ],
+    [contractConfirmationElement, rentingConfirmationElement],
+  );
 
   const handleSaveRentedWarehouse = () => {
     if (user) {
@@ -148,7 +157,7 @@ export function RentingFormContent() {
           <TextContainer>
             <Title>Thuê kho bãi</Title>
             <StepperProgression />
-            <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail>
+            {/* <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail> */}
           </TextContainer>
           <ButtonContainer>
             <StepperBackButton color="secondary" />

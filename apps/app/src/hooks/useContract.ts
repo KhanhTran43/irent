@@ -16,7 +16,7 @@ export const testOptions: PdfOptions = {
     doors: 1,
     floors: 2,
     name: 'kho bai sieu dep',
-    price: formatPrice(2000),
+    price: 2000,
   },
 };
 

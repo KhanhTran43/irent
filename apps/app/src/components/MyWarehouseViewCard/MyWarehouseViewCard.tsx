@@ -9,8 +9,9 @@ import { WarehouseViewCardBase } from '../WarehouseViewCardBase';
 type MyWarehouseViewCardProps = {
   warehouse: MyWarehouseDetailsModel;
   onClick: (id: number) => void;
+  showRentedProgression?: boolean;
 };
 
 export const MyWarehouseViewCard = (props: MyWarehouseViewCardProps) => {
-  return <WarehouseViewCardBase {...props} showRentedProgression></WarehouseViewCardBase>;
+  return <WarehouseViewCardBase {...props}></WarehouseViewCardBase>;
 };

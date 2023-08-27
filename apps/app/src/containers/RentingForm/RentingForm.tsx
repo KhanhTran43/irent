@@ -7,7 +7,7 @@ export const RentingForm = () => {
   return (
     <Container>
       <RenterInformationProvider>
-        <RentingFormContent></RentingFormContent>
+        <RentingFormContent />
       </RenterInformationProvider>
     </Container>
   );

@@ -1,4 +1,6 @@
 import { convertISOtoLocaleDateFormat } from './datetime-format.util';
+import { formatPrice } from './format-price.util';
+import { resolveAddress } from './warehouse-address.util';
 
 type User = {
   name: string;
@@ -97,7 +99,7 @@ export function generatePdfContent(options: PdfOptions) {
         style: 'normalText',
       },
       {
-        text: `2. Địa chỉ: ${warehouse.address}`,
+        text: `2. Địa chỉ: ${resolveAddress(warehouse.address)}`,
         style: 'normalText',
       },
       {
@@ -117,7 +119,7 @@ export function generatePdfContent(options: PdfOptions) {
         style: 'boldText',
       },
       {
-        text: `1. Giá cho thuê là ${warehouse.price} VNĐ / 01 tháng`,
+        text: `1. Giá cho thuê là ${formatPrice(warehouse.price)} VNĐ / 01 tháng`,
         style: 'normalText',
       },
       {

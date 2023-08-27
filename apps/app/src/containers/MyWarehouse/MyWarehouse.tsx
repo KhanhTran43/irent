@@ -6,6 +6,7 @@ import { useAuthStore } from '@/auth';
 import { Button } from '@/components/Common/Button';
 import { MyWarehouseViewCard } from '@/components/MyWarehouseViewCard/MyWarehouseViewCard';
 import { Role } from '@/enums/role.enum';
+import { useWarehouseResolver } from '@/resolver/WarehouseResolver';
 
 import { api } from '../../axios/axios';
 import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
@@ -43,7 +44,12 @@ export const MyWarehouse = () => {
       {warehouses.length > 0 ? (
         <GridContainer>
           {warehouses.map((it) => (
-            <MyWarehouseViewCard key={it.id} warehouse={it} onClick={onSelect}></MyWarehouseViewCard>
+            <MyWarehouseViewCard
+              key={it.id}
+              showRentedProgression={it.rented}
+              warehouse={it}
+              onClick={onSelect}
+            ></MyWarehouseViewCard>
           ))}
         </GridContainer>
       ) : (
