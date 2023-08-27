@@ -2,6 +2,7 @@ import { FormikProps } from 'formik';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
 import { useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAuthStore } from '@/auth';
@@ -27,6 +28,7 @@ export const CreateWarehouse = () => {
   const currentStepRef = useRef<number>();
   const createWarehouseFormRef = useRef<FormikProps<CreateWarehouseFormValuesType>>(null);
   const { user } = useAuthStore();
+  const navigate = useNavigate();
 
   const stepperItems = useMemo<StepperItemType[]>(
     () => [
@@ -35,11 +37,11 @@ export const CreateWarehouse = () => {
         status: 'active',
         content: <CreateWarehouseForm />,
       },
-      {
-        label: 'Xem hợp đồng',
-        status: 'default',
-        content: <Privacy onAgreedChange={(value) => setStepperCanNext(value)} />,
-      },
+      // {
+      //   label: 'Điều khoản',
+      //   status: 'default',
+      //   content: <Privacy onAgreedChange={(value) => setStepperCanNext(value)} />,
+      // },
     ],
     [],
   );
@@ -68,7 +70,9 @@ export const CreateWarehouse = () => {
 
             if (user) {
               const warehouse = { ...formikProps?.values, createdDate: moment().format(), userId: user.id };
-              api.post(`warehouse/`, warehouse);
+              api.post(`warehouse/`, warehouse).then(() => {
+                navigate('/list');
+              });
             }
           }}
           onStepChange={(s) => {

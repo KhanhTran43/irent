@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import { UploadImageButton } from '@/containers/UploadImageButton/UploadImageButton';
 
 import { FieldError } from '../Common/Form';
+import { SuffixInput } from '../Common/SuffixInput';
 import { WardSelect } from '../Common/WardSelect';
 import { MapContainer, MapSearchBoxInput, useMapWithSearchBox } from '../Map';
 import { CreateWarehouseFormValuesType } from './CreateWarehouseProvider';
@@ -63,14 +64,26 @@ export const CreateWarehouseForm = () => {
               </FormField>
               <FormField>
                 <Label>Diện tích</Label>
-                <Input defaultValue={values.area} name="area" onBlur={handleBlur} onChange={handleChange} />
+                <StyledSuffixInput
+                  defaultValue={values.area}
+                  name="area"
+                  suffix={'m2'}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
                 <FieldError errorFor="area" />
               </FormField>
             </LeftSide>
             <RightSide>
               <FormField>
                 <Label>Giá</Label>
-                <Input defaultValue={values.price} name="price" onBlur={handleBlur} onChange={handleChange} />
+                <StyledSuffixInput
+                  defaultValue={values.price}
+                  name="price"
+                  suffix=".000 VND"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
                 <FieldError errorFor={'price'} />
               </FormField>
               <CreateFormMapContainer />
@@ -123,14 +136,18 @@ const FormField = styled.div`
 const Label = styled.label``;
 
 const inputStyles = css`
+  height: 50px;
   padding: 16px;
   border-radius: 8px;
   border: 1px solid gray;
+  box-sizing: border-box;
 `;
 
 const Input = styled.input`
   ${inputStyles}
 `;
+
+const StyledSuffixInput = styled(SuffixInput)``;
 
 const CreateWarehouseMapSearchBoxInput = styled(MapSearchBoxInput)`
   ${inputStyles}

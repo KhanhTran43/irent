@@ -46,7 +46,9 @@ export const UploadImageButton = (props: UploadImageButtonProps) => {
       >
         <label>Thêm ảnh</label>
       </UploadButton>
-      <Image $hasSrc={!!fileInfo || !!props.url} src={props.url} />
+      <ImageContainer $hasSrc={!!fileInfo || !!props.url}>
+        <Image src={props.url} />
+      </ImageContainer>
     </>
   );
 };
@@ -66,14 +68,26 @@ const UploadButton = styled.div`
 
 const ShowImageStyle = css`
   height: 300px;
+  width: 300px;
   outline: 1px gray solid;
   padding: 4px;
+
+  img {
+    height: 300px;
+    width: 300px;
+  }
 `;
 
-const Image = styled.img.attrs({ id: 'uploaded-image' })<{ $hasSrc?: boolean }>`
+const ImageContainer = styled.div<{ $hasSrc?: boolean }>`
+  height: 0;
   ${({ $hasSrc }) => ($hasSrc ? ShowImageStyle : '')}
-  padding: 4px;
-  margin-top: 18px;
+  margin: 0 auto;
+  margin-top: 8px;
+  border-radius: 16px;
+  background-color: #a3a3a36c;
+`;
+
+const Image = styled.img.attrs({ id: 'uploaded-image' })`
   border-radius: 16px;
   object-fit: cover;
   object-position: center;
