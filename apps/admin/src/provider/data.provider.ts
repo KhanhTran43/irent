@@ -2,7 +2,7 @@
 import { stringify } from 'query-string';
 import { DataProvider, fetchUtils } from 'react-admin';
 
-const apiUrl = 'https://7477-2001-f40-95c-38e1-1850-aac0-f77b-3419.ngrok.io/evaluationForm';
+const apiUrl = 'https://localhost:7250/api';
 const httpClient = fetchUtils.fetchJson;
 
 export const dataProvider: DataProvider = {
@@ -18,7 +18,7 @@ export const dataProvider: DataProvider = {
 
     return httpClient(url).then(({ headers, json }) => ({
       data: json,
-      total: parseInt((headers.get('X-Total-Count') || '0').split('/').pop() || 0, 10),
+      total: 10,
     }));
   },
 
@@ -50,12 +50,11 @@ export const dataProvider: DataProvider = {
 
     return httpClient(url).then(({ headers, json }) => ({
       data: json,
-      total: parseInt((headers.get('content-range') || '0').split('/').pop() || 0, 10),
+      total: 10,
     }));
   },
 
   update: (resource, params) => {
-    console.log(params.data);
     return httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: 'PUT',
       body: JSON.stringify(params.data),

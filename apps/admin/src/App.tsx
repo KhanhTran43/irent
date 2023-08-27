@@ -1,15 +1,15 @@
 import './App.css';
 
-import jsonServerProvider from 'ra-data-json-server';
 import { Admin, EditGuesser, ListGuesser, Resource, ShowGuesser } from 'react-admin';
 
-import { authProvider } from './provider';
+import { authProvider, dataProvider } from './provider';
 
-const dataProvider = jsonServerProvider("http://localhost:7075/api");
+// TODO: update api
+// const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
 
 const App = () => (
   <Admin authProvider={authProvider} dataProvider={dataProvider}>
-    <Resource list={ListGuesser} name="warehouse" show={ShowGuesser}/>
+    <Resource edit={EditGuesser}  list={ListGuesser} name="warehouse" show={ShowGuesser}/>
   </Admin>
 );
 
