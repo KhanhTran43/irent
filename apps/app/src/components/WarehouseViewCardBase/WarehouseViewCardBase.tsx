@@ -64,12 +64,8 @@ const RentedProgress = ({ rentedDate, endDate }: RentedProgressProps) => {
 
   return (
     <>
-      {
-        <>
-          <Progress max={daysLeft} value={daysPassed} />
-          <CardDaysLeft>{`Còn ${daysLeft} ngày`}</CardDaysLeft>
-        </>
-      }
+      <Progress max={daysLeft} value={daysPassed} />
+      <CardDaysLeft>{`Còn ${daysLeft} ngày`}</CardDaysLeft>
     </>
   );
 };
@@ -170,5 +166,6 @@ const CardDaysLeft = styled.span`
 `;
 
 const Progress = styled.progress`
+  width: 100%;
   accent-color: ${violet.violet9};
 `;
