@@ -73,6 +73,16 @@ export const CreateWarehouseForm = () => {
                 />
                 <FieldError errorFor="area" />
               </FormField>
+              <FormField>
+                <Label>Số cửa</Label>
+                <Input defaultValue={values.doors} name="doors" onBlur={handleBlur} onChange={handleChange} />
+                <FieldError errorFor={'doors'} />
+              </FormField>
+              <FormField>
+                <Label>Số tầng</Label>
+                <Input defaultValue={values.floors} name="floors" onBlur={handleBlur} onChange={handleChange} />
+                <FieldError errorFor={'floors'} />
+              </FormField>
             </LeftSide>
             <RightSide>
               <FormField>
