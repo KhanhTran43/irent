@@ -27,7 +27,12 @@ export const RentingConfirmation = (props: RentingConfirmationProps) => {
           <WarehouseContainerInfo>
             <Subtitle>Thông tin kho bãi</Subtitle>
             <ProductName>{warehouse.name}</ProductName>
-            <Address>Quận: {warehouse.ward === WardValue.ALL ? '' : WardLabel[warehouse.ward]}</Address>
+            <Address>
+              Quận:{' '}
+              {warehouse.ward === WardValue[WardValue.ALL]
+                ? ''
+                : WardLabel[WardValue[warehouse.ward as keyof typeof WardValue]]}
+            </Address>
             <WarehouseBody>
               <div>
                 <WarehouseBodyLabel>Diện tích</WarehouseBodyLabel>

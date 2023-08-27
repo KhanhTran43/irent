@@ -154,7 +154,10 @@ export const Home = () => {
         filterResult = filterResult.filter(
           (warehouse) => warehouse.price >= priceFilter[0] && warehouse.price <= priceFilter[1],
         );
-      if (wardFilter) filterResult = filterResult.filter((warehouse) => warehouse.ward === wardFilter);
+      if (wardFilter)
+        filterResult = filterResult.filter(
+          (warehouse) => WardValue[warehouse.ward as keyof typeof WardValue] === wardFilter,
+        );
       setWarehouses(filterResult);
     }
   }, [priceFilter, wardFilter]);

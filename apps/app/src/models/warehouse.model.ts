@@ -1,11 +1,9 @@
-import { WardValue } from '../enums/ward-value.enum';
-
 export type WareHouseModel = {
   id: number;
   userId: number;
   name: string;
   image: string;
-  ward: WardValue;
+  ward: string;
   address: string;
   price: number;
   area: number;

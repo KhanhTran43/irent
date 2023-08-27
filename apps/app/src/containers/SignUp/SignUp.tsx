@@ -27,6 +27,7 @@ export const SignUp = () => {
     { setSubmitting, setErrors }: FormikHelpers<SignUpFormValues>,
   ) => {
     setSubmitting(true);
+
     api
       .post('user', values)
       .then(() => {
@@ -105,11 +106,23 @@ export const SignUp = () => {
 
             <RadioButtonContainer>
               <RadioButtonLabel>
-                <RadioButton defaultChecked={values.role === 1} name="role" type="radio" value="1" />
+                <RadioButton
+                  defaultChecked={values.role === 1}
+                  name="role"
+                  type="radio"
+                  value={1}
+                  onChange={handleChange}
+                />
                 Người thuê
               </RadioButtonLabel>
               <RadioButtonLabel>
-                <RadioButton defaultChecked={values.role === 2} name="role" type="radio" value="2" />
+                <RadioButton
+                  defaultChecked={values.role === 2}
+                  name="role"
+                  type="radio"
+                  value={2}
+                  onChange={handleChange}
+                />
                 Chủ kho bãi
               </RadioButtonLabel>
             </RadioButtonContainer>

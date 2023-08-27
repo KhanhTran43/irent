@@ -1,8 +1,6 @@
-import { Role } from '@/enums/role.enum';
-
 export type AuthenticateResponse = {
   id: number;
   name: string;
-  role: Role;
+  role: string;
   jwtToken: string;
 };
