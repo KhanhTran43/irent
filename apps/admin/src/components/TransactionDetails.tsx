@@ -24,7 +24,7 @@ export const TransactionDetails = () => {
         <TextField label="Tên kho bãi" source="name" />
         <TextField label="Chủ sở hữu" source="userId" />
         <TextField label="Người thuê" source="rentedInfo.renterId" />
-        <NumberField label="Giá (VND)" source="price" />
+        <NumberField label="Giá (.000 VND)" source="price" />
         <DateField label="Ngày thuê" source="rentedInfo.rentedDate" />
         <DateField label="Ngày kết thúc" source="rentedInfo.endDate" />
         <DateField label="Thời gian tạo" showTime={true} source="createdDate" />
@@ -42,7 +42,7 @@ export const TransactionDetails = () => {
               }}
             >
               <embed
-                src={`data:application/pdf;base64,${record ? record.rentedInfo.contractBase64 : ''}`}
+                src={`data:application/pdf;base64,${record.rentedInfo ? record.rentedInfo.contractBase64 : ''}`}
                 style={{
                   height: '100%',
                   width: 'calc(100% - 2*24px)',
