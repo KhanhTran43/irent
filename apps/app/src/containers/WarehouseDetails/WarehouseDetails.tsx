@@ -3,8 +3,10 @@ import { isEmpty } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useAuthStore } from '@/auth';
 import { Button } from '@/components/Common/Button/Button';
 import { MapView } from '@/components/Map';
+import { Role } from '@/enums/role.enum';
 import { formatPrice } from '@/utils/format-price.util';
 import { resolveAddress, resolveLocation } from '@/utils/warehouse-address.util';
 
@@ -25,6 +27,9 @@ import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.ut
 
 export const WarehouseDetails = () => {
   const { warehouse, id, isOwner } = useWarehouseResolver();
+  const { user } = useAuthStore(({ user }) => ({
+    user,
+  }));
   const navigate = useNavigate();
 
   const goToRentingForm = () => {
@@ -57,7 +62,7 @@ export const WarehouseDetails = () => {
         <Date>Tạo vào lúc: {warehouse?.createdDate ? convertTimestampToDate(warehouse?.createdDate) : ''}</Date>
         <br />
         <ButtonContainer>
-          {!isOwner && (
+          {user?.role === Role.Renter && (
             <Button disabled={warehouse.rented} onClick={goToRentingForm}>
               {warehouse.rented ? 'Đã thuê' : 'Thuê'}
             </Button>

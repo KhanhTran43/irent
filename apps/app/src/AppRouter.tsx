@@ -76,8 +76,10 @@ export const AppRouter = () => {
             <Route element={<WarehouseResolver />} path="warehouse/:id/*">
               <Route element={<RentedWarehouseGuard />}>
                 <Route element={<WarehouseDetails />} path="" />
-                <Route element={<RentingForm />} path="renting" />
-                <Route element={<Contract />} path="contract"></Route>
+                <Route element={<AuthGuard />}>
+                  <Route element={<RentingForm />} path="renting" />
+                  <Route element={<Contract />} path="contract"></Route>
+                </Route>
               </Route>
             </Route>
             <Route element={<AuthGuard requireRoles={[Role.Owner]} />}>
