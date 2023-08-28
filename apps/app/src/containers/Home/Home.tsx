@@ -191,7 +191,7 @@ export const Home = () => {
     <>
       <FilterContainer>
         <WardSelect onSelect={(value: string) => setWardFilter(Number(value))} />
-        <PriceRangeSlider max={1000000} min={1} onInput={(value: [number, number]) => setPriceFilter(value)} />
+        <PriceRangeSlider max={50000} min={100} onInput={(value: [number, number]) => setPriceFilter(value)} />
       </FilterContainer>
 
       <GridContainer>

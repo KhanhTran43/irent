@@ -9,6 +9,7 @@ import { privateApi } from '../../axios/axios';
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [authenticate] = useAuthStore((state) => [state.authenticate]);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -27,7 +28,10 @@ export const Login = () => {
           setLoading(false);
         }
       })
-      .catch(() => setLoading(false));
+      .catch((e) => {
+        setError('Đăng nhập thất bại, vui lòng thử lại.');
+        setLoading(false);
+      });
   };
 
   return (
@@ -36,6 +40,12 @@ export const Login = () => {
       <Form onSubmit={handleSubmit}>
         <Input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <Input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+
+        {error && (
+          <Error>
+            <p>{error}</p>
+          </Error>
+        )}
         <Button disabled={isLoading} type="submit">
           Login
         </Button>
@@ -71,4 +81,15 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+`;
+
+const Error = styled.div`
+  margin-top: 5px;
+  color: red;
+  font-style: italic;
+  font-size: 0.8rem;
+
+  p {
+    margin: 0;
+  }
 `;
