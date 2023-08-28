@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev:app": "nx serve app & cd apps/app/src/server && npx ts-node index.ts",
+    "dev:admin": "nx serve admin",
     "format": "nx format:write",
     "lint:app": "nx lint app",
     "lint:admin": "nx lint admin",

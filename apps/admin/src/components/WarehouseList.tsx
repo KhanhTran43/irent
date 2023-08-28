@@ -2,7 +2,7 @@ import { BooleanField, Datagrid, List, TextField } from 'react-admin';
 
 export const WarehouseList = () => (
   <List>
-    <Datagrid rowClick="edit">
+    <Datagrid rowClick="show">
       <TextField source="id" />
       <TextField source="name" label="Tên" />
       <TextField source="address" label="Địa chỉ" />

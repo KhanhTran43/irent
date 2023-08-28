@@ -1,15 +1,15 @@
 import './App.css';
 
-import { Admin, EditGuesser, Resource, ShowGuesser } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
 
+import { TransactionDetails } from './components/TransactionDetails';
 import { WarehouseList } from './components/WarehouseList';
 import { authProvider, dataProvider } from './provider';
 
 const App = () => (
   <Admin authProvider={authProvider} dataProvider={dataProvider}>
-    <Resource edit={EditGuesser}  list={WarehouseList} name="warehouse" show={ShowGuesser}/>
+    <Resource list={WarehouseList} name="warehouse" show={TransactionDetails} />
   </Admin>
 );
 
 export default App;
-
