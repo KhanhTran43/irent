@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import { UploadImageButton } from '@/containers/UploadImageButton/UploadImageButton';
+import { getWardFromMapWard } from '@/utils/get-ward-from-map.util';
 
 import { FieldError } from '../Common/Form';
 import { SuffixInput } from '../Common/SuffixInput';
@@ -18,6 +19,7 @@ export const CreateWarehouseForm = () => {
   useEffect(() => {
     setFieldValue('address', JSON.stringify(currentSearchPayload));
     setFieldValue('mapSearch', currentSearchPayload?.address);
+    if (currentSearchPayload?.ward) setFieldValue('ward', getWardFromMapWard(currentSearchPayload.ward));
   }, [currentSearchPayload]);
 
   return (
@@ -53,11 +55,11 @@ export const CreateWarehouseForm = () => {
                 <Label>Quận</Label>
                 <WardSelect
                   allSelect
-                  defaultValue={values.ward?.toString()}
                   name="ward"
                   triggerStyles={{
                     height: 50,
                   }}
+                  value={values.ward?.toString()}
                   onSelect={(value) => setFieldValue('ward', Number(value))}
                 />
                 <FieldError errorFor={'ward'} />

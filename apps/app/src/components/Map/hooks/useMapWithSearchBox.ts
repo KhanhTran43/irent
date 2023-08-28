@@ -86,7 +86,11 @@ function initAutocomplete({ onPlaceChangeAfterSearch, ...otherOptions }: InitAut
         bounds.extend(place.geometry.location);
       }
 
+      console.log(place);
+
       address = place.formatted_address;
+
+      const ward = place.address_components?.find((ac) => ac.types.includes('administrative_area_level_2'))?.long_name;
 
       if (address) searchBoxElement.value = address;
 
@@ -99,6 +103,7 @@ function initAutocomplete({ onPlaceChangeAfterSearch, ...otherOptions }: InitAut
           lat,
           lng,
         },
+        ward,
       });
     });
     map.fitBounds(bounds);
@@ -113,6 +118,7 @@ type MapWithSearchBoxOptions = {
 type PlaceChangeAfterSearchPayload = {
   address?: string;
   position: AddressLocation;
+  ward?: string;
 };
 
 export const useMapWithSearchBox = (options?: MapWithSearchBoxOptions) => {

@@ -14,6 +14,7 @@ type WardSelectProps = {
   onSelect?: (value: string) => void;
   allSelect?: boolean;
   defaultValue?: string;
+  value?: string;
 };
 
 export const WardSelect = (props: WardSelectProps) => {
@@ -27,6 +28,7 @@ export const WardSelect = (props: WardSelectProps) => {
     <Select.Root
       defaultValue={props.defaultValue}
       name={props.name}
+      value={props.value}
       onValueChange={(value) => debouncedOnSelect(value)}
     >
       <SelectTrigger aria-label="Food" style={props.triggerStyles}>

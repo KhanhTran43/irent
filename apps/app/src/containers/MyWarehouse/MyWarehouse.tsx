@@ -37,9 +37,9 @@ export const MyWarehouse = () => {
   return (
     <>
       {user?.role === Role.Owner && (
-        <Button>
-          <Link to={'/create'}>Tạo kho bãi</Link>
-        </Button>
+        <Link to="/create">
+          <Button>Tạo kho bãi</Button>
+        </Link>
       )}
       {warehouses.length > 0 ? (
         <GridContainer>
