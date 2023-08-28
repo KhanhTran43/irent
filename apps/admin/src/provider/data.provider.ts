@@ -18,7 +18,7 @@ export const dataProvider: DataProvider = {
 
     return httpClient(url).then(({ headers, json }) => ({
       data: json,
-      total: 10,
+      total: json.length,
     }));
   },
 
@@ -62,7 +62,7 @@ export const dataProvider: DataProvider = {
         ['Content-Type', 'application/json'],
         ['Access-Control-Allow-Origin', '*'],
         ['Access-Control-Allow-Methods', '*'],
-        ['Origin', 'http://localhost:4200']
+        ['Origin', 'http://localhost:4200'],
       ]),
     }).then(({ json }) => ({ data: json }));
   },
@@ -99,4 +99,3 @@ export const dataProvider: DataProvider = {
     }).then(({ json }) => ({ data: json }));
   },
 };
-
