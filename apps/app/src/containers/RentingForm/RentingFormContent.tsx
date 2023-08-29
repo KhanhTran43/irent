@@ -141,7 +141,7 @@ export function RentingFormContent() {
         defaultCanNextOnNewStep={false}
         isCanNext={isStepperCanNext}
         items={stepperItems}
-        // onCanNextChange={setStepperCanNext}
+        onCanNextChange={setStepperCanNext}
         onComplete={() => handleOnPayment(warehouse.price)}
         onStepChange={(step) => {
           if (step === 0) {
