@@ -7,6 +7,7 @@ import { Header } from './components/Common/Header';
 import { NotFound } from './components/Fallback';
 import { MapView } from './components/Map';
 import { MapSearchBox } from './components/Map/MapSearchBox';
+import { RouteDirection } from './components/RouteDirection';
 import {
   Contract,
   CreateWarehouse,
@@ -107,8 +108,18 @@ export const AppRouter = () => {
             path="map-view"
           ></Route>
           <Route element={<Contract />} path="contract"></Route>
+          <Route
+            element={
+              <RouteDirection
+                from='360 Đ. Lê Duẩn, Tân Chính, Thanh Khê, Đà Nẵng 550000, Vietnam'
+                to='Thanh Lương 11, Hòa Xuân, Cẩm Lệ, Đà Nẵng 550000, Vietnam'
+              />
+            }
+            path="direction"
+          ></Route>
         </Route>
       </Routes>
     </BrowserRouter>
   );
 };
+
