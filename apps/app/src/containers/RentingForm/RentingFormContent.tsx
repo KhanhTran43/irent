@@ -26,6 +26,7 @@ import { useRentingWarehouseResolver } from '@/resolver/WarehouseResolver';
 import { getEndDate, getStartDate } from '@/utils/rented-warehouse.util';
 
 import { CheckoutForm } from './CheckoutForm';
+import { CustomerCheckoutForm } from './CustomerCheckoutForm';
 
 export function RentingFormContent() {
   const { user } = useAuthStore();
@@ -119,15 +120,20 @@ export function RentingFormContent() {
 
   const handleOnPayment = (price: number) => {
     const amount = price * values.duration;
-    api.post<{ clientSecret: string }>('/payment', { amount }).then((response) => {
+    api.post<{ clientSecret: string }>('/payment/fee', { amount, ownerId: owner?.id, userId: user?.id }).then((response) => {
+      const clientSecret = response.data.clientSecret
       const options: StripeElementsOptions = {
-        clientSecret: response.data.clientSecret,
+        clientSecret,
         appearance: stripeAppearance,
       };
 
       dialogContentRef.current = (
         <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm total={amount} onSucceed={handleSaveRentedWarehouse} />
+          <CustomerCheckoutForm
+            clientSecret={clientSecret}
+            total={amount}
+          // onSucceed={handleSaveRentedWarehouse}
+          />
         </Elements>
       );
 

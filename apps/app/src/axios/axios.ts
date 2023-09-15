@@ -9,7 +9,6 @@ const defaultConfigs: CreateAxiosDefaults = {
   paramsSerializer: function (params) {
     return qs.stringify(params);
   },
-  timeout: 5000,
 };
 
 export const api = axios.create({
@@ -27,7 +26,6 @@ export const imageApi = axios.create({
   paramsSerializer: function (params) {
     return qs.stringify(params);
   },
-  timeout: 5000,
 });
 
 privateApi.interceptors.request.use(
@@ -40,4 +38,3 @@ privateApi.interceptors.request.use(
   },
   (error) => Promise.reject(error),
 );
-

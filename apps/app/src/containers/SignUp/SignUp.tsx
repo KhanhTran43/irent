@@ -1,9 +1,17 @@
+import {
+  CardElement as StripeCardElement,
+  Elements as StripeElements,
+  useElements,
+  useStripe
+} from '@stripe/react-stripe-js';
 import { FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { api } from '@/axios/axios';
 import { FieldError, FormProvider } from '@/components/Common/Form';
+import { Spinner } from '@/components/Common/Spinner';
+import { stripePromise } from '@/libs';
 
 import { signUpFormValidateSchema, SignUpFormValues } from './SignUpItem';
 
@@ -20,22 +28,52 @@ const signUpFormInitialValues: SignUpFormValues = {
 };
 
 export const SignUp = () => {
-  const navigate = useNavigate();
+  return (
+    <StripeElements stripe={stripePromise}>
+      <SignUpForm />
+    </StripeElements>
+  );
+};
 
-  const handleOnFormSubmit = (
+export const SignUpForm = () => {
+  const navigate = useNavigate();
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleOnFormSubmit = async (
     values: SignUpFormValues,
-    { setSubmitting, setErrors }: FormikHelpers<SignUpFormValues>,
+    { setSubmitting, setFieldError }: FormikHelpers<SignUpFormValues>,
   ) => {
     setSubmitting(true);
 
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const cardElement = elements.getElement(StripeCardElement);
+
+    if (!cardElement) return;
+
+    const { paymentMethod, error } = await stripe.createPaymentMethod({ element: cardElement });
+
+    if (error) {
+      setFieldError('card', error.message);
+      setSubmitting(false);
+      return;
+    }
+
+    const { data } = await api.post<any>(`payment/account/${paymentMethod.id}`);
+
+
+    // TODO: update the stripe account ids after creating successfully
     api
-      .post('user', values)
+      .post('user', { ...values, ...data })
       .then(() => {
         navigate('/login');
       })
       .catch((e) => {
         if (e.response.status === 400) {
-          if (e.response.data.errors.Email !== undefined) setErrors({ email: 'Email đã tồn tại' });
+          if (e.response.data.errors.Email !== undefined) setFieldError('email', 'Email đã tồn tại');
         }
         setSubmitting(false);
       });
@@ -46,8 +84,11 @@ export const SignUp = () => {
       initialValues={signUpFormInitialValues}
       validationSchema={signUpFormValidateSchema}
       onSubmit={handleOnFormSubmit}
+      onFormValidChange={(payload) => {
+        console.log(payload);
+      }}
     >
-      {({ values, handleSubmit, handleBlur, handleChange, setErrors }) => (
+      {({ values, handleSubmit, handleBlur, handleChange, isSubmitting }) => (
         <FormContainer>
           <h2>Đăng ký</h2>
           <Form onSubmit={handleSubmit}>
@@ -103,6 +144,13 @@ export const SignUp = () => {
               />
               <FieldError errorFor="confirmPassword"></FieldError>
             </Field>
+            <Label htmlFor="card">Thông tin thẻ: </Label>
+            <Field>
+              <ElementContainer>
+                <StripeCardElement id="card" />
+              </ElementContainer>
+              <FieldError errorFor="card"></FieldError>
+            </Field>
 
             <RadioButtonContainer>
               <RadioButtonLabel>
@@ -126,7 +174,7 @@ export const SignUp = () => {
                 Chủ kho bãi
               </RadioButtonLabel>
             </RadioButtonContainer>
-            <Button type="submit">Đăng ký</Button>
+            <Button disabled={isSubmitting} type="submit">{isSubmitting ? <Spinner innerSize={20} margin={0} outerSize={25} /> : "Đăng ký"}</Button>
           </Form>
         </FormContainer>
       )}
@@ -180,10 +228,23 @@ const RadioButtonLabel = styled.label`
 const RadioButton = styled.input``;
 
 const Button = styled.button`
-  padding: 10px 20px;
+  height: 36px;
+  min-width: 90px;
   background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 5px;
+  box-sizing: border-box;
   cursor: pointer;
+`;
+
+const ElementContainer = styled.div`
+  .StripeElement {
+    padding: 10px;
+    outline: 1px solid gray;
+    border-radius: 5px;
+  }
+  .StripeElement--focus {
+    outline: 2px solid black;
+  }
 `;
