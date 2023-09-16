@@ -2,14 +2,17 @@ import { violetDark } from '@radix-ui/colors';
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
+import { CarouselImageModel } from '@/models/carousel-image.model';
+
 type UploadImageButtonProps = {
-  onImageUploaded?: (url: string) => void;
-  url?: string;
+  onImageUploaded?: (url: CarouselImageModel) => void;
+  urls?: CarouselImageModel[];
 };
 
 export const UploadImageButton = (props: UploadImageButtonProps) => {
-  const { onImageUploaded } = props;
-  const [fileInfo, setFileInfo] = useState(null);
+  const { onImageUploaded, urls = [] } = props;
+  const [files, setFiles] = useState<CarouselImageModel[]>(urls);
+  const [carouselImage, setCarouselImage] = useState<CarouselImageModel | null>(null);
   const [widget, setWidget] = useState<any>(null);
 
   useEffect(() => {
@@ -22,16 +25,26 @@ export const UploadImageButton = (props: UploadImageButtonProps) => {
         if (!error && result && result.event === 'success') {
           console.log('Done! Here is the image info: ', result.info);
 
-          onImageUploaded?.(result.info.secure_url);
-          setFileInfo(result.info);
+          const { thumbnail_url: thumbnailUrl, secure_url: url } = result.info;
+          const carouselImage = {
+            originalUrl: url,
+            thumbnailUrl: thumbnailUrl,
+          };
 
-          document.getElementById('uploaded-image')!.setAttribute('src', result.info.secure_url);
+          setCarouselImage(carouselImage);
+          onImageUploaded?.(carouselImage);
         }
       },
     );
 
     setWidget(widget);
   }, []);
+
+  useEffect(() => {
+    if (carouselImage) {
+      setFiles([...files, carouselImage]);
+    }
+  }, [carouselImage])
 
   return (
     <>
@@ -46,8 +59,10 @@ export const UploadImageButton = (props: UploadImageButtonProps) => {
       >
         <label>Thêm ảnh</label>
       </UploadButton>
-      <ImageContainer $hasSrc={!!fileInfo || !!props.url}>
-        <Image src={props.url} />
+      <ImageContainer $hasSrc={!!files.length}>
+        {
+          files.length ? files.map(it => <Image key={it.originalUrl} src={it.originalUrl}/>) : <></>
+        }
       </ImageContainer>
     </>
   );
@@ -68,13 +83,11 @@ const UploadButton = styled.div`
 
 const ShowImageStyle = css`
   height: 300px;
-  width: 300px;
-  outline: 1px gray solid;
   padding: 4px;
 
   img {
-    height: 300px;
-    width: 300px;
+    height: 120px;
+    width: 120px;
   }
 `;
 
@@ -84,7 +97,8 @@ const ImageContainer = styled.div<{ $hasSrc?: boolean }>`
   margin: 0 auto;
   margin-top: 8px;
   border-radius: 16px;
-  background-color: #a3a3a36c;
+  display: flex;
+  gap: 8px;
 `;
 
 const Image = styled.img.attrs({ id: 'uploaded-image' })`

@@ -3,6 +3,7 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import { PersistLogin } from './auth';
+import { Carousel } from './components/Carousel';
 import { Header } from './components/Common/Header';
 import { NotFound } from './components/Fallback';
 import { ListComment } from './components/Feedback';
@@ -23,6 +24,7 @@ import {
 import { Role } from './enums/role.enum';
 import { AuthGuard, RentedWarehouseGuard } from './guard';
 import { WarehouseResolver } from './resolver/WarehouseResolver';
+import { UploadMultipleImages } from './components/UploadMultipleImages/UploadMultipleImages';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -119,6 +121,8 @@ export const AppRouter = () => {
             path="direction"
           ></Route>
           <Route element={<ListComment/>} path='comment'></Route>
+          <Route element={<Carousel url={[]}/>} path='carousel'></Route>
+          <Route element={<UploadMultipleImages/>} path='upload-images'></Route>
         </Route>
       </Routes>
     </BrowserRouter>
