@@ -7,7 +7,7 @@ export const useRefreshToken = () => {
 
   const refresh = async () => {
     try {
-      const response = await privateApi.post<AuthenticateResponse>(`auth/refresh-token`, {});
+      const response = await privateApi.post<AuthenticateResponse>(`auth/refresh-token`, {}, { timeout: 5000 });
 
       const { id, name, role, jwtToken } = response.data;
 
