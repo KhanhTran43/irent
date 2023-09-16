@@ -3,6 +3,5 @@ export type CommentModel = {
   senderName: string;
   content: string;
   timestamp: number;
-  warehouseId: number;
+  warehouseId?: number;
 };
-

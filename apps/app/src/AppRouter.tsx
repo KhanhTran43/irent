@@ -50,7 +50,6 @@ const RootWrapper = () => {
   return (
     <>
       <Header></Header>
-      <GlobalStyle />
       <BackgroundWrapper>
         <Wrapper>
           <Outlet />
@@ -66,62 +65,64 @@ export const AppRouter = () => {
   return (
     // TODO: RequireAuthResolver for auth user data,
     // not using AuthStore for getting user anymore (user in store can be undefined)
-    <BrowserRouter>
-      <Routes>
-        <Route element={<PersistLogin />} path="/*">
-          <Route element={<RootWrapper />}>
-            <Route element={<Home />} path="" />
-            <Route element={<Home />} path="home" />
-            <Route element={<AuthGuard />}>
-              <Route element={<MyWarehouse />} path="list" />
-            </Route>
-            <Route element={<WarehouseResolver />} path="warehouse/:id/*">
-              <Route element={<RentedWarehouseGuard />}>
-                <Route element={<WarehouseDetails />} path="" />
-                <Route element={<AuthGuard />}>
-                  <Route element={<RentingForm />} path="renting" />
-                  <Route element={<Contract />} path="contract"></Route>
+    <>
+      <GlobalStyle />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<PersistLogin />} path="/*">
+            <Route element={<RootWrapper />}>
+              <Route element={<Home />} path="" />
+              <Route element={<Home />} path="home" />
+              <Route element={<AuthGuard />}>
+                <Route element={<MyWarehouse />} path="list" />
+              </Route>
+              <Route element={<WarehouseResolver />} path="warehouse/:id/*">
+                <Route element={<RentedWarehouseGuard />}>
+                  <Route element={<WarehouseDetails />} path="" />
+                  <Route element={<AuthGuard />}>
+                    <Route element={<RentingForm />} path="renting" />
+                    <Route element={<Contract />} path="contract"></Route>
+                  </Route>
                 </Route>
               </Route>
-            </Route>
-            <Route element={<AuthGuard requireRoles={[Role.Owner]} />}>
-              <Route element={<CreateWarehouse />} path="create" />
+              <Route element={<AuthGuard requireRoles={[Role.Owner]} />}>
+                <Route element={<CreateWarehouse />} path="create" />
+              </Route>
             </Route>
           </Route>
-        </Route>
-        <Route element={<RootWrapper />} path="/*">
-          <Route element={<Login />} path="login" />
-          <Route element={<SignUp />} path="sign-up" />
-          <Route element={<NotFound />} path="*" />
-        </Route>
-        <Route path="dev/*">
-          <Route element={<UploadImageButton onImageUploaded={noop} />} path="upload" />
-          <Route element={<MapSearchBox />} path="map-search-box"></Route>
-          <Route
-            element={
-              <MapView
-                location={{
-                  lat: 16.02298393469663,
-                  lng: 108.1880701495974,
-                }}
-              />
-            }
-            path="map-view"
-          ></Route>
-          <Route element={<Contract />} path="contract"></Route>
-          <Route
-            element={
-              <RouteDirection
-                from='360 Đ. Lê Duẩn, Tân Chính, Thanh Khê, Đà Nẵng 550000, Vietnam'
-                to='Thanh Lương 11, Hòa Xuân, Cẩm Lệ, Đà Nẵng 550000, Vietnam'
-              />
-            }
-            path="direction"
-          ></Route>
-          <Route element={<ListComment/>} path='comment'></Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route element={<RootWrapper />} path="/*">
+            <Route element={<Login />} path="login" />
+            <Route element={<SignUp />} path="sign-up" />
+            <Route element={<NotFound />} path="*" />
+          </Route>
+          <Route path="dev/*">
+            <Route element={<UploadImageButton onImageUploaded={noop} />} path="upload" />
+            <Route element={<MapSearchBox />} path="map-search-box"></Route>
+            <Route
+              element={
+                <MapView
+                  location={{
+                    lat: 16.02298393469663,
+                    lng: 108.1880701495974,
+                  }}
+                />
+              }
+              path="map-view"
+            ></Route>
+            <Route element={<Contract />} path="contract"></Route>
+            <Route
+              element={
+                <RouteDirection
+                  from="360 Đ. Lê Duẩn, Tân Chính, Thanh Khê, Đà Nẵng 550000, Vietnam"
+                  to="Thanh Lương 11, Hòa Xuân, Cẩm Lệ, Đà Nẵng 550000, Vietnam"
+                />
+              }
+              path="direction"
+            ></Route>
+            <Route element={<ListComment />} path="comment"></Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 };
-

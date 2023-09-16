@@ -19,15 +19,16 @@ export const CommentCard = (props: CommentCardProps) => {
 
   return (
     <Container>
-      <div>
-        <Avatar name={name} />
-      </div>
-      <Body>
+      <AvatarContainer>
+        <Avatar size={30} name={name} />
         <Sender>{name}</Sender>
-        <Content>{content}</Content>
+        <Action>đã bình luận vào</Action>
         <Time>
           <ReactTimeAgo date={timestamp} locale="vi" timeStyle="twitter" />
         </Time>
+      </AvatarContainer>
+      <Body>
+        <Content>{content}</Content>
       </Body>
     </Container>
   );
@@ -36,30 +37,36 @@ export const CommentCard = (props: CommentCardProps) => {
 const Container = styled.div`
   position: relative;
   display: flex;
-  gap: 24px;
-  padding: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-bottom: 0;
-  min-height: 120px;
-
-  &:last-child {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  }
+  flex-direction: column;
+  gap: 12px;
 `;
 
-const Body = styled.div``;
+const Body = styled.div`
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+`;
 
 const Sender = styled.span`
   display: block;
   font-weight: bold;
 `;
 
-const Content = styled.p``;
-
-const Time = styled.p`
-  position: absolute;
-  top: 0;
-  right: 24px;
-  font-style: italic;
+const Action = styled.span`
+  color: #545454;
 `;
 
+const Time = styled.time`
+  color: gray;
+`;
+
+const Content = styled.p`
+  margin: 0;
+`;
+
+const AvatarContainer = styled.div`
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  align-items: center;
+`;
