@@ -5,14 +5,16 @@ import styled from 'styled-components';
 
 import { useAuthStore } from '@/auth';
 import { Button } from '@/components/Common/Button/Button';
+import { CommentSection } from '@/components/Feedback';
 import { MapView } from '@/components/Map';
 import { Role } from '@/enums/role.enum';
+import { ClientCommentModel, CreateCommentModel } from '@/models/comment.model';
+import warehouseService from '@/service/warehouse-service';
 import { formatPrice } from '@/utils/format-price.util';
 import { resolveAddress, resolveLocation } from '@/utils/warehouse-address.util';
 
 import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
-import { CommentSection } from '@/components/Feedback';
 
 // const mockWarehouseDetails: WareHouseModel = {
 //   id: 1,
@@ -43,6 +45,13 @@ export const WarehouseDetails = () => {
 
   const address = resolveAddress(warehouse.address);
   const location = resolveLocation(warehouse.address);
+
+  const resolveComment = (comment: ClientCommentModel) => {
+    const warehouseId = warehouse.id;
+    const userId = user!.id;
+    const createComment: CreateCommentModel = { userId, warehouseId, ...comment };
+    return warehouseService.addComment(userId, warehouseId, createComment);
+  };
 
   return (
     <Container>
@@ -98,7 +107,7 @@ export const WarehouseDetails = () => {
         </MetricsContainer>
 
         <CommentsContainer>
-          <CommentSection />
+          <CommentSection data={warehouse.comments} resolveComment={resolveComment} />
         </CommentsContainer>
       </BodyContainer>
     </Container>

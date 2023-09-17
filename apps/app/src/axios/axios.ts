@@ -3,8 +3,8 @@ import qs from 'qs';
 
 import { useAuthStore } from '../auth';
 
-const defaultConfigs: CreateAxiosDefaults = {
-  headers: { 'Content-Type': 'application/json' },
+export const defaultConfigs: CreateAxiosDefaults = {
+  headers: { 'Content-Type': 'application/json', Accept: 'text/plain' },
   baseURL: import.meta.env.VITE_BASE_URL,
   paramsSerializer: function (params) {
     return qs.stringify(params);

@@ -1,23 +1,24 @@
 import { isEmpty } from 'lodash';
+import moment from 'moment';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { CommentModel } from '@/models/comment.model';
+import { ClientCommentModel } from '@/models/comment.model';
 
 import { Avatar } from '../Common/Avatar';
 import { Button } from '../Common/Button';
 import { TextAreaAutoSize } from '../Common/TextArea';
 
 type AddCommentProp = {
-  onCommentResolved?: (comment: CommentModel) => void;
+  onCommentSent?: (comment: ClientCommentModel) => void;
 };
 
-export const AddComment = ({ onCommentResolved }: AddCommentProp) => {
+export const AddComment = ({ onCommentSent }: AddCommentProp) => {
   const [comment, setComment] = useState('');
 
   const handleCommentSent = () => {
     if (!isEmpty(comment)) {
-      onCommentResolved?.({ content: comment, id: Math.random(), senderName: 'Mock user', timestamp: Date.now() });
+      onCommentSent?.({ content: comment, senderName: 'Mock user', date: moment().format() });
       setComment('');
     }
   };

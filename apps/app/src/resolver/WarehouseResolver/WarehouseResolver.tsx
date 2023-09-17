@@ -3,6 +3,8 @@ import { Outlet, useParams } from 'react-router-dom';
 
 import { Loading } from '@/components/Fallback';
 import { UserModel } from '@/models/user.model';
+import userService from '@/service/user-service';
+import warehouseService from '@/service/warehouse-service';
 
 import { useAuthStore } from '../../auth';
 import { api } from '../../axios/axios';
@@ -32,8 +34,8 @@ export function useRentingWarehouseResolver() {
 
   useEffect(() => {
     if (!!context && !!user) {
-      api.get<UserModel>(`user/${context.warehouse.userId}`).then((response) => setOwner(response.data));
-      api.get<UserModel>(`user/${user.id}`).then((response) => setRenter(response.data));
+      userService.get(context.warehouse.userId).then((data) => setOwner(data));
+      userService.get(user.id).then((data) => setRenter(data));
     }
   }, [context?.id]);
 
@@ -53,9 +55,10 @@ export function WarehouseResolver() {
   }, [id]);
 
   const getWarehouse = async () => {
-    const warehouse = (await api.get<WareHouseModel>(`warehouse/${id}`)).data;
-
-    setWarehouse(warehouse);
+    if (id !== undefined) {
+      const warehouse = await warehouseService.get(id);
+      setWarehouse(warehouse);
+    }
   };
 
   return (

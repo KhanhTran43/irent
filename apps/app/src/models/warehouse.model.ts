@@ -1,3 +1,5 @@
+import { CommentModel } from './comment.model';
+
 export type WareHouseModel = {
   id: number;
   userId: number;
@@ -11,6 +13,7 @@ export type WareHouseModel = {
   doors: number;
   floors: number;
   rented?: boolean;
+  comments?: CommentModel[];
 } & RentedWarehouseAttributes;
 
 export type RentedWarehouseAttributes =
