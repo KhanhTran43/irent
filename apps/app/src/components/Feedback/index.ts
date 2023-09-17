@@ -1,2 +1,2 @@
 export * from './CommentCard';
-export * from './ListComment'
+export * from './CommentSection'

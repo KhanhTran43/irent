@@ -18,7 +18,6 @@ export const TextAreaAutoSize = forwardRef<HTMLTextAreaElement, TextAreaAutoSize
     return (
       <ReactTextareaAutosize
         ref={ref}
-        maxRows={maxRows}
         minRows={minRows}
         value={value}
         onBlur={onBlur}

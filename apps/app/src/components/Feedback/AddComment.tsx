@@ -28,6 +28,7 @@ export const AddComment = ({ onCommentResolved }: AddCommentProp) => {
         <Avatar name="Chiến Tho" />
       </div>
       <Textarea
+        cacheMeasurements
         placeholder="Leave a comment..."
         rows={1}
         value={comment}

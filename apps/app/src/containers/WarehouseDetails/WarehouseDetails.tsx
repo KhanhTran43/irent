@@ -12,6 +12,7 @@ import { resolveAddress, resolveLocation } from '@/utils/warehouse-address.util'
 
 import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 import { convertTimestampToDate } from '../../utils/convert-timestamp-to-date.util';
+import { CommentSection } from '@/components/Feedback';
 
 // const mockWarehouseDetails: WareHouseModel = {
 //   id: 1,
@@ -51,7 +52,7 @@ export const WarehouseDetails = () => {
           src={isEmpty(warehouse.image) ? 'https://picsum.photos/seed/picsum/900/300' : warehouse.image}
         />
       </ImageContainer>
-      <HeaderContainer>
+      <BodyContainer>
         <Title>{warehouse?.name}</Title>
         <Address>{address}</Address>
         {!!location && (
@@ -95,7 +96,11 @@ export const WarehouseDetails = () => {
             </OtherMetricItem>
           </OtherMetrics>
         </MetricsContainer>
-      </HeaderContainer>
+
+        <CommentsContainer>
+          <CommentSection />
+        </CommentsContainer>
+      </BodyContainer>
     </Container>
   );
 };
@@ -114,7 +119,7 @@ const Image = styled.img`
   object-position: center center;
 `;
 
-const HeaderContainer = styled.div`
+const BodyContainer = styled.div`
   position: relative;
 `;
 
@@ -160,6 +165,12 @@ const MetricsContainer = styled.div`
   border-bottom: 1px solid #999;
   justify-content: space-between;
   align-items: center;
+`;
+
+const CommentsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Price = styled.span`

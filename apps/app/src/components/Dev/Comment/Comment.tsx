@@ -1,10 +1,5 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-
+import { CommentSection } from '@/components/Feedback';
 import { CommentModel } from '@/models/comment.model';
-
-import { AddComment } from './AddComment';
-import { CommentCard } from './CommentCard';
 
 const mockComments: CommentModel[] = [
   {
@@ -38,27 +33,6 @@ const mockComments: CommentModel[] = [
   },
 ];
 
-export const ListComment = () => {
-  const [comments, setComments] = useState<CommentModel[]>(mockComments);
-
-  return (
-    <>
-      <AddComment onCommentResolved={(comment) => setComments([...comments, comment])} />
-
-      <List>
-        {comments.map((it) => (
-          <CommentCard key={it.id} content={it.content} name={it.senderName} timestamp={it.timestamp} />
-        ))}
-      </List>
-    </>
-  );
-};
-
-const List = styled.div`
-  padding: 0 10px;
-  margin-bottom: 24px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
+export function Comment() {
+  return <CommentSection data={mockComments} />;
+}

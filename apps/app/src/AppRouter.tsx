@@ -4,8 +4,8 @@ import styled, { createGlobalStyle } from 'styled-components';
 
 import { PersistLogin } from './auth';
 import { Header } from './components/Common/Header';
+import { Comment } from './components/Dev';
 import { NotFound } from './components/Fallback';
-import { ListComment } from './components/Feedback';
 import { MapView } from './components/Map';
 import { MapSearchBox } from './components/Map/MapSearchBox';
 import { RouteDirection } from './components/RouteDirection';
@@ -119,7 +119,7 @@ export const AppRouter = () => {
               }
               path="direction"
             ></Route>
-            <Route element={<ListComment />} path="comment"></Route>
+            <Route element={<Comment />} path="comment"></Route>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -24,7 +24,7 @@ export const CommentCard = (props: CommentCardProps) => {
         <Sender>{name}</Sender>
         <Action>đã bình luận vào</Action>
         <Time>
-          <ReactTimeAgo date={timestamp} locale="vi" timeStyle="twitter" />
+          <ReactTimeAgo date={timestamp} locale="vi" timeStyle="twitter-minute-now" />
         </Time>
       </AvatarContainer>
       <Body>
