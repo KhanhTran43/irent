@@ -30,7 +30,7 @@ export const CreateWarehouseForm = () => {
           <ImageInfo>
             <Text>Ảnh</Text>
             <ImageInputContainer>
-              <UploadImageButton url={values.image} onImageUploaded={(url) => setFieldValue('image', url)} />
+              <UploadImageButton onImageUploaded={(url) => setFieldValue('image', url)} />
             </ImageInputContainer>
           </ImageInfo>
           <TextInfo>

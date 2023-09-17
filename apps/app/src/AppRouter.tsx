@@ -3,12 +3,14 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import { PersistLogin } from './auth';
+import { Carousel } from './components/Carousel';
 import { Header } from './components/Common/Header';
 import { Comment } from './components/Dev';
 import { NotFound } from './components/Fallback';
 import { MapView } from './components/Map';
 import { MapSearchBox } from './components/Map/MapSearchBox';
 import { RouteDirection } from './components/RouteDirection';
+import { UploadMultipleImages } from './components/UploadMultipleImages/UploadMultipleImages';
 import {
   Contract,
   CreateWarehouse,
@@ -120,6 +122,8 @@ export const AppRouter = () => {
               path="direction"
             ></Route>
             <Route element={<Comment />} path="comment"></Route>
+            <Route element={<Carousel url={[]} />} path="carousel"></Route>
+            <Route element={<UploadMultipleImages />} path="upload-images"></Route>
           </Route>
         </Routes>
       </BrowserRouter>
