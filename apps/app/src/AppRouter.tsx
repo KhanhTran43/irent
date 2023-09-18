@@ -122,7 +122,17 @@ export const AppRouter = () => {
               path="direction"
             ></Route>
             <Route element={<Comment />} path="comment"></Route>
-            <Route element={<Carousel url={[]} />} path="carousel"></Route>
+            <Route
+              element={
+                <Carousel
+                  url={[
+                    'https://res.cloudinary.com/dy6dehxix/image/upload/v1695041166/u9dygkim3lz4zrj6wgqs.jpg',
+                    'https://res.cloudinary.com/dy6dehxix/image/upload/v1695041166/zwyed3akqnlrknoanlah.jpg',
+                  ]}
+                />
+              }
+              path="carousel"
+            ></Route>
             <Route element={<UploadMultipleImages />} path="upload-images"></Route>
           </Route>
         </Routes>

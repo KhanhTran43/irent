@@ -16,11 +16,11 @@ export const CreateWarehouseForm = () => {
     useFormikContext<CreateWarehouseFormValuesType>();
   const { currentSearchPayload } = useMapWithSearchBox();
 
-  useEffect(() => {
-    setFieldValue('address', JSON.stringify(currentSearchPayload));
-    setFieldValue('mapSearch', currentSearchPayload?.address);
-    if (currentSearchPayload?.ward) setFieldValue('ward', getWardFromMapWard(currentSearchPayload.ward));
-  }, [currentSearchPayload]);
+  // useEffect(() => {
+  //   setFieldValue('address', JSON.stringify(currentSearchPayload));
+  //   setFieldValue('mapSearch', currentSearchPayload?.address);
+  //   if (currentSearchPayload?.ward) setFieldValue('ward', getWardFromMapWard(currentSearchPayload.ward));
+  // }, [currentSearchPayload]);
 
   return (
     <Container>
@@ -30,8 +30,9 @@ export const CreateWarehouseForm = () => {
           <ImageInfo>
             <Text>Ảnh</Text>
             <ImageInputContainer>
-              <UploadImageButton onImageUploaded={(url) => setFieldValue('image', url)} />
+              <UploadImageButton onImageUploaded={(images) => setFieldValue('images', images)} />
             </ImageInputContainer>
+            <FieldError errorFor={'images'} />
           </ImageInfo>
           <TextInfo>
             <LeftSide>

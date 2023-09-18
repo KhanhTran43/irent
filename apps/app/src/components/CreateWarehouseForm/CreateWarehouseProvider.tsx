@@ -17,6 +17,7 @@ export type CreateWarehouseFormValuesType = {
 const initialFormValues: CreateWarehouseFormValuesType = {
   name: '',
   mapSearch: '',
+  address: '123 Hoàng Công Chất',
 };
 
 export type CreateWarehouseFormProps = ProviderProps<CreateWarehouseFormValuesType>;
@@ -31,7 +32,12 @@ export const CreateWarehouseProvider = ({ children, onFormValidChange, innerRef 
     address: yup.string().label('Địa chỉ').max(200).required(),
     area: yup.number().label('Diện tích').moreThan(0).required(),
     price: yup.number().label('Giá').moreThan(0).required(),
-    image: yup.string().label('Ảnh kho bãi').required(),
+    images: yup.array().of(
+      yup.object().shape({
+        originalUrl: yup.string().label('Ảnh gốc kho bãi').required(),
+        thumbnailUrl: yup.string().label('Ảnh thumbnail bãi').required(),
+      }),
+    ),
     doors: yup.number().label('Số cửa').required(),
     floors: yup.number().label('Số tầng').required(),
   });

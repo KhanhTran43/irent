@@ -1,19 +1,21 @@
 import { violetDark } from '@radix-ui/colors';
+import { produce } from 'immer';
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { CarouselImageModel } from '@/models/carousel-image.model';
 
 type UploadImageButtonProps = {
-  onImageUploaded?: (url: CarouselImageModel) => void;
+  onImageUploaded?: (url: CarouselImageModel[]) => void;
   urls?: CarouselImageModel[];
 };
 
 export const UploadImageButton = (props: UploadImageButtonProps) => {
   const { onImageUploaded, urls = [] } = props;
-  const [files, setFiles] = useState<CarouselImageModel[]>(urls);
-  const [carouselImage, setCarouselImage] = useState<CarouselImageModel | null>(null);
+  const [files, setFiles] = useState<CarouselImageModel[]>([]);
   const [widget, setWidget] = useState<any>(null);
+
+  console.log('outside', files);
 
   useEffect(() => {
     const widget = (window as any).cloudinary.createUploadWidget(
@@ -22,6 +24,8 @@ export const UploadImageButton = (props: UploadImageButtonProps) => {
         uploadPreset: 'nt12lmzm',
       },
       (error: Error, result: any) => {
+        console.log('inside', files);
+
         if (!error && result && result.event === 'success') {
           console.log('Done! Here is the image info: ', result.info);
 
@@ -31,8 +35,11 @@ export const UploadImageButton = (props: UploadImageButtonProps) => {
             thumbnailUrl: thumbnailUrl,
           };
 
-          setCarouselImage(carouselImage);
-          onImageUploaded?.(carouselImage);
+          setFiles(
+            produce((files) => {
+              files.push(carouselImage);
+            }),
+          );
         }
       },
     );
@@ -41,10 +48,10 @@ export const UploadImageButton = (props: UploadImageButtonProps) => {
   }, []);
 
   useEffect(() => {
-    if (carouselImage) {
-      setFiles([...files, carouselImage]);
+    if (files) {
+      onImageUploaded?.(files);
     }
-  }, [carouselImage])
+  }, [files]);
 
   return (
     <>
@@ -60,9 +67,7 @@ export const UploadImageButton = (props: UploadImageButtonProps) => {
         <label>Thêm ảnh</label>
       </UploadButton>
       <ImageContainer $hasSrc={!!files.length}>
-        {
-          files.length ? files.map(it => <Image key={it.originalUrl} src={it.originalUrl}/>) : <></>
-        }
+        {files.length ? files.map((it) => <Image key={it.originalUrl} src={it.originalUrl} />) : <></>}
       </ImageContainer>
     </>
   );
@@ -82,7 +87,7 @@ const UploadButton = styled.div`
 `;
 
 const ShowImageStyle = css`
-  height: 300px;
+  height: fit-content;
   padding: 4px;
 
   img {

@@ -14,7 +14,6 @@ import {
   StepperNextButton,
   StepperProgression,
 } from '@/components/Common/Stepper';
-import { Privacy } from '@/components/Privacy/Privacy';
 
 import { api } from '../../axios/axios';
 import {
@@ -71,7 +70,7 @@ export const CreateWarehouse = () => {
             if (user) {
               const warehouse = { ...formikProps?.values, createdDate: moment().format(), userId: user.id };
               api.post(`warehouse/`, warehouse).then(() => {
-                navigate('/list');
+                // navigate('/list');
               });
             }
           }}
