@@ -1,10 +1,10 @@
 import { CommentModel } from './comment.model';
+import { WarehouseImage } from './warehouse-image.model';
 
 export type WareHouseModel = {
   id: number;
   userId: number;
   name: string;
-  image: string;
   ward: string;
   address: string;
   price: number;
@@ -14,6 +14,7 @@ export type WareHouseModel = {
   floors: number;
   rented?: boolean;
   comments?: CommentModel[];
+  images?: WarehouseImage[];
 } & RentedWarehouseAttributes;
 
 export type RentedWarehouseAttributes =

@@ -1,18 +1,22 @@
 import ImageGallery from 'react-image-gallery';
 
+import { CarouselImageModel } from '@/models/carousel-image.model';
+
 type CarouselProps = {
-  url: string[];
+  images?: CarouselImageModel[];
 };
 
 export const Carousel = (props: CarouselProps) => {
-  const { url } = props;
+  const { images } = props;
 
   return (
     <ImageGallery
-      items={url.map((it) => ({
-        original: it,
-        thumbnail: it,
-      }))}
+      items={
+        images?.map((images) => ({
+          original: images.originalUrl,
+          thumbnail: images.thumbnailUrl,
+        })) ?? []
+      }
     />
   );
 };

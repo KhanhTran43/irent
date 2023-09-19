@@ -1,9 +1,9 @@
 import { HeartIcon, RulerSquareIcon, StackIcon, ViewVerticalIcon } from '@radix-ui/react-icons';
-import { isEmpty } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAuthStore } from '@/auth';
+import { Carousel } from '@/components/Carousel';
 import { Button } from '@/components/Common/Button/Button';
 import { CommentSection } from '@/components/Feedback';
 import { MapView } from '@/components/Map';
@@ -56,10 +56,7 @@ export const WarehouseDetails = () => {
   return (
     <Container>
       <ImageContainer>
-        <Image
-          alt="title"
-          src={isEmpty(warehouse.image) ? 'https://picsum.photos/seed/picsum/900/300' : warehouse.image}
-        />
+        <Carousel images={warehouse.images}></Carousel>
       </ImageContainer>
       <BodyContainer>
         <Title>{warehouse?.name}</Title>
@@ -116,7 +113,7 @@ export const WarehouseDetails = () => {
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 341px;
+  height: 600px;
   border-radius: 16px;
   overflow: hidden;
   background-color: #8080807a;

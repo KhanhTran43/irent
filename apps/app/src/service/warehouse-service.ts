@@ -11,7 +11,7 @@ class WarehouseService extends Service<WareHouseModel, WareHouseModel, WareHouse
     this.setBaseURL('warehouse');
     this.setDefaultRequestPayload(
       produce((payload) => {
-        payload.includes?.push('RentedWarehouses', 'Comments', 'Comments.User');
+        payload.includes?.push('RentedWarehouses', 'Comments', 'Comments.User', 'Images');
       }),
     );
   }

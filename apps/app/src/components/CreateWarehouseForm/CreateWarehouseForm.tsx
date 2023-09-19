@@ -1,9 +1,7 @@
 import { Form, useFormikContext } from 'formik';
-import { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import { UploadImageButton } from '@/containers/UploadImageButton/UploadImageButton';
-import { getWardFromMapWard } from '@/utils/get-ward-from-map.util';
 
 import { FieldError } from '../Common/Form';
 import { SuffixInput } from '../Common/SuffixInput';

@@ -125,9 +125,19 @@ export const AppRouter = () => {
             <Route
               element={
                 <Carousel
-                  url={[
-                    'https://res.cloudinary.com/dy6dehxix/image/upload/v1695041166/u9dygkim3lz4zrj6wgqs.jpg',
-                    'https://res.cloudinary.com/dy6dehxix/image/upload/v1695041166/zwyed3akqnlrknoanlah.jpg',
+                  images={[
+                    {
+                      originalUrl:
+                        'https://res.cloudinary.com/dy6dehxix/image/upload/v1695041166/u9dygkim3lz4zrj6wgqs.jpg',
+                      thumbnailUrl:
+                        'https://res.cloudinary.com/dy6dehxix/image/upload/c_limit,h_60,w_90/v1695041166/u9dygkim3lz4zrj6wgqs.jpg',
+                    },
+                    {
+                      originalUrl:
+                        'https://res.cloudinary.com/dy6dehxix/image/upload/v1695041166/zwyed3akqnlrknoanlah.jpg',
+                      thumbnailUrl:
+                        'https://res.cloudinary.com/dy6dehxix/image/upload/c_limit,h_60,w_90/v1695041166/zwyed3akqnlrknoanlah.jpg',
+                    },
                   ]}
                 />
               }

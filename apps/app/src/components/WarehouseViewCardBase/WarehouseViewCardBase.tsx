@@ -22,12 +22,15 @@ export const WarehouseViewCardBase = ({
   showPrice = false,
   onClick,
 }: WarehouseViewCardProps) => {
-  const { id, name, price, area, createdDate, rented, ward, image } = warehouse;
+  const { id, name, price, area, createdDate, rented, ward, images } = warehouse;
   const address = resolveAddress(warehouse.address);
 
   return (
     <CardContainer onClick={() => onClick?.(id)}>
-      <CardImage alt="Product" src={isEmpty(image) ? 'https://picsum.photos/seed/picsum/400/300' : image} />
+      <CardImage
+        alt="Product"
+        src={isEmpty(images) ? 'https://picsum.photos/seed/picsum/400/300' : images![0].originalUrl}
+      />
       <TextContainer>
         <CardName>{name}</CardName>
         <CardAddress>
