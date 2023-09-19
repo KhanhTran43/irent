@@ -15,7 +15,7 @@ export const Carousel = (props: CarouselProps) => {
         images?.map((images) => ({
           original: images.originalUrl,
           thumbnail: images.thumbnailUrl,
-          originalHeight: 500,
+          // originalHeight: 500,
         })) ?? []
       }
     />

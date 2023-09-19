@@ -113,10 +113,18 @@ export const WarehouseDetails = () => {
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 587px;
+  height: 580px;
   border-radius: 16px;
   overflow: hidden;
   background-color: #8080807a;
+
+  .image-gallery-content:not(.fullscreen) .image-gallery-image {
+    height: 500px;
+  }
+  .image-gallery-thumbnail-image {
+    height: 62px;
+    width: 92px;
+  }
 `;
 
 const Image = styled.img`
