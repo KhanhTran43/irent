@@ -2,7 +2,7 @@ import {
   CardElement as StripeCardElement,
   Elements as StripeElements,
   useElements,
-  useStripe
+  useStripe,
 } from '@stripe/react-stripe-js';
 import { FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
@@ -62,12 +62,8 @@ export const SignUpForm = () => {
       return;
     }
 
-    const { data } = await api.post<any>(`payment/account/${paymentMethod.id}`);
-
-
-    // TODO: update the stripe account ids after creating successfully
     api
-      .post('user', { ...values, ...data })
+      .post('user', { ...values, paymentMethod: paymentMethod.id })
       .then(() => {
         navigate('/login');
       })
@@ -174,7 +170,9 @@ export const SignUpForm = () => {
                 Chủ kho bãi
               </RadioButtonLabel>
             </RadioButtonContainer>
-            <Button disabled={isSubmitting} type="submit">{isSubmitting ? <Spinner innerSize={20} margin={0} outerSize={25} /> : "Đăng ký"}</Button>
+            <Button disabled={isSubmitting} type="submit">
+              {isSubmitting ? <Spinner innerSize={20} margin={0} outerSize={25} /> : 'Đăng ký'}
+            </Button>
           </Form>
         </FormContainer>
       )}
