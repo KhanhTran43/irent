@@ -113,7 +113,7 @@ export const WarehouseDetails = () => {
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 600px;
+  height: 587px;
   border-radius: 16px;
   overflow: hidden;
   background-color: #8080807a;
