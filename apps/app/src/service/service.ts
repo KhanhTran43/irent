@@ -1,11 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
 
-import { api, defaultConfigs } from '@/axios/axios';
+import { defaultConfigs } from '@/axios/axios';
 import { GetStaticRequest } from '@/models/http/get-static-request';
 
 export class Service<SelectModel, CreateModel, UpdateModel> {
   protected api: AxiosInstance;
-  private defaultRequestPayload: GetStaticRequest = {
+  protected defaultRequestPayload: GetStaticRequest = {
     includes: [],
     resolves: {},
   };

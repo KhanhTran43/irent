@@ -6,9 +6,8 @@ import { useAuthStore } from '@/auth';
 import { Button } from '@/components/Common/Button';
 import { MyWarehouseViewCard } from '@/components/MyWarehouseViewCard/MyWarehouseViewCard';
 import { Role } from '@/enums/role.enum';
-import { useWarehouseResolver } from '@/resolver/WarehouseResolver';
+import warehouseService from '@/service/warehouse-service';
 
-import { api } from '../../axios/axios';
 import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
 
 export const MyWarehouse = () => {
@@ -23,13 +22,9 @@ export const MyWarehouse = () => {
   console.log(user);
 
   useEffect(() => {
-    if (user?.role === Role.Owner) {
-      api.get<MyWarehouseDetailsModel[]>(`warehouse/owner/${user.id}`).then(({ data }) => {
-        if (data.length !== 0) setWarehouses(data);
-      });
-    } else if (user?.role === Role.Renter) {
-      api.get<MyWarehouseDetailsModel[]>(`warehouse/renter/${user.id}`).then(({ data }) => {
-        if (data.length !== 0) setWarehouses(data);
+    if (user) {
+      warehouseService.getMyWarehouse(user.id, user.role).then((data) => {
+        if (data && data.length !== 0) setWarehouses(data);
       });
     }
   }, []);
