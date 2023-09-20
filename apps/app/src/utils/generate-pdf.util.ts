@@ -1,4 +1,4 @@
-import { convertISOtoLocaleDateFormat } from './datetime-format.util';
+import { convertDateToLocaleDateFormat } from './datetime-format.util';
 import { formatPrice } from './format-price.util';
 import { resolveAddress } from './warehouse-address.util';
 
@@ -20,8 +20,9 @@ export type PdfOptions = {
     area: number;
   };
   duration: number;
-  rentedDate: string;
-  endDate: string;
+  rentedDate: Date;
+  startDate: Date;
+  endDate: Date;
 };
 
 export function generatePdf(options: PdfOptions): void {
@@ -30,7 +31,7 @@ export function generatePdf(options: PdfOptions): void {
 }
 
 export function generatePdfContent(options: PdfOptions) {
-  const { renter, owner, warehouse, duration, endDate, rentedDate } = options;
+  const { renter, owner, warehouse, duration, endDate, rentedDate, startDate } = options;
 
   return {
     watermark: { text: 'iRent', color: 'blue', opacity: 0.05, bold: false, italics: true, fontSize: 128 },
@@ -123,9 +124,9 @@ export function generatePdfContent(options: PdfOptions) {
         style: 'normalText',
       },
       {
-        text: `2. Thời hạn thuê là ${duration} tháng. Bắt đầu từ ${convertISOtoLocaleDateFormat(
-          rentedDate,
-        )} đến ${convertISOtoLocaleDateFormat(endDate)}`,
+        text: `2. Thời hạn thuê là ${duration} tháng. Bắt đầu từ ${convertDateToLocaleDateFormat(
+          startDate,
+        )} đến ${convertDateToLocaleDateFormat(endDate)}`,
         style: 'normalText',
       },
       {

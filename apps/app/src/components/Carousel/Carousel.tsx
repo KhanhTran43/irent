@@ -1,23 +1,24 @@
-import ImageGallery from 'react-image-gallery';
+import ImageGallery, { ReactImageGalleryProps } from 'react-image-gallery';
 import styled from 'styled-components';
 
 import { CarouselImageModel } from '@/models/carousel-image.model';
 
-type CarouselProps = {
+type CarouselProps = Omit<ReactImageGalleryProps, 'items'> & {
   images?: CarouselImageModel[];
+  className?: string;
 };
 
 export const Carousel = (props: CarouselProps) => {
-  const { images } = props;
+  const { images, className, ...galleryProps } = props;
 
   return (
-    <CarouselRoot>
+    <CarouselRoot className={className}>
       <ImageGallery
+        {...galleryProps}
         items={
           images?.map((images) => ({
             original: images.originalUrl,
             thumbnail: images.thumbnailUrl,
-            // originalHeight: 500,
           })) ?? []
         }
       />
@@ -35,6 +36,7 @@ const CarouselRoot = styled.div`
     height: 500px;
     padding-top: 5px;
   }
+
   .image-gallery-thumbnail-image {
     height: 62px;
     width: 92px;
