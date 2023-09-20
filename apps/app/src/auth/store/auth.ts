@@ -1,16 +1,10 @@
 import { create } from 'zustand';
 
-import { Role } from '@/enums/role.enum';
-
 import { AuthUser } from '../models/auth';
-
-type AuthOptionsUser = Omit<AuthUser, 'role'> & {
-  role: string;
-};
 
 type AuthenticateOptions = {
   token: string;
-  user: AuthOptionsUser;
+  user: AuthUser;
 };
 
 export type AuthStoreType = {
@@ -32,7 +26,7 @@ export const useAuthStore = create<AuthStoreType>((set) => ({
       const { token, user } = options;
       set({
         accessToken: token,
-        user: { id: user.id, name: user.name, role: Role[user.role as keyof typeof Role] },
+        user: { id: user.id, name: user.name, role: user.role },
         isAuthenticated: true,
       });
     } else set({ isAuthenticated: false });
