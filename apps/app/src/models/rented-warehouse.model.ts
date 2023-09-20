@@ -7,6 +7,9 @@ export type RentedWarehouseModel = {
   endDate: string;
   contractBase64: string;
   status: RentedWarehouseStatus;
+  deposit: number;
+  remain: number;
+  total: number;
 };
 
 export type CreateRentedWarehouseModel = Omit<RentedWarehouseModel, 'status' | 'confirmDate'>;

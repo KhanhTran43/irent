@@ -40,8 +40,8 @@ export const RentingConfirmation = (props: RentingConfirmationProps) => {
                 <WarehouseBodyLabel>Số tầng</WarehouseBodyLabel>
                 <WarehouseBodyLabel>Giá</WarehouseBodyLabel>
                 <WarehouseBodyLabel>Giá cọc (50% giá thuê 1 tháng)</WarehouseBodyLabel>
-                <WarehouseBodyLabel>Giá cần thanh toán sau cọc</WarehouseBodyLabel>
-                <WarehouseBodyLabel>Hạn thanh toán thanh toán sau cọc</WarehouseBodyLabel>
+                <WarehouseBodyLabel>Số tiền cần thanh toán sau cọc</WarehouseBodyLabel>
+                <WarehouseBodyLabel>Hạn thanh toán sau cọc</WarehouseBodyLabel>
               </div>
               <div>
                 <WarehouseBodyData>{warehouse.area} mét vuông</WarehouseBodyData>
@@ -54,7 +54,7 @@ export const RentingConfirmation = (props: RentingConfirmationProps) => {
                   {formatPrice(warehouse.price)} VND / tháng x 0.5 = {formatPrice(deposit)} VND
                 </WarehouseBodyData>
                 <WarehouseBodyData>
-                  {formatPrice(totalPrice)} VND - {formatPrice(deposit)} = {formatPrice(remain)} VND
+                  {formatPrice(totalPrice)} VND - {formatPrice(deposit)} VND = {formatPrice(remain)} VND
                 </WarehouseBodyData>
                 <WarehouseBodyData>
                   {convertDateToLocaleDateFormat(rentingState.startDate, { capital: true })}
