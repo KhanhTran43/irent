@@ -59,7 +59,7 @@ export function CustomerCheckoutForm(props: CustomerCheckoutFormProp) {
         break;
       case 'succeeded':
         setResponded(true);
-        setMessage('Payment succeeded!');
+        setMessage('Thanh toán thành công!');
         props.onSucceed?.();
         break;
       case 'processing':
@@ -76,10 +76,6 @@ export function CustomerCheckoutForm(props: CustomerCheckoutFormProp) {
     }
 
     setLoading(false);
-  };
-
-  const paymentElementOptions: StripePaymentElementOptions = {
-    layout: 'tabs',
   };
 
   return (

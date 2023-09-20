@@ -176,16 +176,16 @@ export function RentingFormContent() {
               <Title>Xác nhận thanh toán</Title>
               <span>
                 <p>
-                  Sau khi xác nhận thanh toán, bạn sẽ trả phần tiền cọc là <strong>{formatPrice(deposit)}</strong> VND.
+                  Sau khi xác nhận thanh toán, bạn sẽ trả phần tiền cọc là <strong>{formatPrice(deposit)} VND</strong>.
                 </p>
                 <p>
-                  Sau đó bạn cần phải thanh toán phần còn lại sau tiền cọc là <strong>{formatPrice(remain)}</strong> VND
-                  trước hoặc trong ngày <strong>{convertDateToLocaleDateFormat(startDate)}</strong> để hoàn thành việc
-                  thuê kho bãi.
+                  Sau đó bạn cần phải thanh toán phần còn lại sau tiền cọc là <strong>{formatPrice(remain)} VND</strong>{' '}
+                  trước hoặc trong <strong>{convertDateToLocaleDateFormat(startDate)}</strong> để hoàn thành việc thuê
+                  kho bãi.
                 </p>
                 <p>
-                  Lưu ý, nếu như không thanh toán đúng hạn, yêu cầu thuê kho cả bạn sẽ bị hủy và không hoàn lại số tiền
-                  đã cọc
+                  <strong>Lưu ý:</strong> Nếu như không thanh toán đúng hạn, yêu cầu thuê kho của bạn sẽ bị hủy và sẽ
+                  không được hoàn lại số tiền đã cọc.
                 </p>
               </span>
             </WarningWrapper>
