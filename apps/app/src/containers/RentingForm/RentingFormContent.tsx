@@ -25,7 +25,6 @@ import { RentedWarehouseModel } from '@/models/rented-warehouse.model';
 import { useRentingWarehouseResolver } from '@/resolver/WarehouseResolver';
 import { getEndDate, getStartDate } from '@/utils/rented-warehouse.util';
 
-import { CheckoutForm } from './CheckoutForm';
 import { CustomerCheckoutForm } from './CustomerCheckoutForm';
 
 export function RentingFormContent() {
@@ -120,25 +119,27 @@ export function RentingFormContent() {
 
   const handleOnPayment = (price: number) => {
     const amount = price * values.duration;
-    api.post<{ clientSecret: string }>('/payment/fee', { amount, ownerId: owner?.id, userId: user?.id }).then((response) => {
-      const clientSecret = response.data.clientSecret
-      const options: StripeElementsOptions = {
-        clientSecret,
-        appearance: stripeAppearance,
-      };
+    api
+      .post<{ clientSecret: string }>('/payment/fee', { amount, ownerId: owner?.id, userId: user?.id })
+      .then((response) => {
+        const clientSecret = response.data.clientSecret;
+        const options: StripeElementsOptions = {
+          clientSecret,
+          appearance: stripeAppearance,
+        };
 
-      dialogContentRef.current = (
-        <Elements options={options} stripe={stripePromise}>
-          <CustomerCheckoutForm
-            clientSecret={clientSecret}
-            total={amount}
-          // onSucceed={handleSaveRentedWarehouse}
-          />
-        </Elements>
-      );
+        dialogContentRef.current = (
+          <Elements options={options} stripe={stripePromise}>
+            <CustomerCheckoutForm
+              clientSecret={clientSecret}
+              total={amount}
+              // onSucceed={handleSaveRentedWarehouse}
+            />
+          </Elements>
+        );
 
-      setPaymentDialogOpen(true);
-    });
+        setPaymentDialogOpen(true);
+      });
   };
 
   return (

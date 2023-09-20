@@ -79,10 +79,10 @@ export const SignUpForm = () => {
     <FormProvider
       initialValues={signUpFormInitialValues}
       validationSchema={signUpFormValidateSchema}
-      onSubmit={handleOnFormSubmit}
       onFormValidChange={(payload) => {
         console.log(payload);
       }}
+      onSubmit={handleOnFormSubmit}
     >
       {({ values, handleSubmit, handleBlur, handleChange, isSubmitting }) => (
         <FormContainer>

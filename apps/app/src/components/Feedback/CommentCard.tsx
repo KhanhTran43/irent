@@ -20,7 +20,7 @@ export const CommentCard = (props: CommentCardProps) => {
   return (
     <Container>
       <AvatarContainer>
-        <Avatar size={30} name={name} />
+        <Avatar name={name} size={30} />
         <Sender>{name}</Sender>
         <Action>đã bình luận vào</Action>
         <Time>
