@@ -26,7 +26,16 @@ export type RentedWarehouseAttributes =
       rentedInfo: RentedWarehouseInfo;
     };
 
-export type RentedWarehouseInfo = { rentedDate: string; endDate: string; contractBase64: string; renterId: number };
+export type RentedWarehouseInfo = {
+  rentedDate: string;
+  startDate: string;
+  endDate: string;
+  contractBase64: string;
+  deposit: number;
+  confirm: number;
+  total: number;
+  renterId: number;
+};
 
 export type AddressModel = {
   address: string;

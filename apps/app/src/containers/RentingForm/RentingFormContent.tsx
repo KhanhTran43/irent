@@ -33,9 +33,9 @@ import { CustomerCheckoutForm } from './CustomerCheckoutForm';
 
 export type RentingState = {
   price: number;
-  totalPrice: number;
+  total: number;
   deposit: number;
-  remain: number;
+  confirm: number;
   startDate: Date;
   endDate: Date;
   rentedDate: Date;
@@ -139,7 +139,7 @@ export function RentingFormContent() {
 
   const handleSaveRentedWarehouse = () => {
     if (user) {
-      const { startDate, endDate, rentedDate, deposit, remain, totalPrice } = rentingState;
+      const { startDate, endDate, rentedDate, deposit, confirm, total } = rentingState;
 
       const rentedWarehouse: CreateRentedWarehouseModel = {
         renterId: user.id,
@@ -149,22 +149,23 @@ export function RentingFormContent() {
         endDate: moment(endDate).format(),
         contractBase64: contractRef.current,
         deposit,
-        remain,
-        total: totalPrice,
+        confirm,
+        total,
       };
 
       console.log(rentedWarehouse);
 
-      // api.post(`rentedWarehouse`, rentedWarehouse).then(() => {
-      //   navigate('/home');
-      // });
+      api.post(`rentedWarehouse`, rentedWarehouse).then(() => {
+        navigate('/home');
+      });
     }
   };
 
   const handleOnPayment = () => {
-    const { deposit, remain, startDate } = rentingState;
+    setStepperCanNext(false);
+    const { deposit, confirm: remain, startDate } = rentingState;
     api
-      .post<{ clientSecret: string }>('/payment/fee', { amount: 1000, ownerId: owner?.id, userId: user?.id })
+      .post<{ clientSecret: string }>('/payment/fee', { amount: deposit, ownerId: owner?.id, userId: user?.id })
       .then((response) => {
         const clientSecret = response.data.clientSecret;
         const options: StripeElementsOptions = {
@@ -197,6 +198,7 @@ export function RentingFormContent() {
         );
 
         setPaymentDialogOpen(true);
+        setStepperCanNext(true);
       });
   };
 

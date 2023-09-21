@@ -1,7 +1,7 @@
 export function calculateRentingWarehousePrices(price: number, duration: number) {
-  const totalPrice = price * duration;
+  const total = price * duration;
   const deposit = price * 0.5;
-  const remain = totalPrice - deposit;
+  const confirm = total - deposit;
 
-  return { totalPrice, deposit, remain };
+  return { total, deposit, confirm };
 }

@@ -8,7 +8,7 @@ export type RentedWarehouseModel = {
   contractBase64: string;
   status: RentedWarehouseStatus;
   deposit: number;
-  remain: number;
+  confirm: number;
   total: number;
 };
 

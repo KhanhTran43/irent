@@ -22,7 +22,7 @@ export const RentingConfirmation = (props: RentingConfirmationProps) => {
     values: { duration },
   } = useFormikContext<RenterInformationFormValuesType>();
 
-  const { deposit, remain, totalPrice } = rentingState;
+  const { deposit, confirm: remain, total: totalPrice } = rentingState;
 
   return (
     <Container>
