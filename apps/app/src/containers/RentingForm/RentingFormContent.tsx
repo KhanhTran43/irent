@@ -77,7 +77,7 @@ export function RentingFormContent() {
     [warehouse, rentingState],
   );
   const contractConfirmationElement = useMemo(() => {
-    const { duration, endDate, rentedDate, startDate } = rentingState;
+    const { duration, endDate, startDate } = rentingState;
     return (
       renter &&
       owner && (
@@ -85,7 +85,6 @@ export function RentingFormContent() {
           contractOptions={{
             duration,
             endDate,
-            rentedDate,
             startDate,
             owner,
             renter,

@@ -2,14 +2,27 @@ export type RentedWarehouseModel = {
   renterId: number;
   warehouseId: number;
   rentedDate: string;
-  confirmDate: string;
   startDate: string;
   endDate: string;
+  confirmDate: string;
   contractBase64: string;
-  status: RentedWarehouseStatus;
   deposit: number;
   confirm: number;
   total: number;
+  status: RentedWarehouseStatus;
+};
+
+export type RentedWarehouseInfo = {
+  renterId: number;
+  rentedDate: string;
+  startDate: string;
+  endDate: string;
+  confirmDate: string;
+  contractBase64: string;
+  deposit: number;
+  confirm: number;
+  total: number;
+  status: RentedWarehouseStatus;
 };
 
 export type CreateRentedWarehouseModel = Omit<RentedWarehouseModel, 'status' | 'confirmDate'>;
@@ -17,8 +30,9 @@ export type CreateRentedWarehouseModel = Omit<RentedWarehouseModel, 'status' | '
 export enum RentedWarehouseStatus {
   None,
   Waiting,
-  Rented,
+  Renting,
   Canceling,
   Canceled,
   Expired,
+  Ended,
 }

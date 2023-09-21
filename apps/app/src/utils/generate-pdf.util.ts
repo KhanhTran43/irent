@@ -20,7 +20,6 @@ export type PdfOptions = {
     area: number;
   };
   duration: number;
-  rentedDate: Date;
   startDate: Date;
   endDate: Date;
 };
@@ -31,7 +30,7 @@ export function generatePdf(options: PdfOptions): void {
 }
 
 export function generatePdfContent(options: PdfOptions) {
-  const { renter, owner, warehouse, duration, endDate, rentedDate, startDate } = options;
+  const { renter, owner, warehouse, duration, endDate, startDate } = options;
 
   return {
     watermark: { text: 'iRent', color: 'blue', opacity: 0.05, bold: false, italics: true, fontSize: 128 },

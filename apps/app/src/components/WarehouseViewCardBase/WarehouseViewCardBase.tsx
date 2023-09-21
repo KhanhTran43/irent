@@ -1,7 +1,6 @@
-import { violet } from '@radix-ui/colors';
+import { blueA, green } from '@radix-ui/colors';
 import { SewingPinFilledIcon, TimerIcon } from '@radix-ui/react-icons';
 import { isEmpty } from 'lodash';
-import moment from 'moment';
 import styled from 'styled-components';
 
 import { WareHouseModel } from '@/models/warehouse.model';
@@ -9,10 +8,14 @@ import { convertTimestampToDate } from '@/utils/convert-timestamp-to-date.util';
 import { formatPrice } from '@/utils/format-price.util';
 import { resolveAddress } from '@/utils/warehouse-address.util';
 
-type WarehouseViewCardProps = {
+import { Label } from '../Common/Label';
+import { RentedWarehouseProgress } from './RentedWarehouseProgress';
+
+export type WarehouseViewCardProps = {
   warehouse: WareHouseModel;
   showRentedProgression?: boolean;
   showPrice?: boolean;
+  showStatus?: boolean;
   onClick?: (id: number) => void;
 };
 
@@ -20,9 +23,10 @@ export const WarehouseViewCardBase = ({
   warehouse,
   showRentedProgression = false,
   showPrice = false,
+  showStatus = false,
   onClick,
 }: WarehouseViewCardProps) => {
-  const { id, name, price, area, createdDate, rented, ward, images } = warehouse;
+  const { id, name, price, area, createdDate, images, rentedInfo } = warehouse;
   const address = resolveAddress(warehouse.address);
 
   return (
@@ -39,14 +43,10 @@ export const WarehouseViewCardBase = ({
           </CardAddressIcon>
           <AddressText title={address}>{address}</AddressText>
         </CardAddress>
-        {showPrice && <PriceText>{formatPrice(price)} VND</PriceText>}
+        {showPrice && <PriceText color="#008cff">{formatPrice(price)} VND</PriceText>}
+        {showStatus && rentedInfo && <Status color={green.green9}>{rentedInfo.status}</Status>}
         <CardArea>{area} mét vuông</CardArea>
-        {showRentedProgression &&
-          (rented === true ? (
-            <RentedProgress endDate={warehouse.rentedInfo.endDate} rentedDate={warehouse.rentedInfo.rentedDate} />
-          ) : (
-            <RentedProgress />
-          ))}
+        {showRentedProgression && <RentedWarehouseProgress rentedInfo={warehouse.rentedInfo}></RentedWarehouseProgress>}
         <CardDate>
           <TimerIcon />
           {convertTimestampToDate(createdDate)}
@@ -56,27 +56,12 @@ export const WarehouseViewCardBase = ({
   );
 };
 
-type RentedProgressProps = {
-  rentedDate?: string;
-  endDate?: string;
-};
-
-const RentedProgress = ({ rentedDate, endDate }: RentedProgressProps) => {
-  const daysLeft = endDate ? moment(endDate).diff(moment(), 'days') : 0;
-  const daysPassed = rentedDate ? moment().diff(moment(rentedDate), 'days') : 0;
-
-  return (
-    <>
-      <Progress max={daysLeft} value={daysPassed} />
-      <CardDaysLeft>{`Còn ${daysLeft} ngày`}</CardDaysLeft>
-    </>
-  );
-};
-
 const CardContainer = styled.div`
   width: 283px;
   background-color: #ffffff;
+  border: 1px solid ${blueA.blueA9};
   border-radius: 8px;
+  padding-top: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   justify-content: center;
   position: relative;
@@ -84,13 +69,14 @@ const CardContainer = styled.div`
   transition: box-shadow 0.5s ease;
 
   &:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 2px 4px ${blueA.blueA6};
     cursor: pointer;
   }
 `;
 
 const TextContainer = styled.div`
-  padding: 25px 20px 20px;
+  --container-padding-top: 30px;
+  padding: var(--container-padding-top) 20px 20px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -103,8 +89,8 @@ const CardArea = styled.span`
 `;
 
 const CardName = styled.span`
+  height: 25px;
   font-size: 20px;
-  margin-bottom: 10px;
   font-weight: bold;
   overflow: hidden;
   white-space: nowrap;
@@ -113,10 +99,10 @@ const CardName = styled.span`
 `;
 
 const CardAddress = styled.span`
+  height: 30px;
   display: flex;
   align-items: center;
   font-size: 14px;
-  margin-bottom: 5px;
   font-weight: normal;
   color: #505050;
 `;
@@ -126,9 +112,12 @@ const AddressText = styled.p`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  margin: 0;
 `;
 
-const CardAddressIcon = styled.div``;
+const CardAddressIcon = styled.div`
+  display: flex;
+`;
 
 const CardImage = styled.img`
   width: 283px;
@@ -140,9 +129,9 @@ const CardImage = styled.img`
 
 const CardDate = styled.span`
   position: absolute;
-  top: 0px;
+  top: var(--container-padding-top);
   right: 20px;
-  transform: translateY(50%);
+  transform: translateY(-100%);
 
   color: #999;
   font-size: 12px;
@@ -151,24 +140,13 @@ const CardDate = styled.span`
   gap: 4px;
 `;
 
-const PriceText = styled.div`
-  min-width: 60px;
-  height: 16px;
-  padding: 4px;
-  background: #3891e3;
-  color: white;
+const PriceText = styled(Label)`
   position: absolute;
   top: -20px;
-  border-radius: 4px;
-  text-align: center;
 `;
 
-const CardDaysLeft = styled.span`
-  color: #999;
-  font-size: 12px;
-`;
-
-const Progress = styled.progress`
-  width: 100%;
-  accent-color: ${violet.violet9};
+const Status = styled(Label)`
+  position: absolute;
+  top: -12px;
+  right: 20px;
 `;

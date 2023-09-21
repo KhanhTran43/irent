@@ -1,17 +1,18 @@
-import { violet } from '@radix-ui/colors';
-import { SewingPinFilledIcon, TimerIcon } from '@radix-ui/react-icons';
-import moment from 'moment';
-import styled from 'styled-components';
-
 import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
-import { WarehouseViewCardBase } from '../WarehouseViewCardBase';
+import { WarehouseViewCardBase, WarehouseViewCardProps } from '../WarehouseViewCardBase';
 
 type MyWarehouseViewCardProps = {
   warehouse: MyWarehouseDetailsModel;
+  type?: 'history' | 'own';
   onClick: (id: number) => void;
-  showRentedProgression?: boolean;
 };
 
-export const MyWarehouseViewCard = (props: MyWarehouseViewCardProps) => {
-  return <WarehouseViewCardBase {...props}></WarehouseViewCardBase>;
+export const MyWarehouseViewCard = ({ type = 'history', ...props }: MyWarehouseViewCardProps) => {
+  const getViewCardOptions = (): Partial<WarehouseViewCardProps> => {
+    if (type === 'history') {
+      return { showRentedProgression: true, showStatus: true };
+    } else return {};
+  };
+
+  return <WarehouseViewCardBase {...props} {...getViewCardOptions()}></WarehouseViewCardBase>;
 };

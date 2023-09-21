@@ -1,11 +1,11 @@
 import { WareHouseModel } from '../../models/warehouse.model';
 import { WarehouseViewCardBase } from '../WarehouseViewCardBase';
 
-type WarehouseViewCardProps = {
+type HomeWarehouseViewCardProps = {
   warehouse: WareHouseModel;
   onClick: (id: number) => void;
 };
 
-export const WarehouseViewCard = (props: WarehouseViewCardProps) => {
+export const HomeWarehouseViewCard = (props: HomeWarehouseViewCardProps) => {
   return <WarehouseViewCardBase {...props} showPrice></WarehouseViewCardBase>;
 };

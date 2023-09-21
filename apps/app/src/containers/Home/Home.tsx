@@ -9,7 +9,7 @@ import { WardValue } from '@/enums/ward-value.enum';
 import warehouseService from '@/service/warehouse-service';
 
 import { api } from '../../axios/axios';
-import { WarehouseViewCard } from '../../components/WarehouseViewCard/WarehouseViewCard';
+import { HomeWarehouseViewCard } from '../../components/HomeWarehouseViewCard/HomeWarehouseViewCard';
 import { WareHouseModel } from '../../models/warehouse.model';
 
 export const Home = () => {
@@ -75,7 +75,7 @@ export const Home = () => {
 
       <GridContainer>
         {warehouses.map((it) => (
-          <WarehouseViewCard key={it.id} warehouse={it} onClick={navigateToDetails}></WarehouseViewCard>
+          <HomeWarehouseViewCard key={it.id} warehouse={it} onClick={navigateToDetails}></HomeWarehouseViewCard>
         ))}
       </GridContainer>
     </>

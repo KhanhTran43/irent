@@ -4,8 +4,10 @@ import styled from 'styled-components';
 
 import { useAuthStore } from '@/auth';
 import { Button } from '@/components/Common/Button';
+import { Loading } from '@/components/Fallback';
 import { MyWarehouseViewCard } from '@/components/MyWarehouseViewCard/MyWarehouseViewCard';
 import { Role } from '@/enums/role.enum';
+import rentedWarehouseService from '@/service/rented-warehouse-service';
 import warehouseService from '@/service/warehouse-service';
 
 import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
@@ -13,7 +15,8 @@ import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model
 export const MyWarehouse = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const [warehouses, setWarehouses] = useState<MyWarehouseDetailsModel[]>([]);
+  const [warehouses, setWarehouses] = useState<MyWarehouseDetailsModel[]>();
+  const [isLoading, setLoading] = useState(true);
 
   const onSelect = (id: number) => {
     navigate(`/warehouse/${id}`);
@@ -23,11 +26,48 @@ export const MyWarehouse = () => {
 
   useEffect(() => {
     if (user) {
-      warehouseService.getMyWarehouse(user.id, user.role).then((data) => {
-        if (data && data.length !== 0) setWarehouses(data);
-      });
-    }
+      switch (user.role) {
+        case Role.Owner:
+          warehouseService.getOwnerWarehouse(user.id).then((data) => {
+            if (data && data.length !== 0) setWarehouses(data);
+            setLoading(false);
+          });
+          break;
+        case Role.Renter:
+          rentedWarehouseService.getRenterWarehouses(user.id).then((data) => {
+            if (data && data.length !== 0) setWarehouses(data);
+            setLoading(false);
+          });
+          break;
+        default:
+          break;
+      }
+    } else setLoading(false);
   }, []);
+
+  const renderMyList = () => {
+    if (isLoading) {
+      return <Loading />;
+    } else if (warehouses && warehouses.length > 0) {
+      return (
+        <GridContainer>
+          {warehouses.map((it) => (
+            <MyWarehouseViewCard
+              key={it.id}
+              warehouse={it}
+              onClick={onSelect}
+            ></MyWarehouseViewCard>
+          ))}
+        </GridContainer>
+      );
+    } else {
+      return (
+        <NothingContainer>
+          <h2>Chưa có gì ở đây</h2>
+        </NothingContainer>
+      );
+    }
+  };
 
   return (
     <>
@@ -36,22 +76,7 @@ export const MyWarehouse = () => {
           <Button>Tạo kho bãi</Button>
         </Link>
       )}
-      {warehouses.length > 0 ? (
-        <GridContainer>
-          {warehouses.map((it) => (
-            <MyWarehouseViewCard
-              key={it.id}
-              showRentedProgression={it.rented}
-              warehouse={it}
-              onClick={onSelect}
-            ></MyWarehouseViewCard>
-          ))}
-        </GridContainer>
-      ) : (
-        <NothingContainer>
-          <h2>Chưa có gì ở đây</h2>
-        </NothingContainer>
-      )}
+      {renderMyList()}
     </>
   );
 };
