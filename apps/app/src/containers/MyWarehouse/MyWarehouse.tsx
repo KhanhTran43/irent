@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,45 +7,27 @@ import { Button } from '@/components/Common/Button';
 import { Loading } from '@/components/Fallback';
 import { MyWarehouseViewCard } from '@/components/MyWarehouseViewCard/MyWarehouseViewCard';
 import { Role } from '@/enums/role.enum';
-import rentedWarehouseService from '@/service/rented-warehouse-service';
-import warehouseService from '@/service/warehouse-service';
 import { useMyWarehouseStore } from '@/store/my-warehouse.store';
-
-import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
 
 export const MyWarehouse = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const [warehouses, setWarehouses] = useState<MyWarehouseDetailsModel[]>();
-  const [isLoading, setLoading] = useState(true);
+  const { fetchMyWarehouses, loading, reset, warehouses } = useMyWarehouseStore();
 
   const onSelect = (id: number) => {
     navigate(`/warehouse/${id}`);
   };
 
   useEffect(() => {
-    if (user) {
-      switch (user.role) {
-        case Role.Owner:
-          warehouseService.getOwnerWarehouse(user.id).then((data) => {
-            if (data && data.length !== 0) setWarehouses(data);
-            setLoading(false);
-          });
-          break;
-        case Role.Renter:
-          rentedWarehouseService.getRenterWarehouses(user.id).then((data) => {
-            if (data && data.length !== 0) setWarehouses(data);
-            setLoading(false);
-          });
-          break;
-        default:
-          break;
-      }
-    } else setLoading(false);
+    fetchMyWarehouses(user);
+
+    return () => {
+      reset();
+    };
   }, []);
 
   const renderMyList = () => {
-    if (isLoading) {
+    if (loading) {
       return <Loading />;
     } else if (warehouses && warehouses.length > 0) {
       return (

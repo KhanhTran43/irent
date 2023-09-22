@@ -1,11 +1,13 @@
 import { red } from '@radix-ui/colors';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
+import { useAuthStore } from '@/auth';
 import { api } from '@/axios/axios';
 import { RentedWarehouseStatus } from '@/models/rented-warehouse.model';
+import { WareHouseModel } from '@/models/warehouse.model';
 import rentedWarehouseService from '@/service/rented-warehouse-service';
+import { useMyWarehouseStore } from '@/store/my-warehouse.store';
 
-import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
 import { ConfirmDialog, ConfirmDialogProps } from '../Common/Dialog';
 import { CustomerPaymentDialog, CustomerPaymentDialogProps } from '../Payment';
 import { WarehouseViewCardBase, WarehouseViewCardProps } from '../WarehouseViewCardBase';
@@ -18,7 +20,7 @@ export enum MyWarehouseViewCardType {
 }
 
 type MyWarehouseViewCardProps = {
-  warehouse: MyWarehouseDetailsModel;
+  warehouse: WareHouseModel;
   type?: MyWarehouseViewCardType;
   onClick: (id: number) => void;
 };
@@ -35,6 +37,8 @@ type ActionDialog =
 
 export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ...props }: MyWarehouseViewCardProps) => {
   const warehouse = props.warehouse;
+  const fetchMyWarehouses = useMyWarehouseStore((state) => state.fetchMyWarehouses);
+  const user = useAuthStore((state) => state.user);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [actionDialog, setActionDialog] = useState<ActionDialog>();
 
@@ -96,7 +100,8 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
   };
 
   const handleConfirmPaymentSuccess = () => {
-    if (warehouse.rentedInfo) rentedWarehouseService.confirmWarehouse(warehouse.rentedInfo.id);
+    if (warehouse.rentedInfo)
+      rentedWarehouseService.confirmWarehouse(warehouse.rentedInfo.id).then(() => fetchMyWarehouses(user));
   };
 
   const renderDialog = () => {
