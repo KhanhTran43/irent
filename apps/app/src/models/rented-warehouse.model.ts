@@ -1,4 +1,5 @@
 export type RentedWarehouseModel = {
+  id: number;
   renterId: number;
   warehouseId: number;
   rentedDate: string;
@@ -13,6 +14,7 @@ export type RentedWarehouseModel = {
 };
 
 export type RentedWarehouseInfo = {
+  id: number;
   renterId: number;
   rentedDate: string;
   startDate: string;
@@ -35,4 +37,5 @@ export enum RentedWarehouseStatus {
   Canceled,
   Expired,
   Ended,
+  Confirmed,
 }

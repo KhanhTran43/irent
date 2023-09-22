@@ -1,31 +1,19 @@
-import { blackA, violetDark } from '@radix-ui/colors';
+import { blackA, red, redA, violetDark } from '@radix-ui/colors';
 import * as stitches from '@stitches/react';
-import { ReactNode } from 'react';
 
-export type ButtonProps = {
-  color?: 'primary' | 'secondary';
-  disabled?: boolean;
-  onClick?: () => void;
-  children?: ReactNode;
-  type?: 'submit';
-  className?: string;
-};
+export type ButtonProps = stitches.ComponentProps<typeof StyledButton>;
 
 export const Button = (props: ButtonProps) => {
   const { onClick, children, color, disabled, type, className } = props || {};
 
   return (
-    <StyledButton
-      className={className}
-      color={color || 'primary'}
-      disabled={disabled}
-      type={type}
-      onClick={() => onClick && onClick()}
-    >
+    <StyledButton className={className} color={color || 'primary'} disabled={disabled} type={type} onClick={onClick}>
       {children}
     </StyledButton>
   );
 };
+
+type A = typeof StyledButton;
 
 const StyledButton = stitches.styled('button', {
   all: 'unset',
@@ -57,6 +45,13 @@ const StyledButton = stitches.styled('button', {
         '&:hover:enabled': { backgroundColor: 'rgba(0, 0, 0, .1)' },
         '&:disabled': {
           backgroundColor: 'rgba(136, 136, 136, 0.3)',
+        },
+      },
+      danger: {
+        backgroundColor: red.red9,
+        '&:hover:enabled': { backgroundColor: red.red11 },
+        '&:disabled': {
+          backgroundColor: redA.redA9,
         },
       },
       primary: {},

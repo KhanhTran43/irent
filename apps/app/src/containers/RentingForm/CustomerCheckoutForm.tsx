@@ -1,5 +1,4 @@
 import { useStripe } from '@stripe/react-stripe-js';
-import { StripePaymentElementOptions } from '@stripe/stripe-js';
 import { useState } from 'react';
 import styled from 'styled-components';
 

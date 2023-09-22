@@ -9,6 +9,7 @@ import { formatPrice } from '@/utils/format-price.util';
 import { resolveAddress } from '@/utils/warehouse-address.util';
 
 import { Label } from '../Common/Label';
+import { CardOptions, CardOptionsProps } from './CardOptions';
 import { RentedWarehouseProgress } from './RentedWarehouseProgress';
 
 export type WarehouseViewCardProps = {
@@ -17,20 +18,26 @@ export type WarehouseViewCardProps = {
   showPrice?: boolean;
   showStatus?: boolean;
   onClick?: (id: number) => void;
-};
+} & CardOptionsProps;
 
 export const WarehouseViewCardBase = ({
   warehouse,
   showRentedProgression = false,
   showPrice = false,
   showStatus = false,
+  actions,
   onClick,
 }: WarehouseViewCardProps) => {
   const { id, name, price, area, createdDate, images, rentedInfo } = warehouse;
   const address = resolveAddress(warehouse.address);
 
+  const renderCardOptions = () => {
+    if (actions) return <CardOptions actions={actions} />;
+  };
+
   return (
     <CardContainer onClick={() => onClick?.(id)}>
+      {!isEmpty(actions) && renderCardOptions()}
       <CardImage
         alt="Product"
         src={isEmpty(images) ? 'https://picsum.photos/seed/picsum/400/300' : images![0].originalUrl}
@@ -61,7 +68,7 @@ const CardContainer = styled.div`
   background-color: #ffffff;
   border: 1px solid ${blueA.blueA9};
   border-radius: 8px;
-  padding-top: 20px;
+  padding-top: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   justify-content: center;
   position: relative;

@@ -175,7 +175,7 @@ export const DialogOverlay = styled(RadixDialog.Overlay)`
 `;
 
 export const DialogContent = styled(RadixDialog.Content)`
-  background-color: hsla(225, 10%, 8%, 1);
+  background-color: white;
   border-radius: 20px;
   box-shadow:
     hsl(206 22% 7% / 35%) 0px 10px 38px -10px,

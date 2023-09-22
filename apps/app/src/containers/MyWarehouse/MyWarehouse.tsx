@@ -9,6 +9,7 @@ import { MyWarehouseViewCard } from '@/components/MyWarehouseViewCard/MyWarehous
 import { Role } from '@/enums/role.enum';
 import rentedWarehouseService from '@/service/rented-warehouse-service';
 import warehouseService from '@/service/warehouse-service';
+import { useMyWarehouseStore } from '@/store/my-warehouse.store';
 
 import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
 
@@ -21,8 +22,6 @@ export const MyWarehouse = () => {
   const onSelect = (id: number) => {
     navigate(`/warehouse/${id}`);
   };
-
-  console.log(user);
 
   useEffect(() => {
     if (user) {
@@ -52,11 +51,7 @@ export const MyWarehouse = () => {
       return (
         <GridContainer>
           {warehouses.map((it) => (
-            <MyWarehouseViewCard
-              key={it.id}
-              warehouse={it}
-              onClick={onSelect}
-            ></MyWarehouseViewCard>
+            <MyWarehouseViewCard key={it.id} warehouse={it} onClick={onSelect}></MyWarehouseViewCard>
           ))}
         </GridContainer>
       );
