@@ -31,11 +31,14 @@ export const MyWarehouse = () => {
       return <Loading />;
     } else if (warehouses && warehouses.length > 0) {
       return (
-        <GridContainer>
-          {warehouses.map((it) => (
-            <MyWarehouseViewCard key={it.id} warehouse={it} onClick={onSelect}></MyWarehouseViewCard>
-          ))}
-        </GridContainer>
+        <>
+          <p>{warehouses.length} kho bãi</p>
+          <GridContainer>
+            {warehouses.map((it) => (
+              <MyWarehouseViewCard key={it.id} warehouse={it} onClick={onSelect}></MyWarehouseViewCard>
+            ))}
+          </GridContainer>
+        </>
       );
     } else {
       return (
@@ -49,9 +52,11 @@ export const MyWarehouse = () => {
   return (
     <>
       {user?.role === Role.Owner && (
-        <Link to="/create">
-          <Button>Tạo kho bãi</Button>
-        </Link>
+        <CreateWareHouse>
+          <Link to="/create">
+            <Button>Tạo kho bãi</Button>
+          </Link>
+        </CreateWareHouse>
       )}
       {renderMyList()}
     </>
@@ -63,9 +68,15 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
+  min-height: 600px;
+`;
+
+const CreateWareHouse = styled.div`
+  text-align: right;
 `;
 
 const NothingContainer = styled.div`
   color: gray;
   text-align: center;
 `;
+

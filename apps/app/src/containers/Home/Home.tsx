@@ -8,7 +8,6 @@ import { WardSelect } from '@/components/Common/WardSelect';
 import { WardValue } from '@/enums/ward-value.enum';
 import warehouseService from '@/service/warehouse-service';
 
-import { api } from '../../axios/axios';
 import { HomeWarehouseViewCard } from '../../components/HomeWarehouseViewCard/HomeWarehouseViewCard';
 import { WareHouseModel } from '../../models/warehouse.model';
 
@@ -73,6 +72,7 @@ export const Home = () => {
         <PriceRangeSlider max={50000} min={100} onInput={(value: [number, number]) => setPriceFilter(value)} />
       </FilterContainer>
 
+      <p>{warehouses.length} kho bãi</p>
       <GridContainer>
         {warehouses.map((it) => (
           <HomeWarehouseViewCard key={it.id} warehouse={it} onClick={navigateToDetails}></HomeWarehouseViewCard>
@@ -86,10 +86,12 @@ const FilterContainer = styled.div`
   display: flex;
   margin-bottom: 48px;
   gap: 24px;
+  justify-content: flex-end;
 `;
 
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
+  min-height: 600px;
 `;

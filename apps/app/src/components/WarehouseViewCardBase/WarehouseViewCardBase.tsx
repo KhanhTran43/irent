@@ -1,5 +1,5 @@
 import { blueA, green } from '@radix-ui/colors';
-import { SewingPinFilledIcon, TimerIcon } from '@radix-ui/react-icons';
+import { HomeIcon, SquareIcon, TimerIcon } from '@radix-ui/react-icons';
 import { isEmpty } from 'lodash';
 import styled from 'styled-components';
 
@@ -46,14 +46,19 @@ export const WarehouseViewCardBase = ({
         <CardName>{name}</CardName>
         <CardAddress>
           <CardAddressIcon>
-            <SewingPinFilledIcon />
+            <HomeIcon />
           </CardAddressIcon>
           <AddressText title={address}>{address}</AddressText>
         </CardAddress>
-        {showPrice && <PriceText color="#008cff">{formatPrice(price)} VND</PriceText>}
         {showStatus && rentedInfo && <Status color={green.green9}>{rentedInfo.status}</Status>}
-        <CardArea>{area} mét vuông</CardArea>
+        <CardArea>
+          <CardAddressIcon>
+            <SquareIcon />
+          </CardAddressIcon>
+          {area} mét vuông
+        </CardArea>
         {showRentedProgression && <RentedWarehouseProgress rentedInfo={warehouse.rentedInfo}></RentedWarehouseProgress>}
+        {showPrice && <PriceText color="#008cff">{formatPrice(price)} VND</PriceText>}
         <CardDate>
           <TimerIcon />
           {convertTimestampToDate(createdDate)}
@@ -64,16 +69,16 @@ export const WarehouseViewCardBase = ({
 };
 
 const CardContainer = styled.div`
-  width: 283px;
+  width: 260px;
   background-color: #ffffff;
   border: 1px solid ${blueA.blueA9};
-  border-radius: 8px;
-  padding-top: 30px;
+  border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   justify-content: center;
   position: relative;
   margin: 0 auto;
   transition: box-shadow 0.5s ease;
+  max-height: 380px;
 
   &:hover {
     box-shadow: 0 2px 4px ${blueA.blueA6};
@@ -93,16 +98,18 @@ const CardArea = styled.span`
   font-size: 14px;
   font-weight: normal;
   margin-top: 0px;
+  display: flex;
+  align-items: center;
 `;
 
 const CardName = styled.span`
   height: 25px;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 16px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 172px;
+  margin: 12px 0 0;
 `;
 
 const CardAddress = styled.span`
@@ -124,10 +131,11 @@ const AddressText = styled.p`
 
 const CardAddressIcon = styled.div`
   display: flex;
+  margin-right: 8px;
 `;
 
 const CardImage = styled.img`
-  width: 283px;
+  width: 260px;
   height: 179px;
   object-fit: contain;
   object-position: center;
@@ -147,9 +155,11 @@ const CardDate = styled.span`
   gap: 4px;
 `;
 
-const PriceText = styled(Label)`
-  position: absolute;
-  top: -20px;
+const PriceText = styled.span`
+  margin-top: 24px;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: right;
 `;
 
 const Status = styled(Label)`
@@ -157,3 +167,4 @@ const Status = styled(Label)`
   top: -12px;
   right: 20px;
 `;
+
