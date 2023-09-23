@@ -10,6 +10,7 @@ import { formatPrice } from '@/utils/format-price.util';
 import { getDuration } from '@/utils/rented-warehouse.util';
 import { resolveAddress } from '@/utils/warehouse-address.util';
 
+import { Separator } from '../Common/Separator';
 import { CardOptions, CardOptionsProps } from './CardOptions';
 import { RentedWarehouseProgress } from './RentedWarehouseProgress';
 import { StatusLabel } from './StatusLabel';
@@ -20,6 +21,7 @@ export type WarehouseViewCardProps = {
   showPrice?: boolean;
   showStatus?: boolean;
   showRentedInfo?: boolean;
+  className?: string;
   onClick?: (id: number) => void;
 } & CardOptionsProps;
 
@@ -30,6 +32,7 @@ export const WarehouseViewCardBase = ({
   showRentedInfo = false,
   showStatus = false,
   actions,
+  className,
   onClick,
 }: WarehouseViewCardProps) => {
   const { id, name, price, area, createdDate, images, rentedInfo } = warehouse;
@@ -46,7 +49,7 @@ export const WarehouseViewCardBase = ({
   };
 
   return (
-    <CardContainer onClick={handleCardClick}>
+    <CardContainer className={className} onClick={handleCardClick}>
       {!isEmpty(actions) && renderCardOptions()}
       <CardImage
         alt="Product"
@@ -67,13 +70,29 @@ export const WarehouseViewCardBase = ({
           </CardAddressIcon>
           {area} mét vuông
         </CardArea>
+
+        {showRentedInfo && rentedInfo && (
+          <>
+            <Separator />
+            <RentedInfoArea>
+              <RentedInfoSide>
+                <RentedInfoSection>Tổng giá thuê:</RentedInfoSection>
+                <RentedInfoSection>Thời gian thuê:</RentedInfoSection>
+                <RentedInfoSection>Giá cọc:</RentedInfoSection>
+                <RentedInfoSection>Giá xác nhận thuê:</RentedInfoSection>
+              </RentedInfoSide>
+              <Separator orientation="vertical" />
+              <RentedInfoSide>
+                <RentedInfoSection>{formatPrice(rentedInfo.total)} VND</RentedInfoSection>
+                <RentedInfoSection>{getDuration(rentedInfo.startDate, rentedInfo.endDate)} tháng</RentedInfoSection>
+                <RentedInfoSection>{formatPrice(rentedInfo.deposit)} VND</RentedInfoSection>
+                <RentedInfoSection>{formatPrice(rentedInfo.confirm)} VND</RentedInfoSection>
+              </RentedInfoSide>
+            </RentedInfoArea>
+          </>
+        )}
         {showRentedProgression && <RentedWarehouseProgress rentedInfo={warehouse.rentedInfo}></RentedWarehouseProgress>}
         {showPrice && <PriceText color="#008cff">{formatPrice(price)} VND / tháng</PriceText>}
-        {showRentedInfo && rentedInfo && (
-          <PriceText color="#008cff">
-            {formatPrice(rentedInfo.total)} VND / {getDuration(rentedInfo.startDate, rentedInfo.endDate)} tháng
-          </PriceText>
-        )}
         <CardDate>
           <TimerIcon />
           {convertTimestampToDate(createdDate)}
@@ -84,7 +103,7 @@ export const WarehouseViewCardBase = ({
 };
 
 const CardContainer = styled.div`
-  width: 260px;
+  width: 300px;
   background-color: #ffffff;
   border: 1px solid ${blueA.blueA9};
   border-radius: 4px;
@@ -116,6 +135,20 @@ const CardArea = styled.span`
   display: flex;
   align-items: center;
 `;
+
+const RentedInfoArea = styled.div`
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const RentedInfoSide = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const RentedInfoSection = styled.div``;
 
 const CardName = styled.span`
   height: 25px;
@@ -150,8 +183,8 @@ const CardAddressIcon = styled.div`
 `;
 
 const CardImage = styled.img`
-  width: 260px;
-  height: 179px;
+  width: 300px;
+  height: 180px;
   padding: 4px;
   border-radius: 8px 8px 0 0px;
   object-fit: cover;

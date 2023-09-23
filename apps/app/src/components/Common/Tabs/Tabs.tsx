@@ -32,7 +32,6 @@ export function Tabs({ tabs, ...props }: TabsProps) {
 }
 
 const TabsRoot = styled(Root)`
-  width: 1160px;
   margin-top: 20px;
   display: flex;
   flex-direction: column;

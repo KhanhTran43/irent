@@ -1,6 +1,7 @@
 import { red } from '@radix-ui/colors';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
+import styled from 'styled-components';
 
 import { useAuthStore } from '@/auth';
 import { api } from '@/axios/axios';
@@ -66,8 +67,8 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
       case MyWarehouseViewCardType.History:
         return {
           ...props,
-          showPrice: true,
           showStatus: true,
+          showRentedInfo: true,
           actions: getOwningTypeActions(),
         };
       default:

@@ -31,11 +31,15 @@ export function MyWarehouseCardList({ type, warehouses, fallback, loading }: MyW
   return <>{loading ? <Loading /> : renderList()}</>;
 }
 
-const MyWarehouseCardListRoot = styled.div``;
+const MyWarehouseCardListRoot = styled.div`
+  --card-width: 300px;
+`;
 
 const GridContainer = styled.div`
+  width: 100%;
   margin-top: 12px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(4, var(--card-width));
+  justify-content: space-between;
+  row-gap: 10px;
 `;

@@ -80,13 +80,15 @@ export const Home = () => {
 
 const FilterContainer = styled.div`
   display: flex;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
   gap: 24px;
   justify-content: flex-end;
 `;
 
 const GridContainer = styled.div`
+  width: 1260px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(4, 300px);
+  justify-content: space-between;
+  row-gap: 20px;
 `;

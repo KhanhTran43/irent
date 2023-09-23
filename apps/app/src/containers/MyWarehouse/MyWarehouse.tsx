@@ -44,7 +44,7 @@ export const MyWarehouse = () => {
       );
     else if (user?.role === Role.Owner)
       return (
-        <Tabs
+        <MyWarehouseTabs
           tabs={[
             {
               tab: 'Kho bãi',
@@ -69,12 +69,12 @@ export const MyWarehouse = () => {
               ),
             },
           ]}
-        ></Tabs>
+        ></MyWarehouseTabs>
       );
   };
 
   return (
-    <>
+    <MyWarehouseRoot>
       {user?.role === Role.Owner && (
         <CreateWareHouse>
           <Link to="/create">
@@ -83,9 +83,17 @@ export const MyWarehouse = () => {
         </CreateWareHouse>
       )}
       {renderMyList()}
-    </>
+    </MyWarehouseRoot>
   );
 };
+
+const MyWarehouseRoot = styled.div`
+  --tabs-width: 1280px;
+`;
+
+const MyWarehouseTabs = styled(Tabs)`
+  width: var(--tabs-width);
+`;
 
 const CreateWareHouse = styled.div`
   text-align: right;
