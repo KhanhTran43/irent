@@ -55,12 +55,14 @@ export const DateProgress = ({ startDate, endDate, daysLeftTemplate = 'Còn {0}'
   const daysLeftDisplay = timeLeft ? format(daysLeftTemplate, [timeLeft]) : 'Hết hạn.';
 
   return (
-    <>
+    <DateProgressRoot>
       <Progress max={daysMax} value={daysPassed} />
       <CardDaysLeft>{daysLeftDisplay}</CardDaysLeft>
-    </>
+    </DateProgressRoot>
   );
 };
+
+const DateProgressRoot = styled.div``;
 
 const CardDaysLeft = styled.span`
   color: #999;

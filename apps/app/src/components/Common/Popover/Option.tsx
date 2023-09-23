@@ -15,6 +15,7 @@ const Container = styled.button<{
   border: none;
   display: flex;
   flex-direction: column;
+  text-align: left;
   width: 100%;
   cursor: pointer;
   background: transparent;

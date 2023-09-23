@@ -8,6 +8,7 @@ import { RentedWarehouseStatus } from '@/models/rented-warehouse.model';
 import { WareHouseModel } from '@/models/warehouse.model';
 import rentedWarehouseService from '@/service/rented-warehouse-service';
 import { useMyWarehouseStore } from '@/store/my-warehouse.store';
+import { formatPrice } from '@/utils/format-price.util';
 
 import { ConfirmDialog, ConfirmDialogProps } from '../Common/Dialog';
 import { CustomerPaymentDialog, CustomerPaymentDialogProps } from '../Payment';
@@ -15,9 +16,9 @@ import { WarehouseViewCardBase, WarehouseViewCardProps } from '../WarehouseViewC
 import { CardActions } from '../WarehouseViewCardBase/CardOptions';
 
 export enum MyWarehouseViewCardType {
-  History,
-  Owning,
-  Renting,
+  History, // Owner
+  Owning, // Owner
+  Renting, // Renter
 }
 
 type MyWarehouseViewCardProps = {
@@ -45,6 +46,68 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
   const [dialogOpen, setDialogOpen] = useState(false);
   const [actionDialog, setActionDialog] = useState<ActionDialog>();
 
+  const getViewCardOptions = (): WarehouseViewCardProps => {
+    switch (type) {
+      case MyWarehouseViewCardType.Renting:
+        return {
+          ...props,
+          showRentedProgression: true,
+          showStatus: true,
+          showRentedInfo: true,
+          actions: getRentingTypeActions(),
+        };
+      case MyWarehouseViewCardType.Owning:
+        return {
+          ...props,
+          showPrice: true,
+          actions: getOwningTypeActions(),
+        };
+      default:
+        return { ...props };
+    }
+  };
+
+  const getOwningTypeActions = useCallback((): CardActions[] => {
+    const viewDetailAction: CardActions = {
+      title: 'Xem kho bãi',
+      onClick: () => navigate(`/warehouse/${warehouse.id}`),
+    };
+
+    const confirmCancelActions: CardActions = {
+      title: 'Chấp thuận yêu cầu hủy',
+      onClick: () => {
+        setActionDialog({
+          type: 'confirm',
+          options: {
+            title: 'Yêu cầu hủy thuê',
+            children: (
+              <>
+                <p>Xác nhận chấp thuận yêu cầu hủy thuê?</p>
+                <p>Sau khi chấp nhận yêu cầu hủy, người thuê kho của bạn sẽ được nhận lại toàn bộ tiền cọc</p>
+              </>
+            ),
+            onAccept: () => {
+              if (warehouse.rentedInfo) {
+                rentedWarehouseService.confirmCancelWarehouse(warehouse.rentedInfo.id).finally(() => {
+                  fetchMyWarehouses(user);
+                });
+              }
+            },
+          },
+        });
+        setDialogOpen(true);
+      },
+      customHoverBackgroundColor: red.red9,
+    };
+
+    switch (warehouse.rentedInfo?.status) {
+      case RentedWarehouseStatus.Canceling:
+        return [viewDetailAction, confirmCancelActions];
+      default:
+        return [viewDetailAction];
+    }
+  }, [warehouse.rentedInfo?.status]);
+
   const getRentingTypeActions = useCallback((): CardActions[] => {
     const viewDetailAction: CardActions = {
       title: 'Xem kho bãi',
@@ -57,8 +120,20 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
         setActionDialog({
           type: 'confirm',
           options: {
-            children: 'Xác nhận gửi yêu cầu hủy thuê?',
-            onAccept: () => console.log('Hủy'),
+            title: 'Yêu cầu hủy thuê',
+            children: (
+              <>
+                <p>Xác nhận gửi yêu cầu hủy thuê?</p>
+                <p>Sau khi gửi yêu cầu hủy, chủ kho bãi sẽ xác nhận và bạn sẽ được hoàn lại tiền cọc.</p>
+              </>
+            ),
+            onAccept: () => {
+              if (warehouse.rentedInfo) {
+                rentedWarehouseService.requestCancelWarehouse(warehouse.rentedInfo.id).finally(() => {
+                  fetchMyWarehouses(user);
+                });
+              }
+            },
           },
         });
         setDialogOpen(true);
@@ -75,18 +150,9 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
       case RentedWarehouseStatus.Waiting:
         return [viewDetailAction, confirmActions, requestCancelActions];
       default:
-        return [];
+        return [viewDetailAction];
     }
   }, [warehouse.rentedInfo?.status]);
-
-  const getViewCardOptions = (): Partial<WarehouseViewCardProps> => {
-    switch (type) {
-      case MyWarehouseViewCardType.Renting:
-        return { showRentedProgression: true, showStatus: true, actions: getRentingTypeActions() };
-      default:
-        return {};
-    }
-  };
 
   const handleConfirmAction = () => {
     const { rentedInfo, userId: ownerId } = warehouse;
@@ -101,7 +167,19 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
 
       setActionDialog({
         type: 'payment',
-        options: { clientSecret: () => clientSecretPromise },
+        options: {
+          clientSecret: () => clientSecretPromise,
+          children: (
+            <>
+              <p>
+                Bạn đang thực hiện thanh toán xác nhận thuê kho bãi <strong>{warehouse.name}</strong>
+              </p>
+              <p>
+                Số tiền mà sau đây bạn phải trả là <strong>{formatPrice(warehouse.rentedInfo?.confirm)} VND</strong>
+              </p>
+            </>
+          ),
+        },
       });
       setDialogOpen(true);
     }
@@ -136,8 +214,8 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
 
   return (
     <>
-      <WarehouseViewCardBase {...props} {...getViewCardOptions()}></WarehouseViewCardBase>
-      {dialogOpen && renderDialog()}
+      <WarehouseViewCardBase {...getViewCardOptions()}></WarehouseViewCardBase>
+      {renderDialog()}
     </>
   );
 };

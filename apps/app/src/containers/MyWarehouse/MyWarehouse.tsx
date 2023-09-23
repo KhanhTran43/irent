@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAuthStore } from '@/auth';
 import { Button } from '@/components/Common/Button';
 import { Loading } from '@/components/Fallback';
-import { MyWarehouseViewCard } from '@/components/MyWarehouseViewCard/MyWarehouseViewCard';
+import { MyWarehouseViewCardType } from '@/components/MyWarehouseViewCard';
 import { Role } from '@/enums/role.enum';
 import { useMyWarehouseStore } from '@/store/my-warehouse.store';
 
+import { MyWarehouseCardList } from './MyWarehouseCardList';
+
 export const MyWarehouse = () => {
-  const navigate = useNavigate();
   const { user } = useAuthStore();
   const { fetchMyWarehouses, loading, reset, warehouses } = useMyWarehouseStore();
 
@@ -26,16 +27,10 @@ export const MyWarehouse = () => {
     if (loading) {
       return <Loading />;
     } else if (warehouses && warehouses.length > 0) {
-      return (
-        <>
-          <p>{warehouses.length} kho bãi</p>
-          <GridContainer>
-            {warehouses.map((it) => (
-              <MyWarehouseViewCard key={it.id} warehouse={it}></MyWarehouseViewCard>
-            ))}
-          </GridContainer>
-        </>
-      );
+      if (user?.role === Role.Renter)
+        return <MyWarehouseCardList type={MyWarehouseViewCardType.Renting} warehouses={warehouses} />;
+      else if (user?.role === Role.Owner)
+        return <MyWarehouseCardList type={MyWarehouseViewCardType.Owning} warehouses={warehouses} />;
     } else {
       return (
         <NothingContainer>
@@ -58,13 +53,6 @@ export const MyWarehouse = () => {
     </>
   );
 };
-
-const GridContainer = styled.div`
-  margin-top: 12px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-`;
 
 const CreateWareHouse = styled.div`
   text-align: right;

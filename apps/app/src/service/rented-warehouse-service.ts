@@ -25,6 +25,14 @@ class RentedWarehouseService extends Service<WareHouseModel, WareHouseModel, War
   async confirmWarehouse(rentedWarehouseId: string | number) {
     await this.api.patch(`confirm/${rentedWarehouseId}`);
   }
+
+  async requestCancelWarehouse(rentedWarehouseId: string | number) {
+    await this.api.patch(`cancel_request/${rentedWarehouseId}`, {}, { withCredentials: true });
+  }
+
+  async confirmCancelWarehouse(rentedWarehouseId: string | number) {
+    await this.api.patch(`cancel_confirm/${rentedWarehouseId}`, {}, { withCredentials: true });
+  }
 }
 
 export default new RentedWarehouseService();

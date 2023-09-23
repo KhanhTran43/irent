@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { WareHouseModel } from '@/models/warehouse.model';
 import { convertTimestampToDate } from '@/utils/convert-timestamp-to-date.util';
 import { formatPrice } from '@/utils/format-price.util';
+import { getDuration } from '@/utils/rented-warehouse.util';
 import { resolveAddress } from '@/utils/warehouse-address.util';
 
 import { Label } from '../Common/Label';
@@ -18,6 +19,7 @@ export type WarehouseViewCardProps = {
   showRentedProgression?: boolean;
   showPrice?: boolean;
   showStatus?: boolean;
+  showRentedInfo?: boolean;
   onClick?: (id: number) => void;
 } & CardOptionsProps;
 
@@ -25,6 +27,7 @@ export const WarehouseViewCardBase = ({
   warehouse,
   showRentedProgression = false,
   showPrice = false,
+  showRentedInfo = false,
   showStatus = false,
   actions,
   onClick,
@@ -66,6 +69,11 @@ export const WarehouseViewCardBase = ({
         </CardArea>
         {showRentedProgression && <RentedWarehouseProgress rentedInfo={warehouse.rentedInfo}></RentedWarehouseProgress>}
         {showPrice && <PriceText color="#008cff">{formatPrice(price)} VND / tháng</PriceText>}
+        {showRentedInfo && rentedInfo && (
+          <PriceText color="#008cff">
+            {formatPrice(rentedInfo.total)} VND / {getDuration(rentedInfo.startDate, rentedInfo.endDate)} tháng
+          </PriceText>
+        )}
         <CardDate>
           <TimerIcon />
           {convertTimestampToDate(createdDate)}
@@ -85,7 +93,6 @@ const CardContainer = styled.div`
   position: relative;
   margin: 0 auto;
   transition: box-shadow 0.5s ease;
-  max-height: 380px;
 
   &:hover {
     box-shadow: 0 2px 4px ${blueA.blueA6};

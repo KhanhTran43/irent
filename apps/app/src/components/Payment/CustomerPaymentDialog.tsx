@@ -24,6 +24,8 @@ export function CustomerPaymentDialog(props: CustomerPaymentDialogProps) {
   const clientSecretRef = useRef<string>();
 
   useEffect(() => {
+    setResponded(false);
+    setMessage('');
     if (typeof clientSecret === 'function') {
       setLoading(true);
       clientSecret().then((data) => {
@@ -35,7 +37,7 @@ export function CustomerPaymentDialog(props: CustomerPaymentDialogProps) {
     } else {
       clientSecretRef.current = clientSecret;
     }
-  }, []);
+  }, [clientSecret]);
 
   const handleSubmit = async () => {
     const stripe = await stripePromise;

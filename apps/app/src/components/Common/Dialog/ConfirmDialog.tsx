@@ -45,7 +45,7 @@ export function ConfirmDialog({
           {showFallBack ? (
             fallback
           ) : (
-            <>
+            <Container>
               <Title>{title}</Title>
               {children}
               <ButtonGroup>
@@ -56,13 +56,17 @@ export function ConfirmDialog({
                 </RadixDialogClose>
                 <Button onClick={onAccept}>{acceptText}</Button>
               </ButtonGroup>
-            </>
+            </Container>
           )}
         </>
       )}
     </Dialog>
   );
 }
+
+const Container = styled.div`
+  width: 500px;
+`;
 
 const ButtonGroup = styled.div`
   display: flex;
@@ -72,5 +76,5 @@ const ButtonGroup = styled.div`
 `;
 
 const Title = styled(RadixDialogTitle)`
-  margin-bottom: 12px;
+  margin: 10px 0;
 `;
