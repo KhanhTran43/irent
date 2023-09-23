@@ -108,7 +108,6 @@ const CardContainer = styled.div`
   border: 1px solid ${blueA.blueA9};
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  justify-content: center;
   position: relative;
   margin: 0 auto;
   transition: box-shadow 0.5s ease;
