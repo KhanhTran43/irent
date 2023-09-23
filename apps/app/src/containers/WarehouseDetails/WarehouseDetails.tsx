@@ -1,12 +1,14 @@
 import { HeartIcon, RulerSquareIcon, StackIcon, ViewVerticalIcon } from '@radix-ui/react-icons';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { useAuthStore } from '@/auth';
 import { Carousel } from '@/components/Carousel';
 import { Button } from '@/components/Common/Button/Button';
 import { CommentSection } from '@/components/Feedback';
-import { MapView } from '@/components/Map';
+import { MapSearchBoxInput, useMapWithSearchBox } from '@/components/Map';
+import { RouteDirection } from '@/components/RouteDirection';
 import { Role } from '@/enums/role.enum';
 import { ClientCommentModel, CreateCommentModel } from '@/models/comment.model';
 import warehouseService from '@/service/warehouse-service';
@@ -33,6 +35,9 @@ export const WarehouseDetails = () => {
   const { user } = useAuthStore(({ user }) => ({
     user,
   }));
+  const { currentSearchPayload } = useMapWithSearchBox();
+  const [searchedAddress, setSearchedAddress] = useState('');
+
   const navigate = useNavigate();
 
   const goToRentingForm = () => {
@@ -53,6 +58,10 @@ export const WarehouseDetails = () => {
     return warehouseService.addComment(userId, warehouseId, createComment);
   };
 
+  useEffect(() => {
+    setSearchedAddress(currentSearchPayload?.address || '');
+  }, [currentSearchPayload])
+
   return (
     <Container>
       <ImageContainer>
@@ -61,11 +70,11 @@ export const WarehouseDetails = () => {
       <BodyContainer>
         <Title>{warehouse?.name}</Title>
         <Address>{address}</Address>
-        {!!location && (
+        {/* {!!location && (
           <MapViewContainer>
             <MapView location={resolveLocation(warehouse.address)} />
           </MapViewContainer>
-        )}
+        )} */}
         <Date>Tạo vào lúc: {warehouse?.createdDate ? convertTimestampToDate(warehouse?.createdDate) : ''}</Date>
         <br />
         <ButtonContainer>
@@ -90,7 +99,7 @@ export const WarehouseDetails = () => {
           <OtherMetrics>
             <OtherMetricItem>
               <RulerSquareIcon color="#999" height={32} width={32}></RulerSquareIcon>
-              <Text>{warehouse?.area} nét vuông</Text>
+              <Text>{warehouse?.area} mét vuông</Text>
             </OtherMetricItem>
             <OtherMetricItem>
               <ViewVerticalIcon color="#999" height={32} width={32}></ViewVerticalIcon>
@@ -102,6 +111,16 @@ export const WarehouseDetails = () => {
             </OtherMetricItem>
           </OtherMetrics>
         </MetricsContainer>
+        <h4>Tìm kiếm đường đi</h4>
+        <InteractionContainer>
+          <AddressSearchInput />
+          <DirectionContainer>
+            <RouteDirection
+              from={searchedAddress}
+              to={address}
+            />
+          </DirectionContainer>
+        </InteractionContainer>
 
         <CommentsContainer>
           <CommentSection data={warehouse.comments} resolveComment={resolveComment} />
@@ -204,3 +223,29 @@ const ButtonContainer = styled.div`
   text-align: right;
   cursor: pointer;
 `;
+
+const InteractionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-top: 16px;
+  align-items: flex-start;
+`;
+
+const DirectionContainer = styled.div`
+  width: 100%;
+`;
+
+const inputStyles = css`
+  height: 50px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid gray;
+  box-sizing: border-box;
+`;
+
+const AddressSearchInput = styled(MapSearchBoxInput)`
+  ${inputStyles};
+  width: 100%;
+`;
+
