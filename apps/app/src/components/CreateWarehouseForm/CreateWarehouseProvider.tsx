@@ -32,12 +32,18 @@ export const CreateWarehouseProvider = ({ children, onFormValidChange, innerRef 
     address: yup.string().label('Địa chỉ').max(200).required(),
     area: yup.number().label('Diện tích').moreThan(0).required(),
     price: yup.number().label('Giá').moreThan(0).required(),
-    images: yup.array().of(
-      yup.object().shape({
-        originalUrl: yup.string().label('Ảnh gốc kho bãi').required(),
-        thumbnailUrl: yup.string().label('Ảnh thumbnail bãi').required(),
-      }),
-    ),
+    images: yup
+      .array()
+      .of(
+        yup
+          .object()
+          .shape({
+            originalUrl: yup.string().label('Ảnh gốc kho bãi').required(),
+            thumbnailUrl: yup.string().label('Ảnh thumbnail bãi').required(),
+          })
+          .required(),
+      )
+      .min(1),
     doors: yup.number().label('Số cửa').required(),
     floors: yup.number().label('Số tầng').required(),
   });

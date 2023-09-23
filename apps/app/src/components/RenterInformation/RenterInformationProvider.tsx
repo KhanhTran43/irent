@@ -1,14 +1,16 @@
-import { ReactNode } from 'react';
-import { number, object, string } from 'yup';
+import moment from 'moment';
+import { number, object } from 'yup';
 
 import { FormProvider, ProviderProps } from '../Common/Form';
 
 export type RenterInformationFormValuesType = {
   duration: number;
+  startDate: Date;
 };
 
 const initialFormValues: RenterInformationFormValuesType = {
   duration: 1,
+  startDate: moment().add(5, 'days').toDate(),
 };
 
 type RenterInformationProviderProps = ProviderProps<RenterInformationFormValuesType>;
@@ -19,10 +21,7 @@ export const RenterInformationProvider = ({
   ...otherProps
 }: RenterInformationProviderProps) => {
   const RenterInformationSchema = object().shape({
-    // name: string().label('Tên người thuê').min(2).max(50).required(),
-    // email: string().label('Email').email().required(),
-    // phoneNumber: string().label('Số điện thoại').phone().required(),
-    // ioc: string().label('CMND/CCCD').length(12).required(),
+
     duration: number().moreThan(0).label('Thời hạn thuê').required(),
   });
 

@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 type RouteDirectionProps = {
   from: string;
   to: string;
 };
+
+const directionsRenderer = new google.maps.DirectionsRenderer({});
+const directionsService = new google.maps.DirectionsService();
 
 function initMap(directionsRenderer: any) {
   const map = new google.maps.Map(document.getElementById('map'), {
@@ -15,9 +18,7 @@ function initMap(directionsRenderer: any) {
   directionsRenderer.setMap(map);
 }
 
-function calculateAndDisplayRoute(directionsRenderer: any, from: string, to: string) {
-  const directionsService = new google.maps.DirectionsService();
-
+function calculateAndDisplayRoute(directionsService: any, directionsRenderer: any, from: string, to: string) {
   directionsService
     .route({
       origin: {
@@ -36,7 +37,6 @@ function calculateAndDisplayRoute(directionsRenderer: any, from: string, to: str
 
 export const RouteDirection = (props: RouteDirectionProps) => {
   const { from, to } = props;
-  const directionsRenderer = new google.maps.DirectionsRenderer({});
 
   useEffect(() => {
     initMap(directionsRenderer);
@@ -44,7 +44,7 @@ export const RouteDirection = (props: RouteDirectionProps) => {
 
   useEffect(() => {
     if (!!from && !!to) {
-      calculateAndDisplayRoute(directionsRenderer, from, to);
+      calculateAndDisplayRoute(directionsService, directionsRenderer, from, to);
     }
   }, [from, to]);
   return (
@@ -55,6 +55,7 @@ export const RouteDirection = (props: RouteDirectionProps) => {
 };
 
 const MapContainer = styled.div.attrs({ id: 'map' })`
-  height: 100%;
+  height: 350px;
+  width: 100%;
 `;
 

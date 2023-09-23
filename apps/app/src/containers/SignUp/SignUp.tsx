@@ -84,7 +84,7 @@ export const SignUpForm = () => {
       }}
       onSubmit={handleOnFormSubmit}
     >
-      {({ values, handleSubmit, handleBlur, handleChange, isSubmitting }) => (
+      {({ values, handleSubmit, handleBlur, handleChange, isSubmitting, setFieldValue }) => (
         <FormContainer>
           <h2>Đăng ký</h2>
           <Form onSubmit={handleSubmit}>
@@ -155,7 +155,7 @@ export const SignUpForm = () => {
                   name="role"
                   type="radio"
                   value={1}
-                  onChange={handleChange}
+                  onChange={() => setFieldValue('role', 1)}
                 />
                 Người thuê
               </RadioButtonLabel>
@@ -165,7 +165,7 @@ export const SignUpForm = () => {
                   name="role"
                   type="radio"
                   value={2}
-                  onChange={handleChange}
+                  onChange={() => setFieldValue('role', 2)}
                 />
                 Chủ kho bãi
               </RadioButtonLabel>

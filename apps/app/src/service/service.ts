@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 
+import { useAuthStore } from '@/auth';
 import { defaultConfigs } from '@/axios/axios';
 import { GetStaticRequest } from '@/models/http/get-static-request';
 
@@ -14,6 +15,17 @@ export class Service<SelectModel, CreateModel, UpdateModel> {
     this.api = axios.create({
       ...defaultConfigs,
     });
+
+    this.api.interceptors.request.use(
+      async (config) => {
+        const { accessToken } = useAuthStore.getState();
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error),
+    );
   }
 
   protected setBaseURL(controllerName: string) {

@@ -1,8 +1,9 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { Appearance, StripeElementsOptions } from '@stripe/stripe-js';
 import { useFormikContext } from 'formik';
-import { isEmpty } from 'lodash';
-import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { isEmpty, mapValues } from 'lodash';
+import moment from 'moment';
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -21,11 +22,25 @@ import { ContractConfirmation } from '@/components/ContractConfirmation';
 import { RenterInformationFormValuesType, RentingInformationForm } from '@/components/RenterInformation';
 import { RentingConfirmation } from '@/components/RentingConfirmation';
 import { stripePromise } from '@/libs';
-import { RentedWarehouseModel } from '@/models/rented-warehouse.model';
+import { CreateRentedWarehouseModel } from '@/models/rented-warehouse.model';
 import { useRentingWarehouseResolver } from '@/resolver/WarehouseResolver';
-import { getEndDate, getStartDate } from '@/utils/rented-warehouse.util';
+import { calculateRentingWarehousePrices } from '@/utils/calculate-renting-warehouse-prices';
+import { convertDateToLocaleDateFormat } from '@/utils/datetime-format.util';
+import { formatPrice } from '@/utils/format-price.util';
+import { getAllRentingInfoDates } from '@/utils/rented-warehouse.util';
 
 import { CustomerCheckoutForm } from './CustomerCheckoutForm';
+
+export type RentingState = {
+  price: number;
+  total: number;
+  deposit: number;
+  confirm: number;
+  startDate: Date;
+  endDate: Date;
+  rentedDate: Date;
+  duration: number;
+};
 
 export function RentingFormContent() {
   const { user } = useAuthStore();
@@ -36,31 +51,53 @@ export function RentingFormContent() {
   const [isStepperCanNext, setStepperCanNext] = useState(false);
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
 
+  const calculateRentingState = useCallback(() => {
+    const price = warehouse.price;
+    const duration = values.duration;
+    const startDate = values.startDate;
+    const prices = calculateRentingWarehousePrices(price, duration);
+    const dates = mapValues(getAllRentingInfoDates(startDate, duration), (date) => date.toDate());
+
+    return { ...prices, ...dates, price, duration };
+  }, [values, warehouse.price]);
+
+  const [rentingState, setRentingState] = useState<RentingState>(() => {
+    return calculateRentingState();
+  });
+
+  useEffect(() => {
+    setRentingState(calculateRentingState());
+  }, [calculateRentingState]);
+
   const dialogContentRef = useRef<ReactNode>(null);
   const contractRef = useRef<string>('');
 
-  const rentingConfirmationElement = useMemo(() => <RentingConfirmation warehouse={warehouse} />, [warehouse]);
-  const contractConfirmationElement = useMemo(
-    () =>
+  const rentingConfirmationElement = useMemo(
+    () => <RentingConfirmation rentingState={rentingState} warehouse={warehouse} />,
+    [warehouse, rentingState],
+  );
+  const contractConfirmationElement = useMemo(() => {
+    const { duration, endDate, startDate } = rentingState;
+    return (
       renter &&
       owner && (
         <ContractConfirmation
           contractOptions={{
-            duration: values.duration,
-            endDate: getEndDate(values.duration),
-            rentedDate: getStartDate(),
-            owner: renter,
-            renter: owner,
-            warehouse: warehouse,
+            duration,
+            endDate,
+            startDate,
+            owner,
+            renter,
+            warehouse,
           }}
           getContract={(contract) => {
             contractRef.current = contract;
           }}
           onAgreedChange={setStepperCanNext}
         />
-      ),
-    [values.duration, warehouse, owner, renter],
-  );
+      )
+    );
+  }, [rentingState, owner, renter, warehouse]);
 
   const navigate = useNavigate();
 
@@ -101,15 +138,21 @@ export function RentingFormContent() {
 
   const handleSaveRentedWarehouse = () => {
     if (user) {
-      const { duration } = values;
+      const { startDate, endDate, rentedDate, deposit, confirm, total } = rentingState;
 
-      const rentedWarehouse: RentedWarehouseModel = {
+      const rentedWarehouse: CreateRentedWarehouseModel = {
         renterId: user.id,
         warehouseId: warehouse.id,
-        rentedDate: getStartDate(),
-        endDate: getEndDate(duration),
+        rentedDate: moment(rentedDate).format(),
+        startDate: moment(startDate).format(),
+        endDate: moment(endDate).format(),
         contractBase64: contractRef.current,
+        deposit,
+        confirm,
+        total,
       };
+
+      console.log(rentedWarehouse);
 
       api.post(`rentedWarehouse`, rentedWarehouse).then(() => {
         navigate('/home');
@@ -117,10 +160,11 @@ export function RentingFormContent() {
     }
   };
 
-  const handleOnPayment = (price: number) => {
-    const amount = price * values.duration;
+  const handleOnPayment = () => {
+    setStepperCanNext(false);
+    const { deposit, confirm: remain, startDate } = rentingState;
     api
-      .post<{ clientSecret: string }>('/payment/fee', { amount, ownerId: owner?.id, userId: user?.id })
+      .post<{ clientSecret: string }>('/payment/fee', { amount: deposit, ownerId: owner?.id, userId: user?.id })
       .then((response) => {
         const clientSecret = response.data.clientSecret;
         const options: StripeElementsOptions = {
@@ -130,15 +174,30 @@ export function RentingFormContent() {
 
         dialogContentRef.current = (
           <Elements options={options} stripe={stripePromise}>
-            <CustomerCheckoutForm
-              clientSecret={clientSecret}
-              total={amount}
-              // onSucceed={handleSaveRentedWarehouse}
-            />
+            <WarningWrapper>
+              <Title>Xác nhận thanh toán</Title>
+              <span>
+                <p>
+                  Sau khi xác nhận thanh toán, bạn sẽ trả phần tiền cọc là <strong>{formatPrice(deposit)} VND</strong>.
+                </p>
+                <p>
+                  Sau đó bạn cần phải thanh toán phần còn lại sau tiền cọc là <strong>{formatPrice(remain)} VND</strong>{' '}
+                  trước hoặc trong <strong>{convertDateToLocaleDateFormat(startDate)}</strong> để hoàn thành việc thuê
+                  kho bãi.
+                </p>
+                <p>
+                  <strong>Lưu ý:</strong> Nếu như không thanh toán đúng hạn, yêu cầu thuê kho của bạn sẽ bị hủy và sẽ
+                  không được hoàn lại số tiền đã cọc.
+                </p>
+              </span>
+            </WarningWrapper>
+
+            <CustomerCheckoutForm clientSecret={clientSecret} total={deposit} onSucceed={handleSaveRentedWarehouse} />
           </Elements>
         );
 
         setPaymentDialogOpen(true);
+        setStepperCanNext(true);
       });
   };
 
@@ -149,7 +208,7 @@ export function RentingFormContent() {
         isCanNext={isStepperCanNext}
         items={stepperItems}
         onCanNextChange={setStepperCanNext}
-        onComplete={() => handleOnPayment(warehouse.price)}
+        onComplete={() => handleOnPayment()}
         onStepChange={(step) => {
           if (step === 0) {
             validateForm().then((errors) => {
@@ -162,9 +221,8 @@ export function RentingFormContent() {
       >
         <Header>
           <TextContainer>
-            <Title>Thuê kho bãi</Title>
+            <Title>Thuê {warehouse.name}</Title>
             <StepperProgression />
-            {/* <Detail>Vui lòng điền đầy đủ thông tin bên dưới</Detail> */}
           </TextContainer>
           <ButtonContainer>
             <StepperBackButton color="secondary" />
@@ -193,10 +251,12 @@ const ButtonContainer = styled.div`
   gap: 24px;
 `;
 
-const Title = styled.h1``;
+const Title = styled.h2`
+  margin-bottom: 20px;
+`;
 
-const Detail = styled.span`
-  color: #999;
+const WarningWrapper = styled.div`
+  width: 500px;
 `;
 
 const PaymentDialog = styled(Dialog)`

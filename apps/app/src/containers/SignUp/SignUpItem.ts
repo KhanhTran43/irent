@@ -1,4 +1,5 @@
-import { date, InferType, mixed, number, object, ref, string } from '@/yup';
+import { Role } from '@/enums/role.enum';
+import { date, InferType, mixed, object, ref, string } from '@/yup';
 
 export const signUpFormValidateSchema = object().shape({
   name: string().label('Tên').max(50).required(),
@@ -12,7 +13,7 @@ export const signUpFormValidateSchema = object().shape({
   dob: date().required(),
   ioc: string().label('CCCD/CMND').integer().lengths([9, 12]).required(),
   phoneNumber: string().phone().required(),
-  role: number().required(),
+  role: mixed().oneOf(Object.values(Role)).required(),
 });
 
 export type SignUpFormValues = InferType<typeof signUpFormValidateSchema>;

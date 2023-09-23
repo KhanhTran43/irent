@@ -23,15 +23,10 @@ class WarehouseService extends Service<WareHouseModel, WareHouseModel, WareHouse
     return response.data;
   }
 
-  async getMyWarehouse(userId: string | number, role: Role) {
-    let response;
-    if (role === Role.Owner) {
-      response = await this.api.post<MyWarehouseDetailsModel[]>(`owner/${userId}`, this.defaultRequestPayload);
-    } else if (role === Role.Renter) {
-      response = await this.api.post<MyWarehouseDetailsModel[]>(`renter/${userId}`, this.defaultRequestPayload);
-    }
+  async getOwnerWarehouse(userId: string | number) {
+    const response = await this.api.post<MyWarehouseDetailsModel[]>(`owner/${userId}`, this.defaultRequestPayload);
 
-    return response?.data;
+    return response.data;
   }
 }
 

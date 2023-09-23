@@ -1,66 +1,61 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAuthStore } from '@/auth';
 import { Button } from '@/components/Common/Button';
-import { MyWarehouseViewCard } from '@/components/MyWarehouseViewCard/MyWarehouseViewCard';
+import { Loading } from '@/components/Fallback';
+import { MyWarehouseViewCardType } from '@/components/MyWarehouseViewCard';
 import { Role } from '@/enums/role.enum';
-import warehouseService from '@/service/warehouse-service';
+import { useMyWarehouseStore } from '@/store/my-warehouse.store';
 
-import { MyWarehouseDetailsModel } from '../../models/my-warehouse-details.model';
+import { MyWarehouseCardList } from './MyWarehouseCardList';
 
 export const MyWarehouse = () => {
-  const navigate = useNavigate();
   const { user } = useAuthStore();
-  const [warehouses, setWarehouses] = useState<MyWarehouseDetailsModel[]>([]);
-
-  const onSelect = (id: number) => {
-    navigate(`/warehouse/${id}`);
-  };
-
-  console.log(user);
+  const { fetchMyWarehouses, loading, reset, warehouses } = useMyWarehouseStore();
 
   useEffect(() => {
-    if (user) {
-      warehouseService.getMyWarehouse(user.id, user.role).then((data) => {
-        if (data && data.length !== 0) setWarehouses(data);
-      });
-    }
+    fetchMyWarehouses(user);
+
+    return () => {
+      reset();
+    };
   }, []);
+
+  const renderMyList = () => {
+    if (loading) {
+      return <Loading />;
+    } else if (warehouses && warehouses.length > 0) {
+      if (user?.role === Role.Renter)
+        return <MyWarehouseCardList type={MyWarehouseViewCardType.Renting} warehouses={warehouses} />;
+      else if (user?.role === Role.Owner)
+        return <MyWarehouseCardList type={MyWarehouseViewCardType.Owning} warehouses={warehouses} />;
+    } else {
+      return (
+        <NothingContainer>
+          <h2>Chưa có gì ở đây</h2>
+        </NothingContainer>
+      );
+    }
+  };
 
   return (
     <>
       {user?.role === Role.Owner && (
-        <Link to="/create">
-          <Button>Tạo kho bãi</Button>
-        </Link>
+        <CreateWareHouse>
+          <Link to="/create">
+            <Button>Tạo kho bãi</Button>
+          </Link>
+        </CreateWareHouse>
       )}
-      {warehouses.length > 0 ? (
-        <GridContainer>
-          {warehouses.map((it) => (
-            <MyWarehouseViewCard
-              key={it.id}
-              showRentedProgression={it.rented}
-              warehouse={it}
-              onClick={onSelect}
-            ></MyWarehouseViewCard>
-          ))}
-        </GridContainer>
-      ) : (
-        <NothingContainer>
-          <h2>Chưa có gì ở đây</h2>
-        </NothingContainer>
-      )}
+      {renderMyList()}
     </>
   );
 };
 
-const GridContainer = styled.div`
-  margin-top: 12px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+const CreateWareHouse = styled.div`
+  text-align: right;
 `;
 
 const NothingContainer = styled.div`

@@ -1,10 +1,13 @@
 import { Form, useFormikContext } from 'formik';
+import moment from 'moment';
 import { useState } from 'react';
 import styled from 'styled-components';
 
 import { useWarehouseResolver } from '../../resolver/WarehouseResolver';
 import { formatPrice } from '../../utils/format-price.util';
+import { DatePicker } from '../Common/DatePicker';
 import { FieldError } from '../Common/Form';
+import { SuffixInput } from '../Common/SuffixInput';
 import { RenterInformationFormValuesType } from './RenterInformationProvider';
 
 export type RenterInformationFormProps = unknown;
@@ -15,7 +18,8 @@ export const RentingInformationForm = (props: RenterInformationFormProps) => {
     warehouse: { price },
   } = useWarehouseResolver();
 
-  const { handleSubmit, handleChange, handleBlur, values } = useFormikContext<RenterInformationFormValuesType>();
+  const { handleSubmit, handleChange, handleBlur, setFieldValue, values } =
+    useFormikContext<RenterInformationFormValuesType>();
 
   return (
     <Container>
@@ -23,36 +27,17 @@ export const RentingInformationForm = (props: RenterInformationFormProps) => {
       <Form onSubmit={handleSubmit}>
         <Body>
           <LeftSide>
-            {/* <FormField>
-              <Label>Tên</Label>
-              <Input name="name" onChange={handleChange} onBlur={handleBlur} />
-              <FieldError errorFor="name" />
-            </FormField>
-            <FormField>
-              <Label>Số điện thoại</Label>
-              <Input name="phoneNumber" onChange={handleChange} onBlur={handleBlur} />
-              <FieldError errorFor="phoneNumber" />
-            </FormField>
-            <FormField>
-              <Label>Email</Label>
-              <Input name="email" onChange={handleChange} onBlur={handleBlur} />
-              <FieldError errorFor="email" />
-            </FormField>
-            <FormField>
-              <Label>CMND/CCCD</Label>
-              <Input name="ioc" onChange={handleChange} onBlur={handleBlur} />
-              <FieldError errorFor="ioc" />
-            </FormField> */}
             <PriceContainer>Giá thuê: {formatPrice(price)} VND</PriceContainer>
           </LeftSide>
 
           <RightSide>
             <FormField>
-              <Label>Thời hạn thuê (tháng)</Label>
-              <Input
+              <Label>Thời hạn thuê</Label>
+              <SuffixInput
                 defaultValue={values.duration}
                 min="1"
                 name="duration"
+                suffix="tháng"
                 type="number"
                 onBlur={handleBlur}
                 onChange={(v) => {
@@ -63,6 +48,20 @@ export const RentingInformationForm = (props: RenterInformationFormProps) => {
               />
             </FormField>
             <FieldError errorFor="duration" />
+            <FormField>
+              <Label>Ngày bắt đầu</Label>
+              <DatePicker
+                showDisabledMonthNavigation
+                dateFormat={'dd/MM/yyyy'}
+                maxDate={moment().add(30, 'days').toDate()}
+                minDate={moment().add(5, 'days').toDate()}
+                name="startDate"
+                selected={values.startDate}
+                onBlur={handleBlur}
+                onChange={(date) => setFieldValue('startDate', date)}
+              ></DatePicker>
+            </FormField>
+            <FieldError errorFor="date" />
             <Text>Thành tiền: {formatPrice(price * duration)} VND</Text>
           </RightSide>
         </Body>

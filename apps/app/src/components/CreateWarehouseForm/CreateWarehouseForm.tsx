@@ -1,7 +1,9 @@
 import { Form, useFormikContext } from 'formik';
+import { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import { UploadImageButton } from '@/containers/UploadImageButton/UploadImageButton';
+import { getWardFromMapWard } from '@/utils/get-ward-from-map.util';
 
 import { FieldError } from '../Common/Form';
 import { SuffixInput } from '../Common/SuffixInput';
@@ -14,11 +16,13 @@ export const CreateWarehouseForm = () => {
     useFormikContext<CreateWarehouseFormValuesType>();
   const { currentSearchPayload } = useMapWithSearchBox();
 
-  // useEffect(() => {
-  //   setFieldValue('address', JSON.stringify(currentSearchPayload));
-  //   setFieldValue('mapSearch', currentSearchPayload?.address);
-  //   if (currentSearchPayload?.ward) setFieldValue('ward', getWardFromMapWard(currentSearchPayload.ward));
-  // }, [currentSearchPayload]);
+  useEffect(() => {
+    setFieldValue('address', JSON.stringify(currentSearchPayload));
+    setFieldValue('mapSearch', currentSearchPayload?.address);
+    if (currentSearchPayload?.ward) setFieldValue('ward', getWardFromMapWard(currentSearchPayload.ward));
+  }, [currentSearchPayload]);
+
+  console.log(values);
 
   return (
     <Container>
@@ -173,3 +177,4 @@ const CreateFormMapContainer = styled(MapContainer)`
   height: 300px;
   width: 100%;
 `;
+

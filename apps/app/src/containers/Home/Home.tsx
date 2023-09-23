@@ -8,8 +8,7 @@ import { WardSelect } from '@/components/Common/WardSelect';
 import { WardValue } from '@/enums/ward-value.enum';
 import warehouseService from '@/service/warehouse-service';
 
-import { api } from '../../axios/axios';
-import { WarehouseViewCard } from '../../components/WarehouseViewCard/WarehouseViewCard';
+import { HomeWarehouseViewCard } from '../../components/HomeWarehouseViewCard/HomeWarehouseViewCard';
 import { WareHouseModel } from '../../models/warehouse.model';
 
 export const Home = () => {
@@ -62,10 +61,6 @@ export const Home = () => {
   //   );
   // };
 
-  const navigateToDetails = (id: number) => {
-    navigate(`/warehouse/${id}`);
-  };
-
   return (
     <>
       <FilterContainer>
@@ -73,9 +68,10 @@ export const Home = () => {
         <PriceRangeSlider max={50000} min={100} onInput={(value: [number, number]) => setPriceFilter(value)} />
       </FilterContainer>
 
+      <p>{warehouses.length} kho bãi</p>
       <GridContainer>
         {warehouses.map((it) => (
-          <WarehouseViewCard key={it.id} warehouse={it} onClick={navigateToDetails}></WarehouseViewCard>
+          <HomeWarehouseViewCard key={it.id} warehouse={it}></HomeWarehouseViewCard>
         ))}
       </GridContainer>
     </>
@@ -86,6 +82,7 @@ const FilterContainer = styled.div`
   display: flex;
   margin-bottom: 48px;
   gap: 24px;
+  justify-content: flex-end;
 `;
 
 const GridContainer = styled.div`
