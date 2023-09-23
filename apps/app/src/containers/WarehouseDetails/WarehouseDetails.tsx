@@ -111,7 +111,7 @@ export const WarehouseDetails = () => {
             </OtherMetricItem>
           </OtherMetrics>
         </MetricsContainer>
-        <h4>Tìm kiếm đường đi</h4>
+        <h4>Tìm kiếm đường đi đến kho bãi</h4>
         <InteractionContainer>
           <AddressSearchInput />
           <DirectionContainer>
