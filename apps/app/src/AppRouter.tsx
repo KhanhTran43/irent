@@ -62,8 +62,6 @@ const RootWrapper = () => {
 };
 
 export const AppRouter = () => {
-  console.log();
-
   return (
     // TODO: RequireAuthResolver for auth user data,
     // not using AuthStore for getting user anymore (user in store can be undefined)
