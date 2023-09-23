@@ -16,8 +16,9 @@ export type CreateWarehouseFormValuesType = {
 
 const initialFormValues: CreateWarehouseFormValuesType = {
   name: '',
-  mapSearch: '',
-  address: '123 Hoàng Công Chất',
+  mapSearch: '123 Võ Văn Kiệt, Phước Mỹ, Sơn Trà, Đà Nẵng 550000, Vietnam',
+  address:
+    '{"address":"123 Võ Văn Kiệt, Phước Mỹ, Sơn Trà, Đà Nẵng 550000, Vietnam","position":{"lat":16.0627636,"lng":108.2420478},"ward":"Sơn Trà"}',
 };
 
 export type CreateWarehouseFormProps = ProviderProps<CreateWarehouseFormValuesType>;

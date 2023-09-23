@@ -17,9 +17,11 @@ export const CreateWarehouseForm = () => {
   const { currentSearchPayload } = useMapWithSearchBox();
 
   useEffect(() => {
-    setFieldValue('address', JSON.stringify(currentSearchPayload));
-    setFieldValue('mapSearch', currentSearchPayload?.address);
-    if (currentSearchPayload?.ward) setFieldValue('ward', getWardFromMapWard(currentSearchPayload.ward));
+    if (currentSearchPayload) {
+      setFieldValue('address', JSON.stringify(currentSearchPayload));
+      setFieldValue('mapSearch', currentSearchPayload?.address);
+      if (currentSearchPayload.ward) setFieldValue('ward', getWardFromMapWard(currentSearchPayload.ward));
+    }
   }, [currentSearchPayload]);
 
   console.log(values);
@@ -177,4 +179,3 @@ const CreateFormMapContainer = styled(MapContainer)`
   height: 300px;
   width: 100%;
 `;
-
