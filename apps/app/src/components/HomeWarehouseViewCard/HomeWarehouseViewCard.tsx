@@ -3,7 +3,7 @@ import { WarehouseViewCardBase } from '../WarehouseViewCardBase';
 
 type HomeWarehouseViewCardProps = {
   warehouse: WareHouseModel;
-  onClick: (id: number) => void;
+  onClick?: (id: number) => void;
 };
 
 export const HomeWarehouseViewCard = (props: HomeWarehouseViewCardProps) => {

@@ -1,5 +1,6 @@
 import { red } from '@radix-ui/colors';
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { useAuthStore } from '@/auth';
 import { api } from '@/axios/axios';
@@ -22,7 +23,7 @@ export enum MyWarehouseViewCardType {
 type MyWarehouseViewCardProps = {
   warehouse: WareHouseModel;
   type?: MyWarehouseViewCardType;
-  onClick: (id: number) => void;
+  onClick?: (id: number) => void;
 };
 
 type ActionDialog =
@@ -39,10 +40,17 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
   const warehouse = props.warehouse;
   const fetchMyWarehouses = useMyWarehouseStore((state) => state.fetchMyWarehouses);
   const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [actionDialog, setActionDialog] = useState<ActionDialog>();
 
   const getRentingTypeActions = useCallback((): CardActions[] => {
+    const viewDetailAction: CardActions = {
+      title: 'Xem kho bãi',
+      onClick: () => navigate(`/warehouse/${warehouse.id}`),
+    };
+
     const requestCancelActions: CardActions = {
       title: 'Yêu cầu hủy',
       onClick: () => {
@@ -65,7 +73,7 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
 
     switch (warehouse.rentedInfo?.status) {
       case RentedWarehouseStatus.Waiting:
-        return [confirmActions, requestCancelActions];
+        return [viewDetailAction, confirmActions, requestCancelActions];
       default:
         return [];
     }

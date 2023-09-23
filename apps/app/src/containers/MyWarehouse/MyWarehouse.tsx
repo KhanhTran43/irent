@@ -14,10 +14,6 @@ export const MyWarehouse = () => {
   const { user } = useAuthStore();
   const { fetchMyWarehouses, loading, reset, warehouses } = useMyWarehouseStore();
 
-  const onSelect = (id: number) => {
-    navigate(`/warehouse/${id}`);
-  };
-
   useEffect(() => {
     fetchMyWarehouses(user);
 
@@ -35,7 +31,7 @@ export const MyWarehouse = () => {
           <p>{warehouses.length} kho bãi</p>
           <GridContainer>
             {warehouses.map((it) => (
-              <MyWarehouseViewCard key={it.id} warehouse={it} onClick={onSelect}></MyWarehouseViewCard>
+              <MyWarehouseViewCard key={it.id} warehouse={it}></MyWarehouseViewCard>
             ))}
           </GridContainer>
         </>
@@ -68,7 +64,6 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
-  min-height: 600px;
 `;
 
 const CreateWareHouse = styled.div`
@@ -79,4 +74,3 @@ const NothingContainer = styled.div`
   color: gray;
   text-align: center;
 `;
-

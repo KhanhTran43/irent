@@ -1,4 +1,3 @@
-import { DotsVerticalIcon } from '@radix-ui/react-icons';
 import styled from 'styled-components';
 
 import { Option, Popover } from '../Common/Popover';
@@ -12,9 +11,11 @@ export type CardActions = {
 export type CardOptionsProps = {
   actions?: CardActions[];
   onClickThreeDots?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  open?: boolean;
+  handleOpenChange?: (open: boolean) => void;
 };
 
-export const CardOptions = ({ actions, onClickThreeDots }: CardOptionsProps) => {
+export const CardOptions = ({ actions, open, onClickThreeDots, handleOpenChange }: CardOptionsProps) => {
   const handleOptionsClick = (e: React.MouseEvent<HTMLButtonElement>, onClick: () => void) => {
     e.stopPropagation();
     onClick();
@@ -35,10 +36,12 @@ export const CardOptions = ({ actions, onClickThreeDots }: CardOptionsProps) => 
           ))}
         </Container>
       }
+      handleOpenChange={handleOpenChange}
+      open={open}
       side="right"
-      sideOffset={2}
+      sideOffset={10}
     >
-      <OptionButton
+      {/* <OptionButton
         onClick={(e) => {
           e.stopPropagation();
           onClickThreeDots?.(e);
@@ -46,18 +49,25 @@ export const CardOptions = ({ actions, onClickThreeDots }: CardOptionsProps) => 
         onDoubleClick={(e) => e.stopPropagation()}
       >
         <DotsVerticalIcon />
-      </OptionButton>
+      </OptionButton> */}
+      <ClickArea></ClickArea>
     </Popover>
   );
 };
 
 const Container = styled.div`
-  padding: 8px;
   border-radius: 4px;
   background: white;
 
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   width: 164px;
+`;
+
+const ClickArea = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
 `;
 
 const OptionButton = styled.div`

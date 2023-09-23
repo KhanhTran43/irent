@@ -30,7 +30,9 @@ export const PriceRangeSlider = (props: PriceRangeSliderProps) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <Label>Giá: {formatPrice(appliedValue[0])} VND - {formatPrice(appliedValue[1])} VND</Label>
+        <Label>
+          Giá: {formatPrice(appliedValue[0])} VND - {formatPrice(appliedValue[1])} VND
+        </Label>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
@@ -50,13 +52,17 @@ export const PriceRangeSlider = (props: PriceRangeSliderProps) => {
               }}
             />
             <ButtonContainer>
-              <Button onClick={() => {
-                onInput?.(value);
-                setAppliedValue(value);
-              }}>Áp dụng</Button>
+              <Button
+                onClick={() => {
+                  onInput?.(value);
+                  setAppliedValue(value);
+                }}
+              >
+                Áp dụng
+              </Button>
             </ButtonContainer>
           </Container>
-          <DropdownMenu.Arrow />
+          <DropdownMenu.Arrow style={{ fill: '#216ba5' }} />
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>

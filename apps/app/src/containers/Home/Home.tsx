@@ -61,10 +61,6 @@ export const Home = () => {
   //   );
   // };
 
-  const navigateToDetails = (id: number) => {
-    navigate(`/warehouse/${id}`);
-  };
-
   return (
     <>
       <FilterContainer>
@@ -75,7 +71,7 @@ export const Home = () => {
       <p>{warehouses.length} kho bãi</p>
       <GridContainer>
         {warehouses.map((it) => (
-          <HomeWarehouseViewCard key={it.id} warehouse={it} onClick={navigateToDetails}></HomeWarehouseViewCard>
+          <HomeWarehouseViewCard key={it.id} warehouse={it}></HomeWarehouseViewCard>
         ))}
       </GridContainer>
     </>
@@ -93,5 +89,4 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
-  min-height: 600px;
 `;

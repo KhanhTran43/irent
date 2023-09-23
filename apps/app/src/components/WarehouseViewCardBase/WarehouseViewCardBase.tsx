@@ -1,6 +1,7 @@
 import { blueA, green } from '@radix-ui/colors';
 import { HomeIcon, SquareIcon, TimerIcon } from '@radix-ui/react-icons';
 import { isEmpty } from 'lodash';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import { WareHouseModel } from '@/models/warehouse.model';
@@ -30,13 +31,19 @@ export const WarehouseViewCardBase = ({
 }: WarehouseViewCardProps) => {
   const { id, name, price, area, createdDate, images, rentedInfo } = warehouse;
   const address = resolveAddress(warehouse.address);
+  const [isOptionsOpen, setOptionsOpen] = useState(false);
 
   const renderCardOptions = () => {
-    if (actions) return <CardOptions actions={actions} />;
+    if (actions) return <CardOptions actions={actions} handleOpenChange={setOptionsOpen} open={isOptionsOpen} />;
+  };
+
+  const handleCardClick = () => {
+    setOptionsOpen(true);
+    onClick?.(id);
   };
 
   return (
-    <CardContainer onClick={() => onClick?.(id)}>
+    <CardContainer onClick={handleCardClick}>
       {!isEmpty(actions) && renderCardOptions()}
       <CardImage
         alt="Product"
@@ -58,7 +65,7 @@ export const WarehouseViewCardBase = ({
           {area} mét vuông
         </CardArea>
         {showRentedProgression && <RentedWarehouseProgress rentedInfo={warehouse.rentedInfo}></RentedWarehouseProgress>}
-        {showPrice && <PriceText color="#008cff">{formatPrice(price)} VND</PriceText>}
+        {showPrice && <PriceText color="#008cff">{formatPrice(price)} VND / tháng</PriceText>}
         <CardDate>
           <TimerIcon />
           {convertTimestampToDate(createdDate)}
@@ -82,7 +89,6 @@ const CardContainer = styled.div`
 
   &:hover {
     box-shadow: 0 2px 4px ${blueA.blueA6};
-    cursor: pointer;
   }
 `;
 
@@ -137,9 +143,11 @@ const CardAddressIcon = styled.div`
 const CardImage = styled.img`
   width: 260px;
   height: 179px;
-  object-fit: contain;
+  padding: 4px;
+  border-radius: 8px 8px 0 0px;
+  object-fit: cover;
   object-position: center;
-  border-radius: 4px;
+  box-sizing: border-box;
 `;
 
 const CardDate = styled.span`
@@ -167,4 +175,3 @@ const Status = styled(Label)`
   top: -12px;
   right: 20px;
 `;
-

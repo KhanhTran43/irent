@@ -5,27 +5,34 @@ import styled from 'styled-components';
 type PopoverProps = {
   children: ReactNode;
   content: ReactNode;
-  isPopoverOpen?: boolean;
+  open?: boolean;
   handleInteractOutside?: () => void;
   handleClickTrigger?: () => void;
   handleOpenChange?: (isOpen: boolean) => void;
 } & RadixPopover.PopoverContentProps;
 
-const NoOutlineContent = styled(RadixPopover.Content)`
-  outline: none;
-`;
+const NoOutlineContent = styled(RadixPopover.Content)``;
 
 const Root = styled(RadixPopover.Root)``;
 
-export function Popover(props: PopoverProps) {
+export function Popover({
+  open,
+  children,
+  content,
+  handleOpenChange,
+  handleClickTrigger,
+  handleInteractOutside,
+  ...props
+}: PopoverProps) {
   return (
-    <Root open={props.isPopoverOpen} onOpenChange={props.handleOpenChange}>
-      <RadixPopover.Trigger asChild onClick={props.handleClickTrigger}>
-        {props.children}
+    <Root open={open} onOpenChange={handleOpenChange}>
+      <RadixPopover.Trigger asChild onClick={handleClickTrigger}>
+        {children}
       </RadixPopover.Trigger>
       <RadixPopover.Portal>
-        <NoOutlineContent {...props} onInteractOutside={props.handleInteractOutside}>
-          {props.content}
+        <NoOutlineContent {...props} onInteractOutside={handleInteractOutside}>
+          {content}
+          {/* <RadixPopover.Arrow fill="white" height={12} width={15} /> */}
         </NoOutlineContent>
       </RadixPopover.Portal>
     </Root>

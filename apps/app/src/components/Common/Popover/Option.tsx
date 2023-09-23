@@ -10,8 +10,7 @@ const Container = styled.button<{
   hoverBackground?: string;
   customHoverBackgroundColor?: string;
 }>`
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 10px 12px;
   outline: none;
   border: none;
   display: flex;
@@ -19,6 +18,16 @@ const Container = styled.button<{
   width: 100%;
   cursor: pointer;
   background: transparent;
+
+  &:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+
+  &:last-child {
+    border-end-end-radius: 4px;
+    border-end-start-radius: 4px;
+  }
 
   &:hover {
     background: ${(props) =>
