@@ -16,6 +16,7 @@ export function Loading({ size = 50, margin = 5 }: LoadingProps) {
 }
 
 const LoadingRoot = styled.div`
+  display: flex;
   width: fit-content;
   position: absolute;
   top: 50%;

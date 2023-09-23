@@ -9,15 +9,19 @@ import warehouseService from '@/service/warehouse-service';
 import { OmitFunctions } from '@/utils/type';
 
 type MyWarehouseStore = {
-  warehouses: WareHouseModel[];
-  loading: boolean;
+  rentedWarehouses: WareHouseModel[];
+  rentedWarehousesLoading: boolean;
+  ownWarehouse: WareHouseModel[];
+  ownWarehousesLoading: boolean;
   fetchMyWarehouses: (user: AuthUser | undefined) => Promise<void>;
   reset: () => void;
 };
 
 const initialState: OmitFunctions<MyWarehouseStore> = {
-  warehouses: [],
-  loading: true,
+  rentedWarehouses: [],
+  ownWarehousesLoading: false,
+  ownWarehouse: [],
+  rentedWarehousesLoading: false,
 };
 
 export const useMyWarehouseStore = create<MyWarehouseStore, [['zustand/immer', MyWarehouseStore]]>(
@@ -27,25 +31,39 @@ export const useMyWarehouseStore = create<MyWarehouseStore, [['zustand/immer', M
 
     // Actions
     fetchMyWarehouses: async (user) => {
-      set({ loading: true });
+      set({ ownWarehousesLoading: true, rentedWarehousesLoading: true });
       if (user) {
         switch (user.role) {
           case Role.Owner:
-            warehouseService.getOwnerWarehouse(user.id).then((data) => {
-              if (data && data.length !== 0) set({ warehouses: data });
-              set({ loading: false });
-            });
+            // owner warehouse
+            warehouseService
+              .getOwnerWarehouse(user.id)
+              .then((data) => {
+                if (data && data.length !== 0) set({ ownWarehouse: data });
+              })
+              .finally(() => set({ ownWarehousesLoading: false }));
+
+            // owner history
+            rentedWarehouseService
+              .getOwnerWarehouses(user.id)
+              .then((data) => {
+                if (data && data.length !== 0) set({ rentedWarehouses: data });
+              })
+              .finally(() => set({ rentedWarehousesLoading: false }));
             break;
           case Role.Renter:
-            rentedWarehouseService.getRenterWarehouses(user.id).then((data) => {
-              if (data && data.length !== 0) set({ warehouses: data });
-              set({ loading: false });
-            });
+            // renter renting warehouse
+            rentedWarehouseService
+              .getRenterWarehouses(user.id)
+              .then((data) => {
+                if (data && data.length !== 0) set({ rentedWarehouses: data });
+              })
+              .finally(() => set({ rentedWarehousesLoading: false }));
             break;
           default:
             break;
         }
-      } else set({ loading: false });
+      } else set({ ownWarehousesLoading: false, rentedWarehousesLoading: false });
     },
     // Reset the state to the initial values
     reset: () => set(initialState),

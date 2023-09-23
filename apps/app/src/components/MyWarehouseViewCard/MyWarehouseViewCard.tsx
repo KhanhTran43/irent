@@ -60,19 +60,34 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
         return {
           ...props,
           showPrice: true,
+          showStatus: true,
+          actions: getOwningTypeActions(),
+        };
+      case MyWarehouseViewCardType.History:
+        return {
+          ...props,
+          showPrice: true,
+          showStatus: true,
           actions: getOwningTypeActions(),
         };
       default:
-        return { ...props };
+        return { ...props, showRentedInfo: true, actions: getHistoryTypeActions() };
     }
   };
 
-  const getOwningTypeActions = useCallback((): CardActions[] => {
-    const viewDetailAction: CardActions = {
-      title: 'Xem kho bãi',
-      onClick: () => navigate(`/warehouse/${warehouse.id}`),
-    };
+  const viewDetailAction = {
+    title: 'Xem kho bãi',
+    onClick: () => navigate(`/warehouse/${warehouse.id}`),
+  };
 
+  const getHistoryTypeActions = useCallback((): CardActions[] => {
+    switch (warehouse.rentedInfo?.status) {
+      default:
+        return [viewDetailAction];
+    }
+  }, [warehouse.rentedInfo?.status]);
+
+  const getOwningTypeActions = useCallback((): CardActions[] => {
     const confirmCancelActions: CardActions = {
       title: 'Chấp thuận yêu cầu hủy',
       onClick: () => {
@@ -109,11 +124,6 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
   }, [warehouse.rentedInfo?.status]);
 
   const getRentingTypeActions = useCallback((): CardActions[] => {
-    const viewDetailAction: CardActions = {
-      title: 'Xem kho bãi',
-      onClick: () => navigate(`/warehouse/${warehouse.id}`),
-    };
-
     const requestCancelActions: CardActions = {
       title: 'Yêu cầu hủy',
       onClick: () => {

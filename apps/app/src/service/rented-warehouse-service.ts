@@ -22,6 +22,12 @@ class RentedWarehouseService extends Service<WareHouseModel, WareHouseModel, War
     return response.data;
   }
 
+  async getOwnerWarehouses(userId: string | number) {
+    const response = await this.api.post<MyWarehouseDetailsModel[]>(`owner/${userId}`, this.defaultRequestPayload);
+
+    return response.data;
+  }
+
   async confirmWarehouse(rentedWarehouseId: string | number) {
     await this.api.patch(`confirm/${rentedWarehouseId}`);
   }

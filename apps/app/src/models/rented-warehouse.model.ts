@@ -30,12 +30,25 @@ export type RentedWarehouseInfo = {
 export type CreateRentedWarehouseModel = Omit<RentedWarehouseModel, 'status' | 'confirmDate'>;
 
 export enum RentedWarehouseStatus {
-  None,
-  Waiting,
-  Renting,
-  Canceling,
-  Canceled,
-  Expired,
-  Ended,
-  Confirmed,
+  None = 0,
+  Waiting = 1,
+  Renting = 2,
+  Canceling = 3,
+  Canceled = 4,
+  Expired = 5,
+  Ended = 6,
+  Confirmed = 7,
 }
+
+type A = typeof RentedWarehouseStatus;
+
+export const RentedWarehouseLabel: Record<RentedWarehouseStatus, string> = {
+  [RentedWarehouseStatus.Canceled]: 'Đã hủy',
+  [RentedWarehouseStatus.Canceling]: 'Đang yêu cầu hủy',
+  [RentedWarehouseStatus.Confirmed]: 'Đã xác nhận thuê',
+  [RentedWarehouseStatus.Ended]: 'Đã thuê xong',
+  [RentedWarehouseStatus.Expired]: 'Hết hạn',
+  [RentedWarehouseStatus.None]: 'Không',
+  [RentedWarehouseStatus.Renting]: 'Đang thuê',
+  [RentedWarehouseStatus.Waiting]: 'Đang chờ thanh toán',
+};

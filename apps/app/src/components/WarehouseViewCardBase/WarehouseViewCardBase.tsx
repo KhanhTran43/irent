@@ -10,9 +10,9 @@ import { formatPrice } from '@/utils/format-price.util';
 import { getDuration } from '@/utils/rented-warehouse.util';
 import { resolveAddress } from '@/utils/warehouse-address.util';
 
-import { Label } from '../Common/Label';
 import { CardOptions, CardOptionsProps } from './CardOptions';
 import { RentedWarehouseProgress } from './RentedWarehouseProgress';
+import { StatusLabel } from './StatusLabel';
 
 export type WarehouseViewCardProps = {
   warehouse: WareHouseModel;
@@ -60,7 +60,7 @@ export const WarehouseViewCardBase = ({
           </CardAddressIcon>
           <AddressText title={address}>{address}</AddressText>
         </CardAddress>
-        {showStatus && rentedInfo && <Status color={green.green9}>{rentedInfo.status}</Status>}
+        {showStatus && rentedInfo && <StatusLabel status={rentedInfo.status} />}
         <CardArea>
           <CardAddressIcon>
             <SquareIcon />
@@ -93,6 +93,8 @@ const CardContainer = styled.div`
   position: relative;
   margin: 0 auto;
   transition: box-shadow 0.5s ease;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     box-shadow: 0 2px 4px ${blueA.blueA6};
@@ -175,10 +177,4 @@ const PriceText = styled.span`
   font-weight: bold;
   font-size: 20px;
   text-align: right;
-`;
-
-const Status = styled(Label)`
-  position: absolute;
-  top: -12px;
-  right: 20px;
 `;
