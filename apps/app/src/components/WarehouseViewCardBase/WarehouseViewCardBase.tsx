@@ -1,7 +1,8 @@
-import { blueA, green } from '@radix-ui/colors';
+import { blueA } from '@radix-ui/colors';
 import { HomeIcon, SquareIcon, TimerIcon } from '@radix-ui/react-icons';
 import { isEmpty } from 'lodash';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { WareHouseModel } from '@/models/warehouse.model';
@@ -56,7 +57,9 @@ export const WarehouseViewCardBase = ({
         src={isEmpty(images) ? 'https://picsum.photos/seed/picsum/400/300' : images![0].originalUrl}
       />
       <TextContainer>
-        <CardName>{name}</CardName>
+        <CardName>
+          <Link to={`/warehouse/${warehouse.id}`}>{name}</Link>
+        </CardName>
         <CardAddress>
           <CardAddressIcon>
             <HomeIcon />
@@ -120,7 +123,7 @@ const CardContainer = styled.div`
 `;
 
 const TextContainer = styled.div`
-  --container-padding-top: 30px;
+  --container-padding-top: 20px;
   padding: var(--container-padding-top) 20px 20px;
   position: relative;
   display: flex;
@@ -156,7 +159,11 @@ const CardName = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 172px;
-  margin: 12px 0 0;
+  margin: 8px 0 0;
+
+  & a:hover {
+    color: ${blueA.blueA9};
+  }
 `;
 
 const CardAddress = styled.span`
@@ -194,7 +201,7 @@ const CardImage = styled.img`
 const CardDate = styled.span`
   position: absolute;
   top: var(--container-padding-top);
-  right: 20px;
+  left: 20px;
   transform: translateY(-100%);
 
   color: #999;
