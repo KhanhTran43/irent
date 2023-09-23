@@ -123,7 +123,7 @@ const CardContainer = styled.div`
 `;
 
 const TextContainer = styled.div`
-  --container-padding-top: 20px;
+  --container-padding-top: 25px;
   padding: var(--container-padding-top) 20px 20px;
   position: relative;
   display: flex;
