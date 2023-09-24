@@ -7,6 +7,7 @@ const MyMenu = () => (
     <Menu.Item primaryText="Đang chờ duyệt" to="/request" />
     <Menu.DashboardItem primaryText="Thống kê"></Menu.DashboardItem>
     <Menu.Item primaryText="Doanh thu" to="/revenue"></Menu.Item>
+    <Menu.Item primaryText="Người dùng" to="/users"></Menu.Item>
   </Menu>
 );
 

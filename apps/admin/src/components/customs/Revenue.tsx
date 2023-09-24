@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import styled from 'styled-components';
 
+import { ChartData } from '../../models/chart-data.model';
 import { RentedWarehouseRevenue } from '../../models/rented-warehouse-revenue.model';
 import { apiUrl } from '../../provider';
 import {
@@ -14,15 +15,6 @@ import {
 import { generateDayLabelsInMonth, generateMonthLabels } from '../../utils/time.util';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-type ChartData = {
-  labels: string[];
-  datasets: Array<{
-    label: string;
-    data: number[];
-    backgroundColor: string;
-  }>;
-};
 
 export const Revenue = () => {
   const [rentedWarehouseRevenue, setRentedWarehouseRevenue] = useState<RentedWarehouseRevenue[]>([]);

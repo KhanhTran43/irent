@@ -7,6 +7,7 @@ import { CustomLayout } from './components/customs/CustomLayout';
 import { RequestWarehouseDetails } from './components/customs/RequestWarehouseDetails';
 import { RequestWarehouseList } from './components/customs/RequestWarehouseList';
 import { Revenue } from './components/customs/Revenue';
+import { Users } from './components/customs/Users';
 import { WarehouseList } from './components/WarehouseList';
 import { authProvider, dataProvider } from './provider';
 
@@ -17,6 +18,7 @@ const App = () => (
       <Route element={<RequestWarehouseList />} path="/request" />
       <Route element={<RequestWarehouseDetails />} path="/request/:id" />
       <Route element={<Revenue />} path="/revenue" />
+      <Route element={<Users />} path="/users" />
     </CustomRoutes>
   </Admin>
 );
