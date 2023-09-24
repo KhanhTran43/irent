@@ -12,6 +12,7 @@ export type CreateWarehouseFormValuesType = {
   image?: string;
   floors?: number;
   doors?: number;
+  description?: string;
 };
 
 const initialFormValues: CreateWarehouseFormValuesType = {
@@ -26,7 +27,6 @@ export type CreateWarehouseFormProps = ProviderProps<CreateWarehouseFormValuesTy
 // const CreateWarehouseForm = forwardRef<FormikProps<CreateWarehouseFormValuesType>, CreateWarehouseFormProps>(
 //   ({ children, onFormValidChange }: CreateWarehouseFormProps, ref) => {
 export const CreateWarehouseProvider = ({ children, onFormValidChange, innerRef }: CreateWarehouseFormProps) => {
-  // TODO: add floors and doors
   const CreateWareHouseSchema = yup.object().shape({
     name: yup.string().label('Tên kho bãi').min(2).max(50).required(),
     ward: yup.number().label('Quận').required(),
@@ -47,6 +47,7 @@ export const CreateWarehouseProvider = ({ children, onFormValidChange, innerRef 
       .min(1),
     doors: yup.number().label('Số cửa').required(),
     floors: yup.number().label('Số tầng').required(),
+    description: yup.string().label('Mô tả').required()
   });
 
   return (

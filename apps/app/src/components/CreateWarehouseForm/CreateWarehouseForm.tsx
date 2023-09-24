@@ -1,4 +1,7 @@
-import { Form, useFormikContext } from 'formik';
+import 'react-quill/dist/quill.snow.css';
+import './style.css';
+
+import { Field, Form, useFormikContext } from 'formik';
 import { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
@@ -6,6 +9,7 @@ import { UploadImageButton } from '@/containers/UploadImageButton/UploadImageBut
 import { getWardFromMapWard } from '@/utils/get-ward-from-map.util';
 
 import { FieldError } from '../Common/Form';
+import { RichTextEditor } from '../Common/RichTextEditor';
 import { SuffixInput } from '../Common/SuffixInput';
 import { WardSelect } from '../Common/WardSelect';
 import { MapContainer, MapSearchBoxInput, useMapWithSearchBox } from '../Map';
@@ -23,8 +27,6 @@ export const CreateWarehouseForm = () => {
       if (currentSearchPayload.ward) setFieldValue('ward', getWardFromMapWard(currentSearchPayload.ward));
     }
   }, [currentSearchPayload]);
-
-  console.log(values);
 
   return (
     <Container>
@@ -106,6 +108,11 @@ export const CreateWarehouseForm = () => {
               <CreateFormMapContainer />
             </RightSide>
           </TextInfo>
+          <FormField>
+            <Label>Mô tả</Label>
+            <Field component={RichTextEditor} name="description" />
+            <FieldError errorFor={'description'} />
+          </FormField>
         </Body>
       </Form>
     </Container>
