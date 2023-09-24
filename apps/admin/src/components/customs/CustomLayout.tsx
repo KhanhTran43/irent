@@ -5,6 +5,7 @@ const MyMenu = () => (
     <Menu.DashboardItem primaryText="Kho bãi"></Menu.DashboardItem>
     <Menu.Item primaryText="Tất cả" to="/warehouse" />
     <Menu.Item primaryText="Đang chờ duyệt" to="/request" />
+    <Menu.DashboardItem primaryText="Thống kê"></Menu.DashboardItem>
     <Menu.Item primaryText="Doanh thu" to="/revenue"></Menu.Item>
   </Menu>
 );
