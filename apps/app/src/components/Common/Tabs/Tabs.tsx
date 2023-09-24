@@ -1,4 +1,4 @@
-import { indigo, indigoA, indigoDark, redDark, redDarkA } from '@radix-ui/colors';
+import { indigo, indigoA } from '@radix-ui/colors';
 import { Content, List, Root, Trigger } from '@radix-ui/react-tabs';
 import styled from 'styled-components';
 
