@@ -2,9 +2,9 @@
 import { stringify } from 'query-string';
 import { DataProvider, fetchUtils } from 'react-admin';
 
-const apiUrl = 'http://localhost:7250';
 const httpClient = fetchUtils.fetchJson;
 
+export const apiUrl = 'https://localhost:7250';
 export const dataProvider: DataProvider = {
   getList: (resource, params) => {
     const { page, perPage } = params.pagination;

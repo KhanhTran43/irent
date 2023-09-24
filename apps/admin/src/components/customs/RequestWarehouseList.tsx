@@ -1,5 +1,4 @@
-import { Button, Datagrid, ListContextProvider, TextField, useGetList, useList } from 'react-admin';
-import { useNavigate } from 'react-router-dom';
+import { Datagrid, ListContextProvider, TextField, useGetList, useList } from 'react-admin';
 
 export const RequestWarehouseList = () => {
   const { data, isLoading } = useGetList('warehouse');
