@@ -39,7 +39,7 @@ export const Revenue = () => {
 
   useEffect(() => {
     axios
-      .post<any, any>(`${apiUrl}/api/RentedWarehouse/static`, {
+      .post<any, any>(`${apiUrl}/RentedWarehouse/static`, {
         includes: ['Warehouse'],
       })
       .then((m) =>

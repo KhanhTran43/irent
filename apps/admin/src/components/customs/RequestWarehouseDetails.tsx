@@ -1,14 +1,17 @@
 import { blackA, blue } from '@radix-ui/colors';
 import * as RadioGroup from '@radix-ui/react-radio-group';
 import * as stitches from '@stitches/react';
-import { useState } from 'react';
-import { Button, useGetOne, useUpdate } from 'react-admin';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Button, useUpdate } from 'react-admin';
 import { useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
+import { apiUrl } from '../../provider';
+
 export const RequestWarehouseDetails = () => {
   const { id } = useParams();
-  const { data: warehouse } = useGetOne('warehouse', { id });
+  const [warehouse, setWarehouse] = useState<any>(null);
   const [status, setStatus] = useState<number | null>(null);
   const [rejectedReason, setRejectedReason] = useState('');
   const [update] = useUpdate('warehouse', {
@@ -20,85 +23,101 @@ export const RequestWarehouseDetails = () => {
     previousData: warehouse,
   });
 
+  useEffect(() => {
+    axios
+      .post<any, any>(`${apiUrl}/warehouse/static/${id}`, {
+        includes: ['RentedWarehouses', 'Comments', 'Comments.User', 'Images'],
+      })
+      .then((v) => {
+        setWarehouse(v.data);
+      });
+  }, []);
+
   return (
     <>
-      <h1>{warehouse.name || ''}</h1>
-      <Wrapper>
-        <FlexField>
-          <LeftSide>
-            <Title>Địa chỉ</Title>
-            <Title>Giá</Title>
-            <Title>Diện tích</Title>
-            <Title>Số tầng</Title>
-            <Title>Số cửa</Title>
-            <Title>Ảnh</Title>
-          </LeftSide>
-          <RightSide>
-            <Text>{warehouse.address}</Text>
-            <Text>{(warehouse.price * 1000).toLocaleString('vi-VN')} VND / tháng</Text>
-            <Text>{warehouse.area} mét vuông</Text>
-            <Text>{warehouse.floors} tầng</Text>
-            <Text>{warehouse.doors} cửa</Text>
-            <ImageContainer $hasSrc={!!warehouse.images.length}>
-              {warehouse.images.length ? (
-                warehouse.images.map((it: any) => <Image key={it.originalUrl} src={it.originalUrl} />)
+      {warehouse ? (
+        <>
+          <h1>{warehouse.name || ''}</h1>
+          <Wrapper>
+            <FlexField>
+              <LeftSide>
+                <Title>Địa chỉ</Title>
+                <Title>Giá</Title>
+                <Title>Diện tích</Title>
+                <Title>Số tầng</Title>
+                <Title>Số cửa</Title>
+                <Title>Ảnh</Title>
+              </LeftSide>
+              <RightSide>
+                <Text>{warehouse.address}</Text>
+                <Text>{(warehouse.price * 1000).toLocaleString('vi-VN')} VND / tháng</Text>
+                <Text>{warehouse.area} mét vuông</Text>
+                <Text>{warehouse.floors} tầng</Text>
+                <Text>{warehouse.doors} cửa</Text>
+                <ImageContainer $hasSrc={!!warehouse.images.length}>
+                  {warehouse.images.length ? (
+                    warehouse.images.map((it: any) => <Image key={it.originalUrl} src={it.originalUrl} />)
+                  ) : (
+                    <></>
+                  )}
+                </ImageContainer>
+              </RightSide>
+            </FlexField>
+            <Field>
+              <Title>Chi tiết kho bãi</Title>
+              <Description dangerouslySetInnerHTML={{ __html: warehouse.description }} />
+            </Field>
+            <UpdateZone>
+              <Title>Xác nhận trạng thái</Title>
+              <RadioGroupRoot
+                onValueChange={(e) => {
+                  setStatus(Number(e));
+                }}
+              >
+                <Flex css={{ alignItems: 'center' }}>
+                  <RadioGroupItem id="approve" value="1">
+                    <RadioGroupIndicator />
+                  </RadioGroupItem>
+                  <Label htmlFor="approve">Đồng ý</Label>
+                </Flex>
+
+                <Flex css={{ alignItems: 'center' }}>
+                  <RadioGroupItem id="reject" value="2">
+                    <RadioGroupIndicator />
+                  </RadioGroupItem>
+                  <Label htmlFor="reject">Từ chối</Label>
+                </Flex>
+              </RadioGroupRoot>
+              {status === 2 ? (
+                <TextareaContainer>
+                  <Textarea
+                    placeholder="Nhập lí do từ chối"
+                    onChange={(e) => {
+                      setRejectedReason(e.target.value);
+                    }}
+                  />
+                </TextareaContainer>
               ) : (
                 <></>
               )}
-            </ImageContainer>
-          </RightSide>
-        </FlexField>
-        <Field>
-          <Title>Chi tiết kho bãi</Title>
-          <Description dangerouslySetInnerHTML={{ __html: warehouse.description }} />
-        </Field>
-        <UpdateZone>
-          <Title>Xác nhận trạng thái</Title>
-          <RadioGroupRoot
-            onValueChange={(e) => {
-              setStatus(Number(e));
-            }}
-          >
-            <Flex css={{ alignItems: 'center' }}>
-              <RadioGroupItem id="approve" value="1">
-                <RadioGroupIndicator />
-              </RadioGroupItem>
-              <Label htmlFor="approve">Đồng ý</Label>
-            </Flex>
-
-            <Flex css={{ alignItems: 'center' }}>
-              <RadioGroupItem id="reject" value="2">
-                <RadioGroupIndicator />
-              </RadioGroupItem>
-              <Label htmlFor="reject">Từ chối</Label>
-            </Flex>
-          </RadioGroupRoot>
-          {status === 2 ? (
-            <TextareaContainer>
-              <Textarea
-                placeholder="Nhập lí do từ chối"
-                onChange={(e) => {
-                  setRejectedReason(e.target.value);
-                }}
-              />
-            </TextareaContainer>
-          ) : (
-            <></>
-          )}
-          <div>
-            <ConfirmButton
-              onClick={() => {
-                if (!status || (status === 2 && !rejectedReason)) {
-                  return;
-                }
-                update();
-              }}
-            >
-              <span>Cập nhật</span>
-            </ConfirmButton>
-          </div>
-        </UpdateZone>
-      </Wrapper>
+              <div>
+                <ConfirmButton
+                  onClick={() => {
+                    if (!status || (status === 2 && !rejectedReason)) {
+                      return;
+                    }
+                    update();
+                  }}
+                >
+                  <span>Cập nhật</span>
+                </ConfirmButton>
+              </div>
+            </UpdateZone>
+          </Wrapper>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

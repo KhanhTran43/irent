@@ -1,9 +1,25 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { Datagrid, ListContextProvider, TextField, useGetList, useList } from 'react-admin';
 
+import { apiUrl } from '../../provider';
+
 export const RequestWarehouseList = () => {
-  const { data, isLoading } = useGetList('warehouse');
-  const filteredData = (data || []).filter((it: any) => it.status === 0);
-  const listContext = useList({ data: filteredData, isLoading });
+  const [data, setData] = useState([]);
+  const listContext = useList<any>({ data });
+
+  useEffect(() => {
+    axios.post<any, any>(`${apiUrl}/warehouse/static`, {
+      includes: ['RentedWarehouses', 'Comments', 'Comments.User', 'Images']
+    }).then(v => {
+      setData((v.data || []).filter((it: any) => it.status === 0).map((it: any) => ({
+        ...it,
+        price: (it.price * 1000).toLocaleString('vi-VN') + ' VND',
+        area: it.area + ' m2',
+        createdDate: new Date(it.createdDate).toISOString().split('T').join(' ')
+      })));
+    });
+  }, [])
 
   return (
     <>
@@ -11,11 +27,11 @@ export const RequestWarehouseList = () => {
       <ListContextProvider value={listContext}>
         <Datagrid rowClick={(e) => String(e)}>
           <TextField source="id" />
-          <TextField source="name" label="Tên" />
-          <TextField source="address" label="Địa chỉ" />
-          <TextField source="price" label="Giá" />
-          <TextField source="area" label="Diện tích" />
-          <TextField source="createdDate" label="Ngày tạo" />
+          <TextField label="Tên" source="name" />
+          <TextField label="Địa chỉ" source="address" />
+          <TextField label="Giá" source="price" />
+          <TextField label="Diện tích" source="area" />
+          <TextField label="Ngày tạo" source="createdDate" />
         </Datagrid>
       </ListContextProvider>
     </>

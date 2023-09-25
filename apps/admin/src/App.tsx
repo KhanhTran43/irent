@@ -8,13 +8,13 @@ import { RequestWarehouseDetails } from './components/customs/RequestWarehouseDe
 import { RequestWarehouseList } from './components/customs/RequestWarehouseList';
 import { Revenue } from './components/customs/Revenue';
 import { Users } from './components/customs/Users';
-import { WarehouseList } from './components/WarehouseList';
+import { WarehouseList } from './components/customs/WarehouseList';
 import { authProvider, dataProvider } from './provider';
 
 const App = () => (
   <Admin authProvider={authProvider} dataProvider={dataProvider} layout={CustomLayout}>
-    <Resource list={WarehouseList} name="warehouse"/>
     <CustomRoutes>
+      <Route element={<WarehouseList />} path="/warehouse" />
       <Route element={<RequestWarehouseList />} path="/request" />
       <Route element={<RequestWarehouseDetails />} path="/request/:id" />
       <Route element={<Revenue />} path="/revenue" />

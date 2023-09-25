@@ -21,7 +21,7 @@ export const Users = () => {
 
   useEffect(() => {
     axios
-      .post<any, any>(`${apiUrl}/api/user/static`, {})
+      .post<any, any>(`${apiUrl}/user/static`, {})
       .then((m) =>
         m.data.map((it: any) => {
           return {
@@ -35,7 +35,6 @@ export const Users = () => {
   }, []);
 
   useEffect(() => {
-    console.log(users);
     setChartData({
       labels: ['Chủ kho bãi', 'Người thuê'],
       datasets: [
