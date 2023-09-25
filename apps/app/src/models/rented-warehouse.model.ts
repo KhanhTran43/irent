@@ -27,7 +27,9 @@ export type RentedWarehouseInfo = {
   status: RentedWarehouseStatus;
 };
 
-export type CreateRentedWarehouseModel = Omit<RentedWarehouseModel, 'status' | 'confirmDate'>;
+export type CreateRentedWarehouseModel = Omit<RentedWarehouseModel, 'status' | 'confirmDate' | 'id'> & {
+  depositPayment: string;
+};
 
 export enum RentedWarehouseStatus {
   None = 0,

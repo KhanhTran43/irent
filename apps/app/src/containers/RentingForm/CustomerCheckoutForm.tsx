@@ -1,4 +1,5 @@
 import { useStripe } from '@stripe/react-stripe-js';
+import { PaymentIntent } from '@stripe/stripe-js';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -18,7 +19,7 @@ const Error = styled.div`
 type CustomerCheckoutFormProp = {
   total: number;
   clientSecret: string;
-  onSucceed?: () => void;
+  onSucceed?: (paymentIntent: PaymentIntent) => void;
 };
 
 export function CustomerCheckoutForm(props: CustomerCheckoutFormProp) {
@@ -59,7 +60,7 @@ export function CustomerCheckoutForm(props: CustomerCheckoutFormProp) {
       case 'succeeded':
         setResponded(true);
         setMessage('Thanh toán thành công!');
-        props.onSucceed?.();
+        props.onSucceed?.(paymentIntent);
         break;
       case 'processing':
         setResponded(true);

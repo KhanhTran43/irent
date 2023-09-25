@@ -1,5 +1,5 @@
 import { Elements } from '@stripe/react-stripe-js';
-import { Appearance, StripeElementsOptions } from '@stripe/stripe-js';
+import { Appearance, PaymentIntent, StripeElementsOptions } from '@stripe/stripe-js';
 import { useFormikContext } from 'formik';
 import { isEmpty, mapValues } from 'lodash';
 import moment from 'moment';
@@ -136,7 +136,7 @@ export function RentingFormContent() {
     [contractConfirmationElement, rentingConfirmationElement],
   );
 
-  const handleSaveRentedWarehouse = () => {
+  const handleSaveRentedWarehouse = (paymentIntent: PaymentIntent) => {
     if (user) {
       const { startDate, endDate, rentedDate, deposit, confirm, total } = rentingState;
 
@@ -150,6 +150,7 @@ export function RentingFormContent() {
         deposit,
         confirm,
         total,
+        depositPayment: paymentIntent.id,
       };
 
       console.log(rentedWarehouse);
