@@ -1,9 +1,11 @@
+import CryptoJS from 'crypto-js';
 import moment from 'moment';
 import { useCallback } from 'react';
 
 import { generatePdfContent, PdfOptions } from '@/utils/generate-pdf.util';
 
 export const testOptions: PdfOptions = {
+  code: 'test_contract',
   owner: { name: 'Trần Quốc Khánh', ioc: '123457', phoneNumber: '09055513099' },
   duration: 1,
   startDate: moment().startOf('days').toDate(),

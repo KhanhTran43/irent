@@ -7,7 +7,6 @@ import userService from '@/service/user-service';
 import warehouseService from '@/service/warehouse-service';
 
 import { useAuthStore } from '../../auth';
-import { api } from '../../axios/axios';
 import { WareHouseModel } from '../../models/warehouse.model';
 
 type WarehouseResolverType = {

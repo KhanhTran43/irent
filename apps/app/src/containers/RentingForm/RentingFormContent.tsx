@@ -26,6 +26,7 @@ import { CreateRentedWarehouseModel } from '@/models/rented-warehouse.model';
 import { useRentingWarehouseResolver } from '@/resolver/WarehouseResolver';
 import { calculateRentingWarehousePrices } from '@/utils/calculate-renting-warehouse-prices';
 import { convertDateToLocaleDateFormat } from '@/utils/datetime-format.util';
+import { generateContractHash, generateRandomAlphanumeric } from '@/utils/encrypt';
 import { formatPrice } from '@/utils/format-price.util';
 import { getAllRentingInfoDates } from '@/utils/rented-warehouse.util';
 
@@ -40,6 +41,8 @@ export type RentingState = {
   endDate: Date;
   rentedDate: Date;
   duration: number;
+  key: string;
+  hash: string;
 };
 
 export function RentingFormContent() {
@@ -57,13 +60,19 @@ export function RentingFormContent() {
     const startDate = values.startDate;
     const prices = calculateRentingWarehousePrices(price, duration);
     const dates = mapValues(getAllRentingInfoDates(startDate, duration), (date) => date.toDate());
+    const key = generateRandomAlphanumeric(6);
+    const hash = generateContractHash(
+      `${renter?.id}.${warehouse.id}.${moment(dates.rentedDate).format('DD-MM-YYYY')}.${key}`,
+    ).slice(0, 30);
 
-    return { ...prices, ...dates, price, duration };
-  }, [values, warehouse.price]);
+    return { ...prices, ...dates, price, duration, key, hash };
+  }, [values, warehouse, renter]);
 
   const [rentingState, setRentingState] = useState<RentingState>(() => {
     return calculateRentingState();
   });
+
+  console.log(rentingState);
 
   useEffect(() => {
     setRentingState(calculateRentingState());
@@ -77,12 +86,13 @@ export function RentingFormContent() {
     [warehouse, rentingState],
   );
   const contractConfirmationElement = useMemo(() => {
-    const { duration, endDate, startDate } = rentingState;
+    const { duration, endDate, startDate, hash } = rentingState;
     return (
       renter &&
       owner && (
         <ContractConfirmation
           contractOptions={{
+            code: hash,
             duration,
             endDate,
             startDate,
@@ -138,7 +148,7 @@ export function RentingFormContent() {
 
   const handleSaveRentedWarehouse = () => {
     if (user) {
-      const { startDate, endDate, rentedDate, deposit, confirm, total } = rentingState;
+      const { startDate, endDate, rentedDate, deposit, confirm, total, hash } = rentingState;
 
       const rentedWarehouse: CreateRentedWarehouseModel = {
         renterId: user.id,
@@ -150,6 +160,8 @@ export function RentingFormContent() {
         deposit,
         confirm,
         total,
+        depositPayment: 'mock',
+        hash,
       };
 
       console.log(rentedWarehouse);

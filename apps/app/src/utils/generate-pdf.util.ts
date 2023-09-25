@@ -9,6 +9,7 @@ type User = {
 };
 
 export type PdfOptions = {
+  code: string;
   renter: User;
   owner: User;
   warehouse: {
@@ -30,7 +31,7 @@ export function generatePdf(options: PdfOptions): void {
 }
 
 export function generatePdfContent(options: PdfOptions) {
-  const { renter, owner, warehouse, duration, endDate, startDate } = options;
+  const { renter, owner, warehouse, duration, endDate, startDate, code } = options;
 
   return {
     watermark: { text: 'iRent', color: 'blue', opacity: 0.05, bold: false, italics: true, fontSize: 128 },
@@ -48,6 +49,11 @@ export function generatePdfContent(options: PdfOptions) {
       {
         text: 'HỢP ĐỒNG CHO THUÊ KHO BÃI',
         style: 'header',
+        alignment: 'center',
+      },
+      {
+        text: `Mã hợp đồng: ${code}`,
+        style: 'code',
         alignment: 'center',
       },
       {
@@ -251,8 +257,13 @@ export function generatePdfContent(options: PdfOptions) {
       },
       header: {
         fontSize: 20,
-        marginBottom: 20,
+        marginBottom: 5,
         bold: true,
+        alignment: 'justify',
+      },
+      code: {
+        fontSize: 14,
+        marginBottom: 15,
         alignment: 'justify',
       },
       spacing: {
