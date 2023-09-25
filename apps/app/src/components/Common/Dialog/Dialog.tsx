@@ -185,7 +185,7 @@ export const DialogContent = styled(RadixDialog.Content)`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
-  min-width: 450px;
+  min-width: 150px;
   max-width: 90vw;
   max-height: 85vh;
   padding: 25px;
@@ -201,8 +201,8 @@ export const DialogContentBody = styled.div``;
 export const DialogTitle = styled(RadixDialog.Title)`
   margin: 0;
   font-weight: 500;
+  margin: 10px 0 15px 0;
   color: var(--mauve12);
-  font-size: 17px;
 `;
 
 export const DialogDescription = styled(RadixDialog.Description)`

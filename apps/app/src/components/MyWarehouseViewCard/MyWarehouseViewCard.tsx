@@ -1,5 +1,7 @@
-import { red } from '@radix-ui/colors';
+import { indigo, red } from '@radix-ui/colors';
+import { Formik, useFormik } from 'formik';
 import { useCallback, useState } from 'react';
+import { Title } from 'react-admin';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
@@ -11,7 +13,8 @@ import rentedWarehouseService from '@/service/rented-warehouse-service';
 import { useMyWarehouseStore } from '@/store/my-warehouse.store';
 import { formatPrice } from '@/utils/format-price.util';
 
-import { ConfirmDialog, ConfirmDialogProps } from '../Common/Dialog';
+import { ConfirmDialog, ConfirmDialogProps, Dialog, DialogProps, DialogTitle } from '../Common/Dialog';
+import { ConfirmDialogAction } from '../Common/Dialog/ConfirmDialogAction';
 import { CustomerPaymentDialog, CustomerPaymentDialogProps } from '../Payment';
 import { WarehouseViewCardBase, WarehouseViewCardProps } from '../WarehouseViewCardBase';
 import { CardActions } from '../WarehouseViewCardBase/CardOptions';
@@ -36,6 +39,10 @@ type ActionDialog =
   | {
       type: 'payment';
       options?: CustomerPaymentDialogProps;
+    }
+  | {
+      type: 'dialog';
+      options: DialogProps;
     };
 
 export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ...props }: MyWarehouseViewCardProps) => {
@@ -69,7 +76,7 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
           ...props,
           showStatus: true,
           showRentedInfo: true,
-          actions: getOwningTypeActions(),
+          actions: getHistoryTypeActions(),
         };
       default:
         return { ...props, showRentedInfo: true, actions: getHistoryTypeActions() };
@@ -157,9 +164,16 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
       onClick: handleConfirmAction,
     };
 
+    const extendAction: CardActions = {
+      title: 'Gia hạn',
+      onClick: handleExtendAction,
+    };
+
     switch (warehouse.rentedInfo?.status) {
       case RentedWarehouseStatus.Waiting:
         return [viewDetailAction, confirmActions, requestCancelActions];
+      case RentedWarehouseStatus.Renting:
+        return [viewDetailAction, extendAction];
       default:
         return [viewDetailAction];
     }
@@ -196,6 +210,29 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
     }
   };
 
+  const handleExtendAction = () => {
+    setActionDialog({
+      type: 'dialog',
+      options: {
+        children: (
+          <Formik initialValues={{ extendDuration: 1 }} onSubmit={() => {}}>
+            {() => (
+              <ExtendForm>
+                <DialogTitle>Gia hạn</DialogTitle>
+                <Field>
+                  <label>Số tháng gia hạn thêm:</label>
+                  <Input name="extendDuration" type="number"></Input>
+                </Field>
+                <ConfirmDialogAction></ConfirmDialogAction>
+              </ExtendForm>
+            )}
+          </Formik>
+        ),
+      },
+    });
+    setDialogOpen(true);
+  };
+
   const handleConfirmPaymentSuccess = () => {
     if (warehouse.rentedInfo)
       rentedWarehouseService.confirmWarehouse(warehouse.rentedInfo.id).then(() => fetchMyWarehouses(user));
@@ -219,6 +256,10 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
             ></CustomerPaymentDialog>
           );
         }
+        case 'dialog': {
+          const { options } = actionDialog;
+          return <Dialog {...options} open={dialogOpen} onOpenChange={setDialogOpen}></Dialog>;
+        }
       }
     }
   };
@@ -230,3 +271,36 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
     </>
   );
 };
+
+const Field = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+`;
+
+const ExtendForm = styled.div``;
+
+const Input = styled.input`
+  & {
+    width: 150px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    padding: 0 10px;
+    font-size: 13px;
+    line-height: 1;
+    border: 0;
+    color: ${indigo.indigo11};
+    box-shadow: 0 0 0 1px ${indigo.indigo7};
+    height: 25px;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px ${indigo.indigo8};
+  }
+
+  &:focus-visible {
+    outline: 0;
+  }
+`;
