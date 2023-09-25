@@ -135,12 +135,12 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
             children: (
               <>
                 <p>Xác nhận gửi yêu cầu hủy thuê?</p>
-                <p>Sau khi gửi yêu cầu hủy, chủ kho bãi sẽ xác nhận và bạn sẽ được hoàn lại tiền cọc.</p>
+                <p>Sau khi gửi yêu cầu hủy, bạn sẽ nhận lại được 1/3 tiền cọc.</p>
               </>
             ),
             onAccept: () => {
               if (warehouse.rentedInfo) {
-                rentedWarehouseService.requestCancelWarehouse(warehouse.rentedInfo.id).finally(() => {
+                rentedWarehouseService.cancelWarehouse(warehouse.rentedInfo.id).finally(() => {
                   fetchMyWarehouses(user);
                 });
               }

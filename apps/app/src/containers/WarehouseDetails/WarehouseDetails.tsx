@@ -60,7 +60,7 @@ export const WarehouseDetails = () => {
 
   useEffect(() => {
     setSearchedAddress(currentSearchPayload?.address || '');
-  }, [currentSearchPayload])
+  }, [currentSearchPayload]);
 
   return (
     <Container>
@@ -111,17 +111,23 @@ export const WarehouseDetails = () => {
             </OtherMetricItem>
           </OtherMetrics>
         </MetricsContainer>
+        <h4>Mô tả kho bãi</h4>
+        {warehouse.description ? (
+          <DescriptionContainer>
+            <Description dangerouslySetInnerHTML={{ __html: warehouse.description }} />
+          </DescriptionContainer>
+        ) : (
+          <small>
+            <i>Không có mô tả gì ở đây cả</i>
+          </small>
+        )}
         <h4>Tìm kiếm đường đi đến kho bãi</h4>
         <InteractionContainer>
           <AddressSearchInput />
           <DirectionContainer>
-            <RouteDirection
-              from={searchedAddress}
-              to={address}
-            />
+            <RouteDirection from={searchedAddress} to={address} />
           </DirectionContainer>
         </InteractionContainer>
-
         <CommentsContainer>
           <CommentSection data={warehouse.comments} resolveComment={resolveComment} />
         </CommentsContainer>
@@ -247,5 +253,16 @@ const inputStyles = css`
 const AddressSearchInput = styled(MapSearchBoxInput)`
   ${inputStyles};
   width: 100%;
+`;
+
+const DescriptionContainer = styled.div`
+  margin-bottom: 16px;
+`;
+
+const Description = styled.div`
+  padding: 8px 16px;
+  border: 1px solid #c2c2c2;
+  border-radius: 8px;
+  min-height: 300px;
 `;
 

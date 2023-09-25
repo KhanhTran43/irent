@@ -29,6 +29,7 @@ export type RentedWarehouseInfo = {
 
 export type CreateRentedWarehouseModel = Omit<RentedWarehouseModel, 'status' | 'confirmDate' | 'id'> & {
   depositPayment: string;
+  hash: string;
 };
 
 export enum RentedWarehouseStatus {

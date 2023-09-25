@@ -2,19 +2,19 @@
 import { stringify } from 'query-string';
 import { DataProvider, fetchUtils } from 'react-admin';
 
-const apiUrl = 'https://localhost:7250/api';
 const httpClient = fetchUtils.fetchJson;
 
+export const apiUrl = 'https://localhost:7250';
 export const dataProvider: DataProvider = {
   getList: (resource, params) => {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
-    const query = {
-      sort: JSON.stringify([field, order]),
-      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-      filter: JSON.stringify(params.filter),
-    };
-    const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    // const query = {
+    //   sort: JSON.stringify([field, order]),
+    //   range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+    //   filter: JSON.stringify(params.filter),
+    // };
+    const url = `${apiUrl}/${resource}`;
 
     return httpClient(url).then(({ headers, json }) => ({
       data: json,
@@ -56,7 +56,7 @@ export const dataProvider: DataProvider = {
 
   update: (resource, params) => {
     return httpClient(`${apiUrl}/${resource}/${params.id}`, {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify(params.data),
       headers: new Headers([
         ['Content-Type', 'application/json'],

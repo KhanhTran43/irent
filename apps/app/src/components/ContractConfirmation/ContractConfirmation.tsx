@@ -19,6 +19,8 @@ export const ContractConfirmation = ({
 }: ContractConfirmationProps) => {
   const { createContract, viewContract } = useContract();
 
+  console.log(contractOptions);
+
   useEffect(() => {
     createContract({ pdfOptions: contractOptions }).getBase64((data) => {
       getContract?.(data);

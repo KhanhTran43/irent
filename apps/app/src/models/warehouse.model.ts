@@ -15,6 +15,7 @@ export type WareHouseModel = {
   createdDate: number;
   doors: number;
   floors: number;
+  description: string;
   rented?: boolean;
   comments?: CommentModel[];
   images?: WarehouseImage[];
