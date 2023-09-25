@@ -182,8 +182,7 @@ export function RentingFormContent() {
                 </p>
                 <p>
                   Sau đó bạn cần phải thanh toán phần còn lại sau tiền cọc là <strong>{formatPrice(remain)} VND</strong>{' '}
-                  trước hoặc trong <strong>{convertDateToLocaleDateFormat(startDate)}</strong> để hoàn thành việc thuê
-                  kho bãi.
+                  trước <strong>{convertDateToLocaleDateFormat(startDate)}</strong> để hoàn thành việc thuê kho bãi.
                 </p>
                 <p>
                   <strong>Lưu ý:</strong> Nếu như không thanh toán đúng hạn, yêu cầu thuê kho của bạn sẽ bị hủy và sẽ
