@@ -10,13 +10,19 @@ const Error = styled.div`
   margin-top: 12px;
 `;
 
-export type CustomerPaymentDialogProps = ConfirmDialogProps & {
+export type CustomerPaymentDialogHelpers = {
+  setSecretClient: (secretClient: string) => void;
+  handlePayment: () => void;
+};
+
+export type CustomerPaymentDialogProps = Omit<ConfirmDialogProps, 'onAccept'> & {
   clientSecret?: string | (() => Promise<string>);
   onSucceed?: () => void;
+  onAcceptPay?: (helpers: CustomerPaymentDialogHelpers) => void;
 };
 
 export function CustomerPaymentDialog(props: CustomerPaymentDialogProps) {
-  const { onSucceed, children, clientSecret, ...dialogProps } = props;
+  const { onSucceed, onAcceptPay, children, clientSecret, title = 'Xác nhận thanh toán', ...dialogProps } = props;
 
   const [message, setMessage] = useState<string>('');
   const [isLoading, setLoading] = useState(false);
@@ -94,12 +100,14 @@ export function CustomerPaymentDialog(props: CustomerPaymentDialogProps) {
       {...dialogProps}
       acceptText="Thanh toán"
       fallback={<div>{message}</div>}
-      isLoading={isLoading}
-      showFallBack={isResponded}
-      title="Xác nhận thanh toán"
+      loading={isLoading}
+      showFallback={isResponded}
+      title={title}
       onAccept={() => {
-        handleSubmit();
-        dialogProps.onAccept?.();
+        onAcceptPay?.({
+          handlePayment: handleSubmit,
+          setSecretClient: (clientSecret) => (clientSecretRef.current = clientSecret),
+        });
       }}
     >
       <div>

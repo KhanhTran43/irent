@@ -1,5 +1,4 @@
 import { UserModel } from '@/models/user.model';
-import { WareHouseModel } from '@/models/warehouse.model';
 
 import { Service } from './service';
 

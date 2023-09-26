@@ -16,6 +16,8 @@ import {
 } from 'react';
 import styled, { keyframes } from 'styled-components';
 
+import { Loading } from '@/components/Fallback';
+
 type PointerDownOutsideEvent = CustomEvent<{
   originalEvent: PointerEvent;
 }>;
@@ -26,6 +28,10 @@ type FocusOutsideEvent = CustomEvent<{
 export type DialogProps = RadixDialogProps & {
   container?: HTMLElement;
   className?: string;
+  loading?: boolean;
+  onLoadingChange?: (loading: boolean) => void;
+  fallback?: ReactNode;
+  showFallback?: boolean;
   onDialogClose?: (data: any) => void;
   onOpenAutoFocus?: (e: Event) => void;
   onCloseAutoFocus?: (e: Event) => void;
@@ -40,6 +46,9 @@ export type DialogRef = {
 
 export type DialogContext = {
   close: (data?: any) => void;
+  setLoading: (loading: boolean) => void;
+  setFallback: (fallback: ReactNode) => void;
+  setShowFallback: (showFallback: boolean) => void;
   children?: ReactNode;
 };
 
@@ -54,7 +63,11 @@ export const DialogProvider = (props: DialogContext) => {
 };
 
 export const useDialogContext = () => {
-  return useContext(DialogContext);
+  const context = useContext(DialogContext);
+
+  if (!context) throw Error('Your component not inside Dialog context');
+
+  return context;
 };
 
 // TODO: refactor this for not using ref to open dialog
@@ -66,6 +79,10 @@ export const Dialog = forwardRef<DialogRef, DialogProps>(
       container,
       children,
       className,
+      loading,
+      onLoadingChange,
+      showFallback = false,
+      fallback,
       onDialogClose,
       onOpenAutoFocus,
       onCloseAutoFocus,
@@ -83,6 +100,18 @@ export const Dialog = forwardRef<DialogRef, DialogProps>(
       defaultProp: defaultOpen,
       onChange: onOpenChange,
     });
+    const [dialogLoading, setDialogLoading] = useControllableState({
+      prop: loading,
+      defaultProp: false,
+      onChange: onLoadingChange,
+    });
+    const [dialogFallback, setDialogFallback] = useControllableState({
+      defaultProp: fallback,
+    });
+    const [dialogShowFallback, setDialogShowFallback] = useControllableState({
+      defaultProp: showFallback,
+    });
+
     const closeReturn = useRef<any>(undefined);
     const onDialogCloseRef = useCallbackRef(onDialogClose);
     // TODO: remove this this for not using ref to set content
@@ -117,7 +146,12 @@ export const Dialog = forwardRef<DialogRef, DialogProps>(
           setDialogOpen(open);
         }}
       >
-        <DialogProvider close={close}>
+        <DialogProvider
+          close={close}
+          setFallback={setDialogFallback}
+          setLoading={setDialogLoading}
+          setShowFallback={setDialogShowFallback}
+        >
           <RadixDialog.Portal container={container}>
             <DialogOverlay />
             <DialogContent
@@ -128,7 +162,13 @@ export const Dialog = forwardRef<DialogRef, DialogProps>(
               onOpenAutoFocus={onOpenAutoFocus}
               onPointerDownOutside={onPointerDownOutside}
             >
-              <DialogContentBody>{content ?? children}</DialogContentBody>
+              <DialogContentBody>
+                {dialogLoading ? (
+                  <Loading size={30} />
+                ) : (
+                  <>{dialogShowFallback ? dialogFallback : content ?? children}</>
+                )}
+              </DialogContentBody>
               <RadixDialog.Close asChild>
                 <CloseButton>
                   <Cross1Icon></Cross1Icon>
@@ -220,8 +260,9 @@ export const CloseButton = styled.button`
   border-width: 0;
 
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 25px;
+  right: 25px;
+  transform: translate(50%, -50%);
 
   display: flex;
   align-items: center;

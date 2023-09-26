@@ -1,7 +1,4 @@
-import { ReactNode } from 'react';
 import styled from 'styled-components';
-
-import { Loading } from '@/components/Fallback';
 
 import { ConfirmDialogAction, ConfirmDialogActionProps } from './ConfirmDialogAction';
 import { Dialog, DialogProps, DialogTitle } from './Dialog';
@@ -9,17 +6,14 @@ import { Dialog, DialogProps, DialogTitle } from './Dialog';
 export type ConfirmDialogProps = DialogProps &
   ConfirmDialogActionProps & {
     title?: string;
-    isLoading?: boolean;
-    fallback?: ReactNode;
-    showFallBack?: boolean;
   };
 
 export function ConfirmDialog({
   children,
   title = 'Xác nhận',
-  isLoading = false,
+  loading = false,
   fallback,
-  showFallBack = false,
+  showFallback = false,
   acceptText,
   cancelText,
   onAccept,
@@ -41,21 +35,11 @@ export function ConfirmDialog({
         onCancel?.();
       }}
     >
-      {isLoading ? (
-        <Loading size={30} />
-      ) : (
-        <>
-          {showFallBack ? (
-            fallback
-          ) : (
-            <Container>
-              <DialogTitle>{title}</DialogTitle>
-              {children}
-              <ConfirmDialogAction {...actionProps} />
-            </Container>
-          )}
-        </>
-      )}
+      <Container>
+        <DialogTitle>{title}</DialogTitle>
+        {children}
+        <ConfirmDialogAction {...actionProps} />
+      </Container>
     </Dialog>
   );
 }

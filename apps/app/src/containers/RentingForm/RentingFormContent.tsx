@@ -60,10 +60,11 @@ export function RentingFormContent() {
     const startDate = values.startDate;
     const prices = calculateRentingWarehousePrices(price, duration);
     const dates = mapValues(getAllRentingInfoDates(startDate, duration), (date) => date.toDate());
-    const key = generateRandomAlphanumeric(6);
-    const hash = generateContractHash(
-      `${renter?.id}.${warehouse.id}.${moment(dates.rentedDate).format('DD-MM-YYYY')}.${key}`,
-    ).slice(0, 30);
+    const { hash, key } = generateContractHash({
+      renterId: renter!.id,
+      warehouseId: warehouse.id,
+      rentedDate: dates.rentedDate,
+    });
 
     return { ...prices, ...dates, price, duration, key, hash };
   }, [values, warehouse, renter]);

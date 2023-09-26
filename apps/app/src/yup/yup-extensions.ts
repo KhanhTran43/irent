@@ -16,6 +16,8 @@ yup.setLocale({
   },
   number: {
     moreThan: '${path} cần lớn hơn ${more}',
+    min: '${path} cần phải lớn hơn hoặc bằng ${min}',
+    max: '${path} cần phải lớn bé hoặc bằng ${min}',
   },
 });
 

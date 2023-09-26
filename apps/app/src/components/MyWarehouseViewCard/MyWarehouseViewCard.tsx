@@ -1,23 +1,21 @@
-import { indigo, red } from '@radix-ui/colors';
-import { Formik, useFormik } from 'formik';
+import { red } from '@radix-ui/colors';
 import { useCallback, useState } from 'react';
-import { Title } from 'react-admin';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 
 import { useAuthStore } from '@/auth';
 import { api } from '@/axios/axios';
+import { useContract } from '@/hooks';
 import { RentedWarehouseStatus } from '@/models/rented-warehouse.model';
 import { WareHouseModel } from '@/models/warehouse.model';
 import rentedWarehouseService from '@/service/rented-warehouse-service';
 import { useMyWarehouseStore } from '@/store/my-warehouse.store';
 import { formatPrice } from '@/utils/format-price.util';
 
-import { ConfirmDialog, ConfirmDialogProps, Dialog, DialogProps, DialogTitle } from '../Common/Dialog';
-import { ConfirmDialogAction } from '../Common/Dialog/ConfirmDialogAction';
+import { ConfirmDialog, ConfirmDialogProps, Dialog, DialogProps } from '../Common/Dialog';
 import { CustomerPaymentDialog, CustomerPaymentDialogProps } from '../Payment';
 import { WarehouseViewCardBase, WarehouseViewCardProps } from '../WarehouseViewCardBase';
 import { CardActions } from '../WarehouseViewCardBase/CardOptions';
+import { ExtendActionDialogContent } from './ExtendActionDialogContent';
 
 export enum MyWarehouseViewCardType {
   History, // Owner
@@ -45,13 +43,16 @@ type ActionDialog =
       options: DialogProps;
     };
 
+// TODO: this component logic need to be bring to the list contain it,
+// then make the dialog reusability logic better
 export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ...props }: MyWarehouseViewCardProps) => {
   const warehouse = props.warehouse;
   const fetchMyWarehouses = useMyWarehouseStore((state) => state.fetchMyWarehouses);
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
+  const { createContract, viewContract } = useContract();
 
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(true);
   const [actionDialog, setActionDialog] = useState<ActionDialog>();
 
   const getViewCardOptions = (): WarehouseViewCardProps => {
@@ -173,6 +174,7 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
       case RentedWarehouseStatus.Waiting:
         return [viewDetailAction, confirmActions, requestCancelActions];
       case RentedWarehouseStatus.Renting:
+      case RentedWarehouseStatus.Confirmed:
         return [viewDetailAction, extendAction];
       default:
         return [viewDetailAction];
@@ -204,6 +206,7 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
               </p>
             </>
           ),
+          onAcceptPay: ({ handlePayment }) => handlePayment(),
         },
       });
       setDialogOpen(true);
@@ -214,20 +217,11 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
     setActionDialog({
       type: 'dialog',
       options: {
-        children: (
-          <Formik initialValues={{ extendDuration: 1 }} onSubmit={() => {}}>
-            {() => (
-              <ExtendForm>
-                <DialogTitle>Gia hạn</DialogTitle>
-                <Field>
-                  <label>Số tháng gia hạn thêm:</label>
-                  <Input name="extendDuration" type="number"></Input>
-                </Field>
-                <ConfirmDialogAction></ConfirmDialogAction>
-              </ExtendForm>
-            )}
-          </Formik>
-        ),
+        children: <ExtendActionDialogContent warehouse={warehouse} />,
+        onDialogClose: () => {
+          fetchMyWarehouses(user);
+          setActionDialog(undefined);
+        },
       },
     });
     setDialogOpen(true);
@@ -271,36 +265,3 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
     </>
   );
 };
-
-const Field = styled.div`
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-`;
-
-const ExtendForm = styled.div``;
-
-const Input = styled.input`
-  & {
-    width: 150px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    padding: 0 10px;
-    font-size: 13px;
-    line-height: 1;
-    border: 0;
-    color: ${indigo.indigo11};
-    box-shadow: 0 0 0 1px ${indigo.indigo7};
-    height: 25px;
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 2px ${indigo.indigo8};
-  }
-
-  &:focus-visible {
-    outline: 0;
-  }
-`;

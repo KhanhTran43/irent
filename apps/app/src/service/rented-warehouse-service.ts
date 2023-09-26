@@ -1,6 +1,7 @@
 import { produce } from 'immer';
 
 import { MyWarehouseDetailsModel } from '@/models/my-warehouse-details.model';
+import { CreateExtendRentingModel } from '@/models/rented-warehouse.model';
 import { WareHouseModel } from '@/models/warehouse.model';
 
 import { Service } from './service';
@@ -11,7 +12,7 @@ class RentedWarehouseService extends Service<WareHouseModel, WareHouseModel, War
     this.setBaseURL('rentedWarehouse');
     this.setDefaultRequestPayload(
       produce((payload) => {
-        payload.includes?.push('Warehouse', 'Warehouse.Images');
+        payload.includes?.push('Warehouse', 'Warehouse.Images', 'Extends');
       }),
     );
   }
@@ -42,6 +43,10 @@ class RentedWarehouseService extends Service<WareHouseModel, WareHouseModel, War
 
   async cancelWarehouse(rentedWarehouseId: string | number) {
     await this.api.patch(`cancel/${rentedWarehouseId}`, {}, { withCredentials: true });
+  }
+
+  async extendRenting(rentedWarehouseId: string | number, extend: CreateExtendRentingModel) {
+    await this.api.put(`extend/${rentedWarehouseId}`, extend, { withCredentials: true });
   }
 }
 

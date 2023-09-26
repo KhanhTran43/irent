@@ -1,4 +1,3 @@
-import CryptoJS from 'crypto-js';
 import moment from 'moment';
 import { useCallback } from 'react';
 
@@ -21,18 +20,18 @@ export const testOptions: PdfOptions = {
   },
 };
 
-type ViewContractOptions = {
+export type ViewContractOptions = {
   containerId: string;
   base64: string;
 };
 
-type CreateContractOptions = {
+export type CreateContractOptions = {
   pdfOptions: PdfOptions;
 };
 
 export type CreateContract = {
   open: () => void;
-  getBase64: (callback: (base64: string) => void) => void;
+  getBase64: (callback?: (base64: string) => void) => Promise<string>;
 };
 
 export function useContract() {
@@ -48,8 +47,15 @@ export function useContract() {
       pdfDocGenerator.open();
     };
 
-    const getBase64 = (callback: (base64: string) => void) => {
-      pdfDocGenerator.getBase64(callback);
+    const getBase64 = async (callback?: (base64: string) => void) => {
+      return new Promise<string>((resolve) => {
+        const resolveCallBack = (base64: string) => {
+          resolve(base64);
+          callback?.(base64);
+        };
+
+        pdfDocGenerator.getBase64(resolveCallBack);
+      });
     };
 
     return {
