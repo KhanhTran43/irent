@@ -32,6 +32,14 @@ export type CreateRentedWarehouseModel = Omit<RentedWarehouseModel, 'status' | '
   hash: string;
 };
 
+export type CreateExtendRentingModel = {
+  duration: number;
+  extendDate: string;
+  total: number;
+  newEndDate: string;
+  newContractBase64: string;
+};
+
 export enum RentedWarehouseStatus {
   None = 0,
   Waiting = 1,

@@ -20,7 +20,11 @@ export function MyWarehouseCardList({ type, warehouses, fallback, loading }: MyW
           <p>{warehouses.length} kho bãi</p>
           <GridContainer>
             {warehouses.map((it) => (
-              <MyWarehouseViewCard key={it.id} type={type} warehouse={it}></MyWarehouseViewCard>
+              <MyWarehouseViewCard
+                key={type === MyWarehouseViewCardType.Owning ? it.id : it.rentedInfo?.id}
+                type={type}
+                warehouse={it}
+              ></MyWarehouseViewCard>
             ))}
           </GridContainer>
         </MyWarehouseCardListRoot>

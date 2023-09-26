@@ -1,35 +1,32 @@
-import { Close as RadixDialogClose, Title as RadixDialogTitle } from '@radix-ui/react-dialog';
-import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-import { Loading } from '@/components/Fallback';
+import { ConfirmDialogAction, ConfirmDialogActionProps } from './ConfirmDialogAction';
+import { Dialog, DialogProps, DialogTitle } from './Dialog';
 
-import { Button } from '../Button';
-import { Dialog, DialogProps } from './Dialog';
-
-export type ConfirmDialogProps = DialogProps & {
-  title?: string;
-  acceptText?: string;
-  cancelText?: string;
-  onAccept?: () => void;
-  onCancel?: () => void;
-  isLoading?: boolean;
-  fallback?: ReactNode;
-  showFallBack?: boolean;
-};
+export type ConfirmDialogProps = DialogProps &
+  ConfirmDialogActionProps & {
+    title?: string;
+  };
 
 export function ConfirmDialog({
   children,
   title = 'Xác nhận',
-  acceptText = 'Đồng ý',
-  cancelText = 'Hủy',
+  loading = false,
+  fallback,
+  showFallback = false,
+  acceptText,
+  cancelText,
   onAccept,
   onCancel,
-  isLoading = false,
-  fallback,
-  showFallBack = false,
   ...props
 }: ConfirmDialogProps) {
+  const actionProps: ConfirmDialogActionProps = {
+    acceptText,
+    cancelText,
+    onAccept,
+    onCancel,
+  };
+
   return (
     <Dialog
       {...props}
@@ -38,43 +35,15 @@ export function ConfirmDialog({
         onCancel?.();
       }}
     >
-      {isLoading ? (
-        <Loading size={30} />
-      ) : (
-        <>
-          {showFallBack ? (
-            fallback
-          ) : (
-            <Container>
-              <Title>{title}</Title>
-              {children}
-              <ButtonGroup>
-                <RadixDialogClose asChild>
-                  <Button color={'danger'} onClick={onCancel}>
-                    {cancelText}
-                  </Button>
-                </RadixDialogClose>
-                <Button onClick={onAccept}>{acceptText}</Button>
-              </ButtonGroup>
-            </Container>
-          )}
-        </>
-      )}
+      <Container>
+        <DialogTitle>{title}</DialogTitle>
+        {children}
+        <ConfirmDialogAction {...actionProps} />
+      </Container>
     </Dialog>
   );
 }
 
 const Container = styled.div`
   width: 500px;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  margin-top: 18px;
-`;
-
-const Title = styled(RadixDialogTitle)`
-  margin: 10px 0;
 `;

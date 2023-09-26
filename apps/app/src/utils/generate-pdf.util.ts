@@ -21,8 +21,8 @@ export type PdfOptions = {
     area: number;
   };
   duration: number;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | string;
+  endDate: Date | string;
 };
 
 export function generatePdf(options: PdfOptions): void {
