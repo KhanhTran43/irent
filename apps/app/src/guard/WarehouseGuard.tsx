@@ -1,23 +1,19 @@
 import { useAuthStore } from '@/auth';
 import { Invalid } from '@/components/Fallback';
+import { WarehouseStatus } from '@/models/warehouse.model';
 import { useWarehouseResolver } from '@/resolver/WarehouseResolver';
 
 import { GuardResolveFunc, GuardResolver } from './GuardResolver';
 
-export function RentedWarehouseGuard() {
+export function WarehouseGuard() {
   const { user } = useAuthStore();
   const { warehouse } = useWarehouseResolver();
 
-  console.log(user, warehouse);
-
   const resolve: GuardResolveFunc = () => {
-    if (warehouse.rented) {
-      if (warehouse.userId === user?.id || warehouse.rentedInfo?.renterId === user?.id) return { result: true };
-      else {
-        return { result: false, fallback: <Invalid /> };
-      }
-    } else {
+    if (warehouse.status === WarehouseStatus.Accepted || warehouse.userId === user?.id) {
       return { result: true };
+    } else {
+      return { result: false, fallback: <Invalid /> };
     }
   };
 

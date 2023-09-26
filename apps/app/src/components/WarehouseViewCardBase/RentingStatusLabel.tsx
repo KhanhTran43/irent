@@ -5,11 +5,11 @@ import { RentedWarehouseLabel, RentedWarehouseStatus } from '@/models/rented-war
 
 import { Label } from '../Common/Label';
 
-export type StatusLabelProps = {
+export type RentingStatusLabelProps = {
   status: RentedWarehouseStatus;
 };
 
-export function StatusLabel({ status }: StatusLabelProps) {
+export function RentingStatusLabel({ status }: RentingStatusLabelProps) {
   const getColor = () => {
     switch (status) {
       case RentedWarehouseStatus.Waiting:

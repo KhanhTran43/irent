@@ -20,6 +20,20 @@ export type WareHouseModel = {
   comments?: CommentModel[];
   images?: WarehouseImage[];
   rentedInfo?: RentedWarehouseInfo;
+  status: WarehouseStatus;
+  rejectedReason?: string;
+};
+
+export enum WarehouseStatus {
+  Pending,
+  Accepted,
+  Rejected,
+}
+
+export const WarehouseLabel: Record<WarehouseStatus, string> = {
+  [WarehouseStatus.Pending]: 'Đang chờ duyệt',
+  [WarehouseStatus.Accepted]: 'Đã chấp thuận',
+  [WarehouseStatus.Rejected]: 'Đã từ chối',
 };
 
 export type AddressModel = {

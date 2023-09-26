@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useState } from 'react';
 import styled from 'styled-components';
 
+import { useAuthStore } from '@/auth';
 import { ClientCommentModel } from '@/models/comment.model';
 
 import { Avatar } from '../Common/Avatar';
@@ -15,6 +16,7 @@ type AddCommentProp = {
 
 export const AddComment = ({ onCommentSent }: AddCommentProp) => {
   const [comment, setComment] = useState('');
+  const { user } = useAuthStore();
 
   const handleCommentSent = () => {
     if (!isEmpty(comment)) {
@@ -26,11 +28,11 @@ export const AddComment = ({ onCommentSent }: AddCommentProp) => {
   return (
     <Container>
       <div>
-        <Avatar name="Chiến Tho" />
+        <Avatar name={user?.name} />
       </div>
       <Textarea
         cacheMeasurements
-        placeholder="Leave a comment..."
+        placeholder="Nhập bình luận"
         rows={1}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
@@ -48,7 +50,7 @@ const Container = styled.div`
 `;
 
 const Textarea = styled(TextAreaAutoSize)`
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 16px;
   display: block;
   width: 100%;

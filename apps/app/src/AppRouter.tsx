@@ -24,6 +24,7 @@ import {
 } from './containers';
 import { Role } from './enums/role.enum';
 import { AuthGuard, RentedWarehouseGuard } from './guard';
+import { WarehouseGuard } from './guard/WarehouseGuard';
 import { WarehouseResolver } from './resolver/WarehouseResolver';
 
 const GlobalStyle = createGlobalStyle`
@@ -77,11 +78,13 @@ export const AppRouter = () => {
                 <Route element={<MyWarehouse />} path="list" />
               </Route>
               <Route element={<WarehouseResolver />} path="warehouse/:id/*">
-                <Route element={<RentedWarehouseGuard />}>
-                  <Route element={<WarehouseDetails />} path="" />
-                  <Route element={<AuthGuard />}>
-                    <Route element={<RentingForm />} path="renting" />
-                    <Route element={<Contract />} path="contract"></Route>
+                <Route element={<WarehouseGuard />}>
+                  <Route element={<RentedWarehouseGuard />}>
+                    <Route element={<WarehouseDetails />} path="" />
+                    <Route element={<AuthGuard />}>
+                      <Route element={<RentingForm />} path="renting" />
+                      <Route element={<Contract />} path="contract"></Route>
+                    </Route>
                   </Route>
                 </Route>
               </Route>

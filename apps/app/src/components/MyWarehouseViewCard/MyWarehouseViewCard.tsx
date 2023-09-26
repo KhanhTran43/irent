@@ -18,8 +18,9 @@ import { CardActions } from '../WarehouseViewCardBase/CardOptions';
 import { ExtendActionDialogContent } from './ExtendActionDialogContent';
 
 export enum MyWarehouseViewCardType {
-  History, // Owner
+  RentingHistory, // Owner
   Owning, // Owner
+  RequestHistory,
   Renting, // Renter
 }
 
@@ -61,7 +62,7 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
         return {
           ...props,
           showRentedProgression: true,
-          showStatus: true,
+          showRentingStatus: true,
           showRentedInfo: true,
           actions: getRentingTypeActions(),
         };
@@ -69,14 +70,20 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
         return {
           ...props,
           showPrice: true,
-          showStatus: true,
+          showRentingStatus: true,
           actions: getOwningTypeActions(),
         };
-      case MyWarehouseViewCardType.History:
+      case MyWarehouseViewCardType.RentingHistory:
         return {
           ...props,
-          showStatus: true,
+          showRentingStatus: true,
           showRentedInfo: true,
+          actions: getHistoryTypeActions(),
+        };
+      case MyWarehouseViewCardType.RequestHistory:
+        return {
+          ...props,
+          showWarehouseStatus: true,
           actions: getHistoryTypeActions(),
         };
       default:

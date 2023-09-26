@@ -9,7 +9,21 @@ export const Avatar = (props: AvatarProps) => {
   const { name } = props;
   const nameChars = name.split(' ');
 
-  return <Container $size={props.size}>{`${nameChars[0][0]}${nameChars[nameChars.length - 1][0]}`}</Container>;
+  const getName = () => {
+    const first = nameChars.length > 0 ? nameChars[0][0] : '';
+    const second =
+      nameChars.length === 0
+        ? ''
+        : nameChars.length === 1
+        ? nameChars[0].length > 0
+          ? nameChars[0][1]
+          : ''
+        : nameChars[nameChars.length - 1][0];
+
+    return `${first}${second}`;
+  };
+
+  return <Container $size={props.size}>{getName()}</Container>;
 };
 
 const Container = styled.div<{ $size?: number }>`

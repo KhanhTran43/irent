@@ -2,8 +2,9 @@ import { blackA, blue } from '@radix-ui/colors';
 import * as RadioGroup from '@radix-ui/react-radio-group';
 import * as stitches from '@stitches/react';
 import axios from 'axios';
+import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
-import { Button, useUpdate } from 'react-admin';
+import { Button, useRedirect } from 'react-admin';
 import { useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -12,16 +13,15 @@ import { apiUrl } from '../../provider';
 export const RequestWarehouseDetails = () => {
   const { id } = useParams();
   const [warehouse, setWarehouse] = useState<any>(null);
-  const [status, setStatus] = useState<number | null>(null);
+  const [status, setStatus] = useState<string>('1');
   const [rejectedReason, setRejectedReason] = useState('');
-  const [update] = useUpdate('warehouse', {
-    id,
-    data: {
-      status,
-      ...(status === 2 && { rejectedReason }),
-    },
-    previousData: warehouse,
-  });
+  const redirect = useRedirect();
+
+  const handleUpdateWarehouseRequest = () => {
+    axios.patch(`${apiUrl}/warehouse/confirm/${id}`, { status: Number(status), rejectedReason }).then(() => {
+      redirect('/request');
+    });
+  };
 
   useEffect(() => {
     axios
@@ -65,48 +65,54 @@ export const RequestWarehouseDetails = () => {
             </FlexField>
             <Field>
               <Title>Chi tiết kho bãi</Title>
-              <Description dangerouslySetInnerHTML={{ __html: warehouse.description }} />
+              {!isEmpty(warehouse.description) && (
+                <Description dangerouslySetInnerHTML={{ __html: warehouse.description }} />
+              )}
             </Field>
             <UpdateZone>
-              <Title>Xác nhận trạng thái</Title>
-              <RadioGroupRoot
-                onValueChange={(e) => {
-                  setStatus(Number(e));
-                }}
-              >
-                <Flex css={{ alignItems: 'center' }}>
-                  <RadioGroupItem id="approve" value="1">
-                    <RadioGroupIndicator />
-                  </RadioGroupItem>
-                  <Label htmlFor="approve">Đồng ý</Label>
-                </Flex>
+              <FirstSection>
+                <Title>Xác nhận duyệt kho:</Title>
+                <RadioGroupRoot
+                  value={status}
+                  onValueChange={(e) => {
+                    setStatus(e);
+                  }}
+                >
+                  <Flex css={{ alignItems: 'center' }}>
+                    <RadioGroupItem id="approve" value="1">
+                      <RadioGroupIndicator />
+                    </RadioGroupItem>
+                    <Label htmlFor="approve">Đồng ý</Label>
+                  </Flex>
 
-                <Flex css={{ alignItems: 'center' }}>
-                  <RadioGroupItem id="reject" value="2">
-                    <RadioGroupIndicator />
-                  </RadioGroupItem>
-                  <Label htmlFor="reject">Từ chối</Label>
-                </Flex>
-              </RadioGroupRoot>
-              {status === 2 ? (
-                <TextareaContainer>
-                  <Textarea
-                    placeholder="Nhập lí do từ chối"
-                    onChange={(e) => {
-                      setRejectedReason(e.target.value);
-                    }}
-                  />
-                </TextareaContainer>
-              ) : (
-                <></>
-              )}
+                  <Flex css={{ alignItems: 'center' }}>
+                    <RadioGroupItem id="reject" value="2">
+                      <RadioGroupIndicator />
+                    </RadioGroupItem>
+                    <Label htmlFor="reject">Từ chối</Label>
+                  </Flex>
+                </RadioGroupRoot>
+              </FirstSection>
+
+              <TextareaContainer>
+                <Textarea
+                  disabled={status !== '2'}
+                  placeholder="Nhập lí do từ chối"
+                  onChange={(e) => {
+                    setRejectedReason(e.target.value);
+                  }}
+                />
+              </TextareaContainer>
+
               <div>
                 <ConfirmButton
                   onClick={() => {
-                    if (!status || (status === 2 && !rejectedReason)) {
+                    console.log(status);
+
+                    if (!status || (status === '2' && !rejectedReason)) {
                       return;
                     }
-                    update();
+                    handleUpdateWarehouseRequest();
                   }}
                 >
                   <span>Cập nhật</span>
@@ -139,10 +145,16 @@ const RightSide = styled.div``;
 
 const Field = styled.div``;
 const UpdateZone = styled.div`
+  margin: 0 auto;
+  width: 500px;
   padding: 16px;
-  border: 1px solid #c2c2c2;
   border-radius: 4px;
-  box-shadow: 2px 2px 2px 2px #2196f3;
+  border: 1px solid #c2c2c2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+
   text-align: center;
 `;
 const Title = styled.h4``;
@@ -152,8 +164,8 @@ const Text = styled.h4`
 
 const Description = styled.div`
   border: 1px solid #c2c2c2;
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 16px 4px;
+  border-radius: 4px;
 `;
 
 const ShowImageStyle = css`
@@ -183,8 +195,8 @@ const Image = styled.img.attrs({ id: 'uploaded-image' })`
 `;
 const RadioGroupRoot = stitches.styled(RadioGroup.Root, {
   display: 'flex',
-  flexDirection: 'column',
-  gap: 10,
+  flexDirection: 'row',
+  gap: 20,
   alignItems: 'center',
 });
 
@@ -222,12 +234,10 @@ const Label = stitches.styled('label', {
   color: 'black',
   fontSize: 15,
   lineHeight: 1,
-  paddingLeft: 15,
+  paddingLeft: 4,
 });
 
-const ConfirmButton = styled(Button)`
-  margin-top: 32px;
-`;
+const ConfirmButton = styled(Button)``;
 
 const TextareaContainer = styled.div``;
 
@@ -240,3 +250,7 @@ const Textarea = styled.textarea`
   font-family: inherit;
 `;
 
+const FirstSection = styled.div`
+  display: flex;
+  flex-direction: column;
+`;

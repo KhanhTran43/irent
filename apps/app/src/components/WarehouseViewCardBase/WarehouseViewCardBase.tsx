@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { WareHouseModel } from '@/models/warehouse.model';
+import { WareHouseModel, WarehouseStatus } from '@/models/warehouse.model';
 import { convertTimestampToDate } from '@/utils/convert-timestamp-to-date.util';
 import { formatPrice } from '@/utils/format-price.util';
 import { getDuration } from '@/utils/rented-warehouse.util';
@@ -14,13 +14,15 @@ import { resolveAddress } from '@/utils/warehouse-address.util';
 import { Separator } from '../Common/Separator';
 import { CardOptions, CardOptionsProps } from './CardOptions';
 import { RentedWarehouseProgress } from './RentedWarehouseProgress';
-import { StatusLabel } from './StatusLabel';
+import { RentingStatusLabel } from './RentingStatusLabel';
+import { WarehouseStatusLabel } from './WarehouseStatusLabel';
 
 export type WarehouseViewCardProps = {
   warehouse: WareHouseModel;
   showRentedProgression?: boolean;
   showPrice?: boolean;
-  showStatus?: boolean;
+  showRentingStatus?: boolean;
+  showWarehouseStatus?: boolean;
   showRentedInfo?: boolean;
   className?: string;
   onClick?: (id: number) => void;
@@ -31,7 +33,8 @@ export const WarehouseViewCardBase = ({
   showRentedProgression = false,
   showPrice = false,
   showRentedInfo = false,
-  showStatus = false,
+  showRentingStatus = false,
+  showWarehouseStatus = false,
   actions,
   className,
   onClick,
@@ -66,13 +69,27 @@ export const WarehouseViewCardBase = ({
           </CardAddressIcon>
           <AddressText title={address}>{address}</AddressText>
         </CardAddress>
-        {showStatus && rentedInfo && <StatusLabel status={rentedInfo.status} />}
+        {showRentingStatus && rentedInfo && <RentingStatusLabel status={rentedInfo.status} />}
         <CardArea>
           <CardAddressIcon>
             <SquareIcon />
           </CardAddressIcon>
           {area} mét vuông
         </CardArea>
+
+        {showWarehouseStatus && (
+          <>
+            <WarehouseStatusLabel status={warehouse.status}></WarehouseStatusLabel>
+            {warehouse.status === WarehouseStatus.Rejected && (
+              <>
+                <Separator start={5} end={5} />
+                <RejectedReason>
+                  <strong>Lý do từ chối:</strong> {warehouse.rejectedReason}
+                </RejectedReason>
+              </>
+            )}
+          </>
+        )}
 
         {showRentedInfo && rentedInfo && (
           <>
@@ -216,4 +233,9 @@ const PriceText = styled.span`
   font-weight: bold;
   font-size: 20px;
   text-align: right;
+`;
+
+const RejectedReason = styled.div`
+  font-size: 14px;
+  word-wrap: break-word;
 `;

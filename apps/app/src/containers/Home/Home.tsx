@@ -9,7 +9,7 @@ import { WardValue } from '@/enums/ward-value.enum';
 import warehouseService from '@/service/warehouse-service';
 
 import { HomeWarehouseViewCard } from '../../components/HomeWarehouseViewCard/HomeWarehouseViewCard';
-import { WareHouseModel } from '../../models/warehouse.model';
+import { WareHouseModel, WarehouseStatus } from '../../models/warehouse.model';
 
 export const Home = () => {
   const [warehouses, setWarehouses] = useState<WareHouseModel[]>([]);
@@ -21,8 +21,8 @@ export const Home = () => {
   useEffect(() => {
     warehouseService.getAll().then((data) => {
       if (!isEmpty(data)) {
-        const notRentedWarehouse = data!.filter((d) => !d.rented);
-        warehouseRef.current = notRentedWarehouse;
+        const filterWarehouses = data!.filter((d) => d.status === WarehouseStatus.Accepted && !d.rented);
+        warehouseRef.current = filterWarehouses;
         setWarehouses(warehouseRef.current);
       }
     });

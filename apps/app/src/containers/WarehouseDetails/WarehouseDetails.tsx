@@ -11,6 +11,7 @@ import { MapSearchBoxInput, useMapWithSearchBox } from '@/components/Map';
 import { RouteDirection } from '@/components/RouteDirection';
 import { Role } from '@/enums/role.enum';
 import { ClientCommentModel, CreateCommentModel } from '@/models/comment.model';
+import { WarehouseStatus } from '@/models/warehouse.model';
 import warehouseService from '@/service/warehouse-service';
 import { formatPrice } from '@/utils/format-price.util';
 import { resolveAddress, resolveLocation } from '@/utils/warehouse-address.util';
@@ -123,14 +124,16 @@ export const WarehouseDetails = () => {
         )}
         <h4>Tìm kiếm đường đi đến kho bãi</h4>
         <InteractionContainer>
-          <AddressSearchInput />
+          <AddressSearchInput placeholder="Nhập địa chỉ bạn muốn chỉ đường" />
           <DirectionContainer>
             <RouteDirection from={searchedAddress} to={address} />
           </DirectionContainer>
         </InteractionContainer>
-        <CommentsContainer>
-          <CommentSection data={warehouse.comments} resolveComment={resolveComment} />
-        </CommentsContainer>
+        {warehouse.status === WarehouseStatus.Accepted && (
+          <CommentsContainer>
+            <CommentSection data={warehouse.comments} resolveComment={resolveComment} />
+          </CommentsContainer>
+        )}
       </BodyContainer>
     </Container>
   );
@@ -245,7 +248,7 @@ const DirectionContainer = styled.div`
 const inputStyles = css`
   height: 50px;
   padding: 16px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid gray;
   box-sizing: border-box;
 `;
@@ -260,9 +263,7 @@ const DescriptionContainer = styled.div`
 `;
 
 const Description = styled.div`
-  padding: 8px 16px;
+  padding: 4px 16px;
   border: 1px solid #c2c2c2;
-  border-radius: 8px;
-  min-height: 300px;
+  border-radius: 4px;
 `;
-

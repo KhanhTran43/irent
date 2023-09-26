@@ -51,7 +51,7 @@ export const MyWarehouse = () => {
               content: (
                 <MyWarehouseCardList
                   fallback={renderNoContent()}
-                  loading={rentedWarehousesLoading}
+                  loading={ownWarehousesLoading}
                   type={MyWarehouseViewCardType.Owning}
                   warehouses={ownWarehouse}
                 />
@@ -62,9 +62,20 @@ export const MyWarehouse = () => {
               content: (
                 <MyWarehouseCardList
                   fallback={renderNoContent()}
-                  loading={ownWarehousesLoading}
-                  type={MyWarehouseViewCardType.History}
+                  loading={rentedWarehousesLoading}
+                  type={MyWarehouseViewCardType.RentingHistory}
                   warehouses={rentedWarehouses}
+                />
+              ),
+            },
+            {
+              tab: 'Trạng thái duyệt bài',
+              content: (
+                <MyWarehouseCardList
+                  fallback={renderNoContent()}
+                  loading={ownWarehousesLoading}
+                  type={MyWarehouseViewCardType.RequestHistory}
+                  warehouses={ownWarehouse}
                 />
               ),
             },
