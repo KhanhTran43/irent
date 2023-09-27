@@ -9,7 +9,7 @@ type RouteDirectionProps = {
 const directionsRenderer = new google.maps.DirectionsRenderer({});
 const directionsService = new google.maps.DirectionsService();
 
-function initMap(directionsRenderer: any) {
+function initMap() {
   const map = new google.maps.Map(document.getElementById('map'), {
     zoom: 13,
     center: { lat: 16.02298393469663, lng: 108.1880701495974 },
@@ -18,7 +18,7 @@ function initMap(directionsRenderer: any) {
   directionsRenderer.setMap(map);
 }
 
-function calculateAndDisplayRoute(directionsService: any, directionsRenderer: any, from: string, to: string) {
+function calculateAndDisplayRoute(from: string, to: string) {
   directionsService
     .route({
       origin: {
@@ -39,12 +39,14 @@ export const RouteDirection = (props: RouteDirectionProps) => {
   const { from, to } = props;
 
   useEffect(() => {
-    initMap(directionsRenderer);
+    initMap();
   }, []);
 
   useEffect(() => {
     if (!!from && !!to) {
-      calculateAndDisplayRoute(directionsService, directionsRenderer, from, to);
+      calculateAndDisplayRoute(from, to);
+
+      initMap();
     }
   }, [from, to]);
   return (
