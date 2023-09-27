@@ -139,6 +139,14 @@ export function generatePdfContent(options: PdfOptions) {
         style: 'normalText',
       },
       {
+        text: '4. Đối với tiền cọc: Bên B sẽ thanh toán cọc cho bên A bằng 50% số tiền thuê tháng đầu tiên và phần còn lại sẽ được trả trước ngày bắt đầu thuê. Nếu không hoàn thành việc thanh toán trước ngày ngày bắt đầu thuê, bên B sẽ mất hoàn toàn tiền cọc',
+        style: 'normalText',
+      },
+      {
+        text: '5. Thời hạn thanh toán: Đối với tiền thuê, tối thiểu là 5 ngày và tối đa là 15 ngày kể từ ngày ký hợp đồng',
+        style: 'normalText',
+      },
+      {
         text: 'Điều 3: Quyền và nghĩa vụ bên A:',
         style: 'boldText',
       },
@@ -212,6 +220,30 @@ export function generatePdfContent(options: PdfOptions) {
       },
       {
         text: '1. Các bên cùng cam kết thực hiện đúng các nội dung thoả thuận trong hợp đồng. Trường hợp có tranh chấp hoặc vi phạm hợp đồng thì các bên thương lượng giải quyết, nếu không thương lượng được thì đề nghị Toà án nhân dân giải quyết.',
+        style: 'normalText',
+      },
+      {
+        text: '2. Hợp đồng có thể bị chấm dứt theo thỏa thuận của các bên.',
+        style: 'normalText',
+      },
+      {
+        text: 'Điều 6: Phạt hợp đồng và bồi thường',
+        style: 'boldText',
+      },
+      {
+        text: '1. Đối với bên A: Nếu kho bãi không và dịch vụ không giống như mô tả hoặc cho người khác thuê sẽ bồi thường 100% tiền hợp đồng đã ký.',
+        style: 'normalText',
+      },
+      {
+        text: '2. Đối với bên B: Nếu không thanh toán tiền cọc cũng như tiền thuê kho bãi hàng tháng như hợp đồng sẽ bồi thường 100% tiền hợp đồng đã ký.',
+        style: 'normalText',
+      },
+      {
+        text: 'Điều 7: Điều khoản và thi hành',
+        style: 'boldText',
+      },
+      {
+        text: '1. Các bên cam kết cùng nhau thực hiện hợp đồng. Nếu trong quá trình thực hiện có phát sinh vướng mắc các bên sẽ trao đổi trên tinh thần hỗ trợ lẫn nhau. Nếu không thể giải quyết hai bên sẽ đưa ra toà án hoặc cơ quan có thẩm quyền giải quyết.',
         style: 'normalText',
       },
       {

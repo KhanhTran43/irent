@@ -9,7 +9,7 @@ export function getCurrentDate() {
 }
 
 export function getEndDate(startDate: string | Date, duration: number) {
-  const today = moment(getStartDate(startDate)).add(Math.floor(duration * (365 / 12)) + 1, 'days');
+  const today = moment(getStartDate(startDate)).add(duration, 'months');
 
   return today;
 }

@@ -160,7 +160,9 @@ export const MyWarehouseViewCard = ({
             children: (
               <>
                 <p>Xác nhận gửi yêu cầu hủy thuê?</p>
-                <p>Sau khi gửi yêu cầu hủy, bạn sẽ nhận lại được 1/3 tiền cọc.</p>
+                <p>
+                  Sau khi gửi yêu cầu hủy, bạn sẽ nhận lại được <strong>1/2</strong> tiền cọc.
+                </p>
               </>
             ),
             onAccept: () => {
@@ -236,8 +238,8 @@ export const MyWarehouseViewCard = ({
       options: {
         children: <ExtendActionDialogContent warehouse={warehouse} />,
         onDialogClose: () => {
-          // fetchMyWarehouses(user);
-          // setActionDialog(undefined);
+          fetchMyWarehouses(user);
+          setActionDialog(undefined);
         },
       },
     });
