@@ -1,7 +1,6 @@
 import { blueA } from '@radix-ui/colors';
 import { HomeIcon, SquareIcon, TimerIcon } from '@radix-ui/react-icons';
 import { isEmpty } from 'lodash';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -26,6 +25,7 @@ export type WarehouseViewCardProps = {
   showRentedInfo?: boolean;
   className?: string;
   onClick?: (id: number) => void;
+  onDoubleClick?: (id: number) => void;
 } & MenuCardOptionsProps;
 
 export const WarehouseViewCardBase = ({
@@ -38,6 +38,7 @@ export const WarehouseViewCardBase = ({
   actions,
   className,
   onClick,
+  onDoubleClick,
 }: WarehouseViewCardProps) => {
   const { id, name, price, area, createdDate, images, rentedInfo } = warehouse;
   const address = resolveAddress(warehouse.address);
@@ -50,8 +51,12 @@ export const WarehouseViewCardBase = ({
     onClick?.(id);
   };
 
+  const handleCardDoubleClick = () => {
+    onDoubleClick?.(id);
+  };
+
   return (
-    <CardContainer className={className} onClick={handleCardClick}>
+    <CardContainer className={className} onClick={handleCardClick} onDoubleClick={handleCardDoubleClick}>
       {!isEmpty(actions) && renderCardOptions()}
       <ContentArea>
         <CardImage

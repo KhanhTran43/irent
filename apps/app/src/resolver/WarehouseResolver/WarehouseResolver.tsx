@@ -23,30 +23,6 @@ export function useWarehouseResolver() {
   return context;
 }
 
-// export function useRentingWarehouseResolver() {
-//   const context = useContext(WarehouseResolverContext);
-//   const { user } = useAuthStore();
-//   const [renter, setRenter] = useState<UserModel>();
-//   const [owner, setOwner] = useState<UserModel>();
-//   const [loading, setLoading] = useState(false);
-
-//   useEffect(() => {
-//     setLoading(true);
-//     if (!!context && !!user) {
-//       userService.get(context.warehouse.userId).then((data) => setOwner(data));
-//       userService.get(user.id).then((data) => setRenter(data));
-//     }
-//   }, [context?.id]);
-
-//   useEffect(() => {
-//     if (!!owner && !!renter) setLoading(false);
-//   }, [owner, renter]);
-
-//   if (context === undefined) throw Error(`WarehouseResolver: The component is not inside the resolver`);
-
-//   return { ...context, owner, renter, loading };
-// }
-
 export function WarehouseResolver() {
   const { id } = useParams();
   const { user } = useAuthStore();

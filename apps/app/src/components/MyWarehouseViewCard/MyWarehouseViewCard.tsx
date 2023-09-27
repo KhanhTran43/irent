@@ -18,10 +18,10 @@ import { MenuCardActions } from '../WarehouseViewCardBase/MenuCardOptions';
 import { ExtendActionDialogContent } from './ExtendActionDialogContent';
 
 export enum MyWarehouseViewCardType {
-  RentingHistory, // Owner
+  OwnerRentingHistory, // Owner
   Owning, // Owner
-  RequestHistory,
-  Renting, // Renter
+  RequestHistory, // Owner
+  RenterRentingHistory, // Renter
 }
 
 type MyWarehouseViewCardProps = {
@@ -46,7 +46,10 @@ type ActionDialog =
 
 // TODO: this component logic need to be bring to the list contain it,
 // then make the dialog reusability logic better
-export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ...props }: MyWarehouseViewCardProps) => {
+export const MyWarehouseViewCard = ({
+  type = MyWarehouseViewCardType.RenterRentingHistory,
+  ...props
+}: MyWarehouseViewCardProps) => {
   const warehouse = props.warehouse;
   const fetchMyWarehouses = useMyWarehouseStore((state) => state.fetchMyWarehouses);
   const user = useAuthStore((state) => state.user);
@@ -58,7 +61,7 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
 
   const getViewCardOptions = (): WarehouseViewCardProps => {
     switch (type) {
-      case MyWarehouseViewCardType.Renting:
+      case MyWarehouseViewCardType.RenterRentingHistory:
         return {
           ...props,
           showRentedProgression: true,
@@ -73,7 +76,7 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
           showRentingStatus: true,
           actions: getOwningTypeActions(),
         };
-      case MyWarehouseViewCardType.RentingHistory:
+      case MyWarehouseViewCardType.OwnerRentingHistory:
         return {
           ...props,
           showRentingStatus: true,
@@ -96,10 +99,17 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
     onClick: () => navigate(`/warehouse/${warehouse.id}`),
   };
 
+  const viewDetailContractAction = {
+    title: 'Xem hợp đồng',
+    onClick: () => navigate(`/warehouse/${warehouse.id}/contract`),
+  };
+
+  const defaultActions = [viewDetailAction];
+
   const getHistoryTypeActions = useCallback((): MenuCardActions[] => {
     switch (warehouse.rentedInfo?.status) {
       default:
-        return [viewDetailAction];
+        return defaultActions;
     }
   }, [warehouse.rentedInfo?.status]);
 
@@ -133,7 +143,7 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
 
     switch (warehouse.rentedInfo?.status) {
       case RentedWarehouseStatus.Canceling:
-        return [viewDetailAction, confirmCancelActions];
+        return [...defaultActions, confirmCancelActions];
       default:
         return [viewDetailAction];
     }
@@ -179,12 +189,12 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
 
     switch (warehouse.rentedInfo?.status) {
       case RentedWarehouseStatus.Waiting:
-        return [viewDetailAction, confirmActions, requestCancelActions];
+        return [...defaultActions, confirmActions, requestCancelActions];
       case RentedWarehouseStatus.Renting:
       case RentedWarehouseStatus.Confirmed:
-        return [viewDetailAction, extendAction];
+        return [...defaultActions, extendAction];
       default:
-        return [viewDetailAction];
+        return [...defaultActions];
     }
   }, [warehouse.rentedInfo?.status]);
 
@@ -267,7 +277,10 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
 
   return (
     <>
-      <WarehouseViewCardBase {...getViewCardOptions()}></WarehouseViewCardBase>
+      <WarehouseViewCardBase
+        {...getViewCardOptions()}
+        onDoubleClick={(id) => navigate(`/warehouse/${id}`)}
+      ></WarehouseViewCardBase>
       {renderDialog()}
     </>
   );

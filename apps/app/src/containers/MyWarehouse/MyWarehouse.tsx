@@ -63,7 +63,7 @@ export const MyWarehouse = () => {
         <MyWarehouseCardList
           fallback={renderNoContent()}
           loading={rentedWarehousesLoading}
-          type={MyWarehouseViewCardType.Renting}
+          type={MyWarehouseViewCardType.RenterRentingHistory}
           warehouses={rentedWarehouses.sort(sortByRentingStatus)}
         />
       );
@@ -88,7 +88,7 @@ export const MyWarehouse = () => {
                 <MyWarehouseCardList
                   fallback={renderNoContent()}
                   loading={rentedWarehousesLoading}
-                  type={MyWarehouseViewCardType.RentingHistory}
+                  type={MyWarehouseViewCardType.OwnerRentingHistory}
                   warehouses={rentedWarehouses.sort(sortByRentingStatus)}
                 />
               ),
