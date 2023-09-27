@@ -56,7 +56,11 @@ export const RequestWarehouseDetails = () => {
                 <Text>{warehouse.doors} cửa</Text>
                 <ImageContainer $hasSrc={!!warehouse.images.length}>
                   {warehouse.images.length ? (
-                    warehouse.images.map((it: any) => <Image key={it.originalUrl} src={it.originalUrl} />)
+                    warehouse.images.map((it: any) => (
+                      <a key={it.originalUrl} href={it.originalUrl} rel="noreferrer" target="_blank">
+                        <Image src={it.originalUrl} />
+                      </a>
+                    ))
                   ) : (
                     <></>
                   )}
@@ -183,16 +187,16 @@ const ImageContainer = styled.div<{ $hasSrc?: boolean }>`
   ${({ $hasSrc }) => ($hasSrc ? ShowImageStyle : '')}
   margin: 0 auto;
   margin-top: 8px;
-  border-radius: 16px;
   display: flex;
   gap: 8px;
 `;
 
 const Image = styled.img.attrs({ id: 'uploaded-image' })`
-  border-radius: 16px;
+  border-radius: 4px;
   object-fit: cover;
   object-position: center;
 `;
+
 const RadioGroupRoot = stitches.styled(RadioGroup.Root, {
   display: 'flex',
   flexDirection: 'row',

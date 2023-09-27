@@ -162,7 +162,7 @@ const Label = styled.label``;
 const inputStyles = css`
   height: 50px;
   padding: 16px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid gray;
   box-sizing: border-box;
 `;

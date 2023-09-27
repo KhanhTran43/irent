@@ -21,7 +21,7 @@ const SuffixInputRoot = styled.div`
   width: 100%;
   height: 50px;
   display: flex;
-  border-radius: 8px;
+  border-radius: 4px;
   outline: 1px solid gray;
   padding: 15px 0 15px 15px;
   box-sizing: border-box;

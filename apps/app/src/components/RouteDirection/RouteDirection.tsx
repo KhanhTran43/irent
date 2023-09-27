@@ -55,7 +55,6 @@ export const RouteDirection = (props: RouteDirectionProps) => {
 };
 
 const MapContainer = styled.div.attrs({ id: 'map' })`
-  height: 350px;
+  height: 550px;
   width: 100%;
 `;
-

@@ -7,9 +7,22 @@ import { Button } from '@/components/Common/Button';
 import { Tabs } from '@/components/Common/Tabs';
 import { MyWarehouseViewCardType } from '@/components/MyWarehouseViewCard';
 import { Role } from '@/enums/role.enum';
+import { RentedWarehouseStatus } from '@/models/rented-warehouse.model';
+import { WareHouseModel, WarehouseStatus } from '@/models/warehouse.model';
 import { useMyWarehouseStore } from '@/store/my-warehouse.store';
 
 import { MyWarehouseCardList } from './MyWarehouseCardList';
+
+const rentingStatusWeight: Record<RentedWarehouseStatus, number> = {
+  [RentedWarehouseStatus.Waiting]: 1,
+  [RentedWarehouseStatus.Confirmed]: 2,
+  [RentedWarehouseStatus.Renting]: 3,
+  [RentedWarehouseStatus.Ended]: 4,
+  [RentedWarehouseStatus.Canceling]: 5,
+  [RentedWarehouseStatus.Expired]: 6,
+  [RentedWarehouseStatus.Canceled]: 7,
+  [RentedWarehouseStatus.None]: 8,
+};
 
 export const MyWarehouse = () => {
   const { user } = useAuthStore();
@@ -23,6 +36,18 @@ export const MyWarehouse = () => {
       reset();
     };
   }, []);
+
+  const sortByRentingStatus = (a: WareHouseModel, b: WareHouseModel) => {
+    if (!a.rentedInfo && !b.rentedInfo) {
+      return 0;
+    } else if (!a.rentedInfo) {
+      return 1;
+    } else if (!b.rentedInfo) {
+      return -1;
+    } else {
+      return rentingStatusWeight[a.rentedInfo.status] - rentingStatusWeight[b.rentedInfo.status];
+    }
+  };
 
   const renderNoContent = () => {
     return (
@@ -39,7 +64,7 @@ export const MyWarehouse = () => {
           fallback={renderNoContent()}
           loading={rentedWarehousesLoading}
           type={MyWarehouseViewCardType.Renting}
-          warehouses={rentedWarehouses}
+          warehouses={rentedWarehouses.sort(sortByRentingStatus)}
         />
       );
     else if (user?.role === Role.Owner)
@@ -53,7 +78,7 @@ export const MyWarehouse = () => {
                   fallback={renderNoContent()}
                   loading={ownWarehousesLoading}
                   type={MyWarehouseViewCardType.Owning}
-                  warehouses={ownWarehouse}
+                  warehouses={ownWarehouse.filter((w) => w.status !== WarehouseStatus.Pending)}
                 />
               ),
             },
@@ -64,7 +89,7 @@ export const MyWarehouse = () => {
                   fallback={renderNoContent()}
                   loading={rentedWarehousesLoading}
                   type={MyWarehouseViewCardType.RentingHistory}
-                  warehouses={rentedWarehouses}
+                  warehouses={rentedWarehouses.sort(sortByRentingStatus)}
                 />
               ),
             },

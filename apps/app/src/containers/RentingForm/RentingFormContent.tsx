@@ -23,10 +23,10 @@ import { RenterInformationFormValuesType, RentingInformationForm } from '@/compo
 import { RentingConfirmation } from '@/components/RentingConfirmation';
 import { stripePromise } from '@/libs';
 import { CreateRentedWarehouseModel } from '@/models/rented-warehouse.model';
-import { useRentingWarehouseResolver } from '@/resolver/WarehouseResolver';
+import { useRentingWarehouseResolver } from '@/resolver';
 import { calculateRentingWarehousePrices } from '@/utils/calculate-renting-warehouse-prices';
 import { convertDateToLocaleDateFormat } from '@/utils/datetime-format.util';
-import { generateContractHash, generateRandomAlphanumeric } from '@/utils/encrypt';
+import { generateContractHash } from '@/utils/encrypt';
 import { formatPrice } from '@/utils/format-price.util';
 import { getAllRentingInfoDates } from '@/utils/rented-warehouse.util';
 
@@ -61,7 +61,7 @@ export function RentingFormContent() {
     const prices = calculateRentingWarehousePrices(price, duration);
     const dates = mapValues(getAllRentingInfoDates(startDate, duration), (date) => date.toDate());
     const { hash, key } = generateContractHash({
-      renterId: renter!.id,
+      renterId: renter.id,
       warehouseId: warehouse.id,
       rentedDate: dates.rentedDate,
     });
@@ -69,11 +69,7 @@ export function RentingFormContent() {
     return { ...prices, ...dates, price, duration, key, hash };
   }, [values, warehouse, renter]);
 
-  const [rentingState, setRentingState] = useState<RentingState>(() => {
-    return calculateRentingState();
-  });
-
-  console.log(rentingState);
+  const [rentingState, setRentingState] = useState<RentingState>(calculateRentingState);
 
   useEffect(() => {
     setRentingState(calculateRentingState());

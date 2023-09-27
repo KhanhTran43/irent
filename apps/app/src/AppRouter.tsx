@@ -25,7 +25,7 @@ import {
 import { Role } from './enums/role.enum';
 import { AuthGuard, RentedWarehouseGuard } from './guard';
 import { WarehouseGuard } from './guard/WarehouseGuard';
-import { WarehouseResolver } from './resolver/WarehouseResolver';
+import { RentingWarehouseResolver, WarehouseResolver } from './resolver';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -82,7 +82,9 @@ export const AppRouter = () => {
                   <Route element={<RentedWarehouseGuard />}>
                     <Route element={<WarehouseDetails />} path="" />
                     <Route element={<AuthGuard />}>
-                      <Route element={<RentingForm />} path="renting" />
+                      <Route element={<RentingWarehouseResolver />}>
+                        <Route element={<RentingForm />} path="renting" />
+                      </Route>
                       <Route element={<Contract />} path="contract"></Route>
                     </Route>
                   </Route>

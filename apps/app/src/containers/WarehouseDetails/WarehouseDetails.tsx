@@ -124,7 +124,7 @@ export const WarehouseDetails = () => {
         )}
         <h4>Tìm kiếm đường đi đến kho bãi</h4>
         <InteractionContainer>
-          <AddressSearchInput placeholder="Nhập địa chỉ bạn muốn chỉ đường" />
+          <AddressSearchInput placeholder="Nhập địa chỉ xuất phát củ bạn" />
           <DirectionContainer>
             <RouteDirection from={searchedAddress} to={address} />
           </DirectionContainer>
@@ -235,7 +235,7 @@ const ButtonContainer = styled.div`
 
 const InteractionContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 16px;
   margin-top: 16px;
   align-items: flex-start;

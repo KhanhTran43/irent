@@ -2,8 +2,6 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 
 import { Loading } from '@/components/Fallback';
-import { UserModel } from '@/models/user.model';
-import userService from '@/service/user-service';
 import warehouseService from '@/service/warehouse-service';
 
 import { useAuthStore } from '../../auth';
@@ -25,23 +23,29 @@ export function useWarehouseResolver() {
   return context;
 }
 
-export function useRentingWarehouseResolver() {
-  const context = useContext(WarehouseResolverContext);
-  const { user } = useAuthStore();
-  const [renter, setRenter] = useState<UserModel>();
-  const [owner, setOwner] = useState<UserModel>();
+// export function useRentingWarehouseResolver() {
+//   const context = useContext(WarehouseResolverContext);
+//   const { user } = useAuthStore();
+//   const [renter, setRenter] = useState<UserModel>();
+//   const [owner, setOwner] = useState<UserModel>();
+//   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!!context && !!user) {
-      userService.get(context.warehouse.userId).then((data) => setOwner(data));
-      userService.get(user.id).then((data) => setRenter(data));
-    }
-  }, [context?.id]);
+//   useEffect(() => {
+//     setLoading(true);
+//     if (!!context && !!user) {
+//       userService.get(context.warehouse.userId).then((data) => setOwner(data));
+//       userService.get(user.id).then((data) => setRenter(data));
+//     }
+//   }, [context?.id]);
 
-  if (context === undefined) throw Error(`WarehouseResolver: The component is not inside the resolver`);
+//   useEffect(() => {
+//     if (!!owner && !!renter) setLoading(false);
+//   }, [owner, renter]);
 
-  return { ...context, owner, renter };
-}
+//   if (context === undefined) throw Error(`WarehouseResolver: The component is not inside the resolver`);
+
+//   return { ...context, owner, renter, loading };
+// }
 
 export function WarehouseResolver() {
   const { id } = useParams();
