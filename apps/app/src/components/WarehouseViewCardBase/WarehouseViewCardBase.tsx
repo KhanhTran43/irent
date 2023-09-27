@@ -12,7 +12,7 @@ import { getDuration } from '@/utils/rented-warehouse.util';
 import { resolveAddress } from '@/utils/warehouse-address.util';
 
 import { Separator } from '../Common/Separator';
-import { CardOptions, CardOptionsProps } from './CardOptions';
+import { MenuCardOptions, MenuCardOptionsProps } from './MenuCardOptions';
 import { RentedWarehouseProgress } from './RentedWarehouseProgress';
 import { RentingStatusLabel } from './RentingStatusLabel';
 import { WarehouseStatusLabel } from './WarehouseStatusLabel';
@@ -26,7 +26,7 @@ export type WarehouseViewCardProps = {
   showRentedInfo?: boolean;
   className?: string;
   onClick?: (id: number) => void;
-} & CardOptionsProps;
+} & MenuCardOptionsProps;
 
 export const WarehouseViewCardBase = ({
   warehouse,
@@ -41,83 +41,86 @@ export const WarehouseViewCardBase = ({
 }: WarehouseViewCardProps) => {
   const { id, name, price, area, createdDate, images, rentedInfo } = warehouse;
   const address = resolveAddress(warehouse.address);
-  const [isOptionsOpen, setOptionsOpen] = useState(false);
 
   const renderCardOptions = () => {
-    if (actions) return <CardOptions actions={actions} handleOpenChange={setOptionsOpen} open={isOptionsOpen} />;
+    if (actions) return <MenuCardOptions actions={actions} />;
   };
 
   const handleCardClick = () => {
-    setOptionsOpen(true);
     onClick?.(id);
   };
 
   return (
     <CardContainer className={className} onClick={handleCardClick}>
       {!isEmpty(actions) && renderCardOptions()}
-      <CardImage
-        alt="Product"
-        src={isEmpty(images) ? 'https://picsum.photos/seed/picsum/400/300' : images![0].originalUrl}
-      />
-      <TextContainer>
-        <CardName>
-          <Link to={`/warehouse/${warehouse.id}`}>{name}</Link>
-        </CardName>
-        <CardAddress>
-          <CardAddressIcon>
-            <HomeIcon />
-          </CardAddressIcon>
-          <AddressText title={address}>{address}</AddressText>
-        </CardAddress>
-        {showRentingStatus && rentedInfo && <RentingStatusLabel status={rentedInfo.status} />}
-        <CardArea>
-          <CardAddressIcon>
-            <SquareIcon />
-          </CardAddressIcon>
-          {area} mét vuông
-        </CardArea>
+      <ContentArea>
+        <CardImage
+          alt="Product"
+          src={isEmpty(images) ? 'https://picsum.photos/seed/picsum/400/300' : images![0].originalUrl}
+        />
 
-        {showWarehouseStatus && (
-          <>
-            <WarehouseStatusLabel status={warehouse.status}></WarehouseStatusLabel>
-            {warehouse.status === WarehouseStatus.Rejected && (
-              <>
-                <Separator start={5} end={5} />
-                <RejectedReason>
-                  <strong>Lý do từ chối:</strong> {warehouse.rejectedReason}
-                </RejectedReason>
-              </>
-            )}
-          </>
-        )}
+        <TextContainer>
+          <CardName>
+            <Link to={`/warehouse/${warehouse.id}`}>{name}</Link>
+          </CardName>
+          <CardAddress>
+            <CardAddressIcon>
+              <HomeIcon />
+            </CardAddressIcon>
+            <AddressText title={address}>{address}</AddressText>
+          </CardAddress>
+          {showRentingStatus && rentedInfo && <RentingStatusLabel status={rentedInfo.status} />}
+          <CardArea>
+            <CardAddressIcon>
+              <SquareIcon />
+            </CardAddressIcon>
+            {area} mét vuông
+          </CardArea>
 
-        {showRentedInfo && rentedInfo && (
-          <>
-            <Separator />
-            <RentedInfoArea>
-              <RentedInfoSide>
-                <RentedInfoSection>Tổng giá thuê:</RentedInfoSection>
-                <RentedInfoSection>Thời gian thuê:</RentedInfoSection>
-                <RentedInfoSection>Giá cọc:</RentedInfoSection>
-                <RentedInfoSection>Giá xác nhận thuê:</RentedInfoSection>
-              </RentedInfoSide>
-              <Separator orientation="vertical" />
-              <RentedInfoSide>
-                <RentedInfoSection>{formatPrice(rentedInfo.total)} VND</RentedInfoSection>
-                <RentedInfoSection>{getDuration(rentedInfo.startDate, rentedInfo.endDate)} tháng</RentedInfoSection>
-                <RentedInfoSection>{formatPrice(rentedInfo.deposit)} VND</RentedInfoSection>
-                <RentedInfoSection>{formatPrice(rentedInfo.confirm)} VND</RentedInfoSection>
-              </RentedInfoSide>
-            </RentedInfoArea>
-          </>
-        )}
-        {showRentedProgression && <RentedWarehouseProgress rentedInfo={warehouse.rentedInfo}></RentedWarehouseProgress>}
-        {showPrice && <PriceText color="#008cff">{formatPrice(price)} VND / tháng</PriceText>}
-        <CardDate>
-          <TimerIcon />
-          {convertTimestampToDate(createdDate)}
-        </CardDate>
-      </TextContainer>
+          {showWarehouseStatus && (
+            <>
+              <WarehouseStatusLabel status={warehouse.status}></WarehouseStatusLabel>
+              {warehouse.status === WarehouseStatus.Rejected && (
+                <>
+                  <Separator start={5} end={5} />
+                  <RejectedReason>
+                    <strong>Lý do từ chối:</strong> {warehouse.rejectedReason}
+                  </RejectedReason>
+                </>
+              )}
+            </>
+          )}
+
+          {showRentedInfo && rentedInfo && (
+            <>
+              <Separator />
+              <RentedInfoArea>
+                <RentedInfoSide>
+                  <RentedInfoSection>Tổng giá thuê:</RentedInfoSection>
+                  <RentedInfoSection>Thời gian thuê:</RentedInfoSection>
+                  <RentedInfoSection>Giá cọc:</RentedInfoSection>
+                  <RentedInfoSection>Giá xác nhận thuê:</RentedInfoSection>
+                </RentedInfoSide>
+                <Separator orientation="vertical" />
+                <RentedInfoSide>
+                  <RentedInfoSection>{formatPrice(rentedInfo.total)} VND</RentedInfoSection>
+                  <RentedInfoSection>{getDuration(rentedInfo.startDate, rentedInfo.endDate)} tháng</RentedInfoSection>
+                  <RentedInfoSection>{formatPrice(rentedInfo.deposit)} VND</RentedInfoSection>
+                  <RentedInfoSection>{formatPrice(rentedInfo.confirm)} VND</RentedInfoSection>
+                </RentedInfoSide>
+              </RentedInfoArea>
+            </>
+          )}
+          {showRentedProgression && (
+            <RentedWarehouseProgress rentedInfo={warehouse.rentedInfo}></RentedWarehouseProgress>
+          )}
+          {showPrice && <PriceText color="#008cff">{formatPrice(price)} VND / tháng</PriceText>}
+          <CardDate>
+            <TimerIcon />
+            {convertTimestampToDate(createdDate)}
+          </CardDate>
+        </TextContainer>
+      </ContentArea>
     </CardContainer>
   );
 };
@@ -131,12 +134,16 @@ const CardContainer = styled.div`
   position: relative;
   margin: 0 auto;
   transition: box-shadow 0.5s ease;
-  display: flex;
-  flex-direction: column;
+  isolation: isolate;
 
   &:hover {
     box-shadow: 0 2px 4px ${blueA.blueA6};
   }
+`;
+
+const ContentArea = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const TextContainer = styled.div`

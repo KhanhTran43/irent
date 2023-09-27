@@ -14,7 +14,7 @@ import { formatPrice } from '@/utils/format-price.util';
 import { ConfirmDialog, ConfirmDialogProps, Dialog, DialogProps } from '../Common/Dialog';
 import { CustomerPaymentDialog, CustomerPaymentDialogProps } from '../Payment';
 import { WarehouseViewCardBase, WarehouseViewCardProps } from '../WarehouseViewCardBase';
-import { CardActions } from '../WarehouseViewCardBase/CardOptions';
+import { MenuCardActions } from '../WarehouseViewCardBase/MenuCardOptions';
 import { ExtendActionDialogContent } from './ExtendActionDialogContent';
 
 export enum MyWarehouseViewCardType {
@@ -96,15 +96,15 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
     onClick: () => navigate(`/warehouse/${warehouse.id}`),
   };
 
-  const getHistoryTypeActions = useCallback((): CardActions[] => {
+  const getHistoryTypeActions = useCallback((): MenuCardActions[] => {
     switch (warehouse.rentedInfo?.status) {
       default:
         return [viewDetailAction];
     }
   }, [warehouse.rentedInfo?.status]);
 
-  const getOwningTypeActions = useCallback((): CardActions[] => {
-    const confirmCancelActions: CardActions = {
+  const getOwningTypeActions = useCallback((): MenuCardActions[] => {
+    const confirmCancelActions: MenuCardActions = {
       title: 'Chấp thuận yêu cầu hủy',
       onClick: () => {
         setActionDialog({
@@ -128,7 +128,7 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
         });
         setDialogOpen(true);
       },
-      customHoverBackgroundColor: red.red9,
+      type: 'warning',
     };
 
     switch (warehouse.rentedInfo?.status) {
@@ -139,8 +139,8 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
     }
   }, [warehouse.rentedInfo?.status]);
 
-  const getRentingTypeActions = useCallback((): CardActions[] => {
-    const requestCancelActions: CardActions = {
+  const getRentingTypeActions = useCallback((): MenuCardActions[] => {
+    const requestCancelActions: MenuCardActions = {
       title: 'Yêu cầu hủy',
       onClick: () => {
         setActionDialog({
@@ -164,15 +164,15 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
         });
         setDialogOpen(true);
       },
-      customHoverBackgroundColor: red.red9,
+      type: 'warning',
     };
 
-    const confirmActions: CardActions = {
+    const confirmActions: MenuCardActions = {
       title: 'Thanh toán',
       onClick: handleConfirmAction,
     };
 
-    const extendAction: CardActions = {
+    const extendAction: MenuCardActions = {
       title: 'Gia hạn',
       onClick: handleExtendAction,
     };
@@ -226,8 +226,8 @@ export const MyWarehouseViewCard = ({ type = MyWarehouseViewCardType.Renting, ..
       options: {
         children: <ExtendActionDialogContent warehouse={warehouse} />,
         onDialogClose: () => {
-          fetchMyWarehouses(user);
-          setActionDialog(undefined);
+          // fetchMyWarehouses(user);
+          // setActionDialog(undefined);
         },
       },
     });
