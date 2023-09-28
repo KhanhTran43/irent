@@ -14,7 +14,10 @@ export const WarehouseList = () => {
         includes: ['RentedWarehouses', 'Comments', 'Comments.User', 'Images'],
       })
       .then((v) => {
-        setData(v.data || []);
+        setData(v.data.map(it => ({
+          ...it,
+          address: JSON.parse(it.address).address
+        })) || []);
       });
   }, []);
 
@@ -22,7 +25,7 @@ export const WarehouseList = () => {
     <>
       <h1>Tất cả kho bãi</h1>
       <ListContextProvider value={listContext}>
-        <Datagrid rowClick="show">
+        <Datagrid rowClick={(e) => String(e)}>
           <TextField source="id" />
           <TextField label="Tên" source="name" />
           <TextField label="Địa chỉ" source="address" />

@@ -36,7 +36,7 @@ export function calculateRevenuePerMonthByStatus(data: RentedWarehouseRevenue[])
 
 export function calculateRevenuePerDayByStatus(data: RentedWarehouseRevenue[], month: number, year: number): number[] {
   const dayLabels = generateDayLabelsInMonth(month, year);
-  const dataByDay = data.reduce(
+  const dataByDay = data.filter(it => it.rentedMonth === month).reduce(
     (prev, curr) => {
       const label = dayLabels[curr.rentedDay - 1];
       if (prev[label]) {
