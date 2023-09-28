@@ -70,7 +70,7 @@ export const Revenue = () => {
         {
           label: 'Doanh thu',
           data: calculateRevenuePerMonthByStatus(rentedWarehouseRevenue),
-          backgroundColor: '#2196f3',
+          backgroundColor: '#667CFF',
         },
       ],
     });
@@ -85,7 +85,7 @@ export const Revenue = () => {
           {
             label: 'Doanh thu trong tháng',
             data: calculateRevenuePerDayByStatus(rentedWarehouseRevenue, selectedMonth, 2023),
-            backgroundColor: '#6e97b8',
+            backgroundColor: '#2196f3',
           },
         ],
       });
