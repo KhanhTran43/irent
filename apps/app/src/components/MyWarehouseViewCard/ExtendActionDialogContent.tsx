@@ -81,7 +81,7 @@ const ExtendActionDialogForm = ({ warehouse }: ExtendActionDialogContentProps) =
         const duration = values.extendDuration;
         const oldEndDate = warehouse.rentedInfo.endDate;
         const startDate = moment(warehouse.rentedInfo.startDate).format();
-        const newEndDate = getEndDate(moment(oldEndDate).subtract(1, 'days').format(), duration).format();
+        const newEndDate = getEndDate(moment(oldEndDate).format(), duration).format();
         const extendDate = moment().format();
         const total = values.extendDuration * warehouse.price;
 
@@ -110,7 +110,7 @@ const ExtendActionDialogForm = ({ warehouse }: ExtendActionDialogContentProps) =
           const oldEndDate = warehouse.rentedInfo.endDate;
           state.duration = values.extendDuration;
           state.total = values.extendDuration * warehouse.price;
-          state.newEndDate = getEndDate(moment(oldEndDate).subtract(1, 'days').format(), state.duration).format();
+          state.newEndDate = getEndDate(moment(oldEndDate).format(), state.duration).format();
         }
       }),
     );

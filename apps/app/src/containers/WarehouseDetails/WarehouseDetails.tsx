@@ -124,7 +124,7 @@ export const WarehouseDetails = () => {
         )}
         <h4>Tìm kiếm đường đi đến kho bãi</h4>
         <InteractionContainer>
-          <AddressSearchInput placeholder="Nhập địa chỉ xuất phát củ bạn" />
+          <AddressSearchInput placeholder="Nhập địa chỉ xuất phát của bạn" />
           <DirectionContainer>
             <RouteDirection from={searchedAddress} to={address} />
           </DirectionContainer>

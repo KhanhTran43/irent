@@ -53,7 +53,7 @@ export const RentingInformationForm = (props: RenterInformationFormProps) => {
               <DatePicker
                 showDisabledMonthNavigation
                 dateFormat={'dd/MM/yyyy'}
-                maxDate={moment().add(30, 'days').toDate()}
+                maxDate={moment().add(15, 'days').toDate()}
                 minDate={moment().add(5, 'days').toDate()}
                 name="startDate"
                 selected={values.startDate}

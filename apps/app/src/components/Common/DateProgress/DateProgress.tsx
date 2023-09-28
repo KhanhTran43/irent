@@ -31,16 +31,14 @@ export const DateProgress = ({ startDate, endDate, daysLeftTemplate = 'Còn {0}'
   const [timeLeft, setTimeLeft] = useState<string>();
 
   useEffect(() => {
-    const targetTime = moment(endDate); // Set your target time here
-
     const updateTimer = () => {
       const now = moment();
-      const duration = moment.duration(targetTime.diff(now));
+      const duration = moment.duration(endMoment.diff(now));
 
-      if (duration.days() > 0) {
-        setTimeLeft(`${duration.days()} ngày`);
-      } else if (duration.milliseconds() >= 0) {
-        setTimeLeft(`${duration.hours()} giờ`);
+      if (duration.asDays() > 0) {
+        setTimeLeft(`${Math.floor(duration.asDays())} ngày`);
+      } else if (duration.asMilliseconds() >= 0) {
+        setTimeLeft(`${Math.floor(duration.asHours())} giờ`);
       } else {
         setTimeLeft(undefined);
       }
