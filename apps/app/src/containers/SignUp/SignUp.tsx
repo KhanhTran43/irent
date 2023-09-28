@@ -5,6 +5,7 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { FormikHelpers } from 'formik';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -39,13 +40,10 @@ export const SignUpForm = () => {
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
+  const [loading, setLoading] = useState(false);
 
-  const handleOnFormSubmit = async (
-    values: SignUpFormValues,
-    { setSubmitting, setFieldError }: FormikHelpers<SignUpFormValues>,
-  ) => {
-    setSubmitting(true);
-
+  const handleOnFormSubmit = async (values: SignUpFormValues, { setFieldError }: FormikHelpers<SignUpFormValues>) => {
+    setLoading(true);
     if (!stripe || !elements) {
       return;
     }
@@ -58,7 +56,7 @@ export const SignUpForm = () => {
 
     if (error) {
       setFieldError('card', error.message);
-      setSubmitting(false);
+      setLoading(false);
       return;
     }
 
@@ -70,9 +68,11 @@ export const SignUpForm = () => {
       .catch((e) => {
         if (e.response.status === 400) {
           if (e.response.data.errors.Email !== undefined) setFieldError('email', 'Email đã tồn tại');
+        } else {
+          setFieldError('form', 'Có lỗi xảy ra khi tạo tài khoản mới, xin hãy duyệt kỹ lại thông tin đăng ký');
         }
-        setSubmitting(false);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -84,7 +84,7 @@ export const SignUpForm = () => {
       }}
       onSubmit={handleOnFormSubmit}
     >
-      {({ values, handleSubmit, handleBlur, handleChange, isSubmitting, setFieldValue }) => (
+      {({ values, handleSubmit, handleBlur, handleChange, setSubmitting, setFieldValue }) => (
         <FormContainer>
           <h2>Đăng ký</h2>
           <Form onSubmit={handleSubmit}>
@@ -170,9 +170,23 @@ export const SignUpForm = () => {
                 Chủ kho bãi
               </RadioButtonLabel>
             </RadioButtonContainer>
-            <Button disabled={isSubmitting} type="submit">
-              {isSubmitting ? <Spinner innerSize={20} margin={0} outerSize={25} /> : 'Đăng ký'}
+            <Button disabled={loading} type="submit">
+              {loading ? <Spinner innerSize={20} margin={0} outerSize={25} /> : 'Đăng ký'}
             </Button>
+            {/* <Button
+              type="button"
+              onClick={() => {
+                setSubmitting(true);
+                new Promise((resolve) => {
+                  setTimeout(resolve, 10000);
+                })
+                  .then(() => navigate('/login'))
+                  .finally(() => setSubmitting(false));
+              }}
+            >
+              Đi
+            </Button> */}
+            <FieldError errorFor="all" />
           </Form>
         </FormContainer>
       )}

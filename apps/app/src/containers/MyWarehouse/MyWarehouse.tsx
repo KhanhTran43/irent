@@ -78,7 +78,7 @@ export const MyWarehouse = () => {
                   fallback={renderNoContent()}
                   loading={ownWarehousesLoading}
                   type={MyWarehouseViewCardType.Owning}
-                  warehouses={ownWarehouse.filter((w) => w.status !== WarehouseStatus.Pending)}
+                  warehouses={ownWarehouse.filter((w) => w.status === WarehouseStatus.Accepted)}
                 />
               ),
             },

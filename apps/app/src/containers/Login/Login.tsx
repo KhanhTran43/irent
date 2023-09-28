@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Loading } from '@/components/Fallback';
+
 import { useAuthStore } from '../../auth';
 import { AuthenticateResponse } from '../../auth/models';
 import { privateApi } from '../../axios/axios';
@@ -47,7 +49,7 @@ export const Login = () => {
           </Error>
         )}
         <Button disabled={isLoading} type="submit">
-          Login
+          {isLoading ? <Loading size={25} /> : 'Login'}
         </Button>
       </Form>
     </FormContainer>
@@ -75,12 +77,15 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  padding: 10px 20px;
+  width: 100px;
+  height: 30px;
   background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 5px;
+  box-sizing: border-box;
   cursor: pointer;
+  position: relative;
 `;
 
 const Error = styled.div`

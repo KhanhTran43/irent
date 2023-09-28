@@ -36,7 +36,11 @@ export const WarehouseDetails = () => {
   const { user } = useAuthStore(({ user }) => ({
     user,
   }));
-  const { currentSearchPayload } = useMapWithSearchBox();
+
+  const address = resolveAddress(warehouse.address);
+  const location = resolveLocation(warehouse.address);
+  const { currentSearchPayload } = useMapWithSearchBox({ markerLocation: location });
+
   const [searchedAddress, setSearchedAddress] = useState('');
 
   const navigate = useNavigate();
@@ -48,9 +52,6 @@ export const WarehouseDetails = () => {
   const handleViewContract = () => {
     navigate('contract');
   };
-
-  const address = resolveAddress(warehouse.address);
-  const location = resolveLocation(warehouse.address);
 
   const resolveComment = (comment: ClientCommentModel) => {
     const warehouseId = warehouse.id;

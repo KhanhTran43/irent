@@ -1,13 +1,13 @@
 import styled, { css } from 'styled-components';
 
 type AvatarProps = {
-  name: string;
+  name?: string;
   size?: number;
 };
 
 export const Avatar = (props: AvatarProps) => {
   const { name } = props;
-  const nameChars = name.split(' ');
+  const nameChars = name ? name.split(' ') : ['Guest'];
 
   const getName = () => {
     const first = nameChars.length > 0 ? nameChars[0][0] : '';
@@ -37,4 +37,4 @@ const Container = styled.div<{ $size?: number }>`
   font-size: 20px;
 `;
 
-Container.defaultProps = { $size: 64 };
+Container.defaultProps = { $size: 50 };

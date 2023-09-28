@@ -4,9 +4,7 @@ import { AddressLocation } from '@/models/warehouse.model';
 
 type InitAutoCompleteOptions = {
   onPlaceChangeAfterSearch?: (data: PlaceChangeAfterSearchPayload) => void;
-  mapElementId?: string;
-  searchBoxElementId?: string;
-};
+} & MapWithSearchBoxOptions;
 
 function initAutocomplete({ onPlaceChangeAfterSearch, ...otherOptions }: InitAutoCompleteOptions) {
   const mapElementId = otherOptions.mapElementId ?? 'map';
@@ -22,6 +20,15 @@ function initAutocomplete({ onPlaceChangeAfterSearch, ...otherOptions }: InitAut
   // Create the search box and link it to the UI element.
   const searchBoxElementId = otherOptions.searchBoxElementId ?? 'map-search-box';
   const searchBoxElement = document.getElementById(searchBoxElementId) as HTMLInputElement;
+
+  if (otherOptions.markerLocation) {
+    new google.maps.Marker({
+      map,
+      position: otherOptions.markerLocation,
+    });
+
+    map.setCenter(otherOptions.markerLocation);
+  }
 
   if (searchBoxElement === null)
     throw Error(`Element with id #${searchBoxElementId} for map search box is not existed`);
@@ -113,6 +120,7 @@ function initAutocomplete({ onPlaceChangeAfterSearch, ...otherOptions }: InitAut
 type MapWithSearchBoxOptions = {
   mapElementId?: string;
   searchBoxElementId?: string;
+  markerLocation?: AddressLocation;
 };
 
 type PlaceChangeAfterSearchPayload = {
@@ -126,8 +134,7 @@ export const useMapWithSearchBox = (options?: MapWithSearchBoxOptions) => {
 
   useEffect(() => {
     initAutocomplete({
-      mapElementId: options?.mapElementId,
-      searchBoxElementId: options?.searchBoxElementId,
+      ...options,
       onPlaceChangeAfterSearch: (data) => {
         setCurrentSearchPayload(data);
       },
