@@ -31,5 +31,10 @@ export const HomeWarehouseViewCard = ({ warehouse, onClick }: HomeWarehouseViewC
     };
   };
 
-  return <WarehouseViewCardBase {...getViewCardOptions()}></WarehouseViewCardBase>;
+  return (
+    <WarehouseViewCardBase
+      {...getViewCardOptions()}
+      onDoubleClick={() => navigate(`/warehouse/${warehouse.id}`)}
+    ></WarehouseViewCardBase>
+  );
 };
